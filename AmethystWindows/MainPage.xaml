@@ -1,0 +1,52 @@
+﻿<Page
+    x:Class="AmethystWindows.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:AmethystWindows"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <StackPanel Orientation="Vertical">
+        <CommandBar>
+            <local:AppBarLockableToggleButton LockToggle="True" x:Name="ApplicationsBarButton" Icon="List" Label="Home"/>
+            <local:AppBarLockableToggleButton LockToggle="True" x:Name="AboutBarButton" Icon="Setting" Label="About"/>
+        </CommandBar>
+        <Grid x:Name="DesktopWindowsListHeaders" HorizontalAlignment="Stretch" VerticalAlignment="Top" Padding="20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Style="{ThemeResource TitleTextBlockStyle}" Text="Application Name" />
+            <TextBlock Grid.Column="1" Style="{ThemeResource TitleTextBlockStyle}" Text="Virtual Desktop" />
+            <TextBlock Grid.Column="2" Style="{ThemeResource TitleTextBlockStyle}" Text="Monitor" />
+        </Grid>
+        <ScrollViewer>
+            <ListView x:Name="DesktopWindowsList" ItemsSource="{Binding DesktopWindows}">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        <Setter Property="VerticalContentAlignment" Value="Top"/>
+                        <Setter Property="Padding" Value="0,0,0,0"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Top" Padding="20">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Style="{ThemeResource BodyTextBlockStyle}" Text="{Binding AppName}" />
+                            <TextBlock Grid.Column="1" Style="{ThemeResource BodyTextBlockStyle}" Text="{Binding VirtualDesktop}" />
+                            <TextBlock Grid.Column="2" Style="{ThemeResource BodyTextBlockStyle}" Text="{Binding Monitor}" />
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </ScrollViewer>
+    </StackPanel>
+</Page>
