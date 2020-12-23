@@ -2,7 +2,7 @@
 
 Tiling window manager for Windows 10 along the lines of [xmonad](https://xmonad.org/) and [Amethyst](https://ianyh.com/amethyst/).
 
-[![Build status](https://build.appcenter.ms/v0.1/apps/8ec48c76-c96e-470c-88e2-b8e660f5dc44/branches/master/badge)](https://appcenter.ms)
+[![Build status](https://build.appcenter.ms/v0.1/apps/8ec48c76-c96e-470c-88e2-b8e660f5dc44/branches/master/badge)](https://appcenter.ms) [![Join the chat at https://gitter.im/glsorre/amethystwindows](https://badges.gitter.im/glsorre/amethystwindows.svg)](https://gitter.im/glsorre/amethystwindows?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 # Keyboard Shortcut
 
