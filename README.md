@@ -2,6 +2,8 @@
 
 Tiling window manager for Windows 10 along the lines of [xmonad](https://xmonad.org/) and [Amethyst](https://ianyh.com/amethyst/).
 
+[![Build status](https://build.appcenter.ms/v0.1/apps/8ec48c76-c96e-470c-88e2-b8e660f5dc44/branches/master/badge)](https://appcenter.ms)
+
 # Keyboard Shortcut
 
 Amethyst Windows uses one modifier: `shift + alt`.
