@@ -197,7 +197,7 @@ namespace AmethystWindowsSystray
                 {
                     connection = new AppServiceConnection();
                     connection.PackageFamilyName = Package.Current.Id.FamilyName;
-                    connection.AppServiceName = "AmethystWindowsSysTrayService";
+                    connection.AppServiceName = "AmethystWindowsSystray";
                     connection.ServiceClosed += Connection_ServiceClosed;
                     AppServiceConnectionStatus connectionStatus = await connection.OpenAsync();
                 }

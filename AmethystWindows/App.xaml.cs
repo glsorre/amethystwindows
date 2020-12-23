@@ -1,4 +1,7 @@
 ﻿using GalaSoft.MvvmLight.Threading;
+using Microsoft.AppCenter;
+using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -40,6 +43,7 @@ namespace AmethystWindows
         public App()
         {
             this.InitializeComponent();
+            AppCenter.Start("d37be467-14e5-48f8-b6be-42080bc64dc9", typeof(Analytics), typeof(Crashes));
             Suspending += App_OnSuspending;
             Resuming += App_Resuming;
             LeavingBackground += App_LeavingBackground;
