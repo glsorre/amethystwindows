@@ -385,6 +385,15 @@ namespace AmethystWindowsSystray
         public String AppName { get; set; }
         public RECT Borders;
 
+        private static readonly string[] WindowsClassNamesToSkip =
+        {
+            "Shell_TrayWnd",
+            "DV2ControlHost",
+            "MsgrIMEWindowClass",
+            "SysShadow",
+            "Button"
+        };
+
         public DesktopWindow(HWND window)
         {
             Window = window;
@@ -417,9 +426,26 @@ namespace AmethystWindowsSystray
 
         private bool IsAltTabWindow()
         {
-            HWND ancestorHWND = User32.GetAncestor(Window, User32.GetAncestorFlag.GA_ROOTOWNER);
-            return ancestorHWND == Window &&
-                !Info.dwExStyle.HasFlag(User32.WindowStylesEx.WS_EX_TOOLWINDOW);
+            if (Info.dwExStyle.HasFlag(User32.WindowStylesEx.WS_EX_TOOLWINDOW)) return false;
+
+            var classNameStringBuilder = new StringBuilder(256);
+            var length = User32.GetClassName(Window, classNameStringBuilder, classNameStringBuilder.Capacity);
+            if (length == 0)
+                return false;
+
+            var className = classNameStringBuilder.ToString();
+
+            if (Array.IndexOf(WindowsClassNamesToSkip, className) > -1) return false;
+
+            HWND hwndWalk = User32.GetAncestor(Window, User32.GetAncestorFlag.GA_ROOTOWNER);
+            // See if we are the last active visible popup
+            HWND hwndTry;
+            while ((hwndTry = User32.GetLastActivePopup(hwndWalk)) != hwndTry)
+            {
+                if (User32.IsWindowVisible(hwndTry)) break;
+                hwndWalk = hwndTry;
+            }
+            return hwndWalk == Window;
         }
 
         public void GetInfo()
