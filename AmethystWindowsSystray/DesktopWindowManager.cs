@@ -18,7 +18,9 @@ namespace AmethystWindowsSystray
         Vertical = 1,
         HorizGrid = 2,
         VertGrid = 3,
-        Monocle = 4
+        Monocle = 4,
+        Wide = 5,
+        Tall = 6
     }
 
     public struct Pair<K, V>
@@ -223,6 +225,32 @@ namespace AmethystWindowsSystray
                 for (int i = 0; i < windowsCount; i++)
                 {
                     yield return new Tuple<int, int, int, int>(0, 0, mWidth, mHeight);
+                }
+            }
+            else if (layout == Layout.Wide)
+            {
+                if (windowsCount == 1) yield return new Tuple<int, int, int, int>(0, 0, mWidth, mHeight);
+                else
+                {
+                    int size = mWidth / (windowsCount - 1);
+                    for (int i = 0; i < windowsCount - 1; i++)
+                    {
+                        if (i == 0) yield return new Tuple<int, int, int, int>(0, 0, mWidth, mHeight / 2);
+                        yield return new Tuple<int, int, int, int>(i * size, mHeight / 2, size, mHeight / 2);
+                    }
+                } 
+            }
+            else if (layout == Layout.Tall)
+            {
+                if (windowsCount == 1) yield return new Tuple<int, int, int, int>(0, 0, mWidth, mHeight);
+                else
+                {
+                    int size = mHeight / (windowsCount - 1);
+                    for (int i = 0; i < windowsCount - 1; i++)
+                    {
+                        if (i == 0) yield return new Tuple<int, int, int, int>(0, 0, mWidth / 2, mHeight);
+                        yield return new Tuple<int, int, int, int>(mWidth / 2, i * size, mWidth / 2, size);
+                    }
                 }
             }
         }
