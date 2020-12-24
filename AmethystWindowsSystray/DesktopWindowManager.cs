@@ -345,7 +345,7 @@ namespace AmethystWindowsSystray
             }
             catch
             {
-                Layouts.Add(desktopMonitor.Key, Layout.Horizontal);
+                Layouts.Add(desktopMonitor.Key, Layout.Tall);
                 mCurrentLayout = Layouts[desktopMonitor.Key];
             }
 

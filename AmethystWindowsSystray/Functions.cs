@@ -74,7 +74,7 @@ namespace AmethystWindowsSystray
             foreach (Pair<VirtualDesktop, HMONITOR> desktopMonitor in DesktopWindowsManager.Windows.Keys)
             {
                 DesktopWindowsManager.Layouts.Clear();
-                DesktopWindowsManager.Layouts.Add(desktopMonitor, Layout.Horizontal);
+                DesktopWindowsManager.Layouts.Add(desktopMonitor, Layout.Tall);
             }
         }
 
