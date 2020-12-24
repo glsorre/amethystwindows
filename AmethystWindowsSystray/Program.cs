@@ -40,7 +40,6 @@ namespace AmethystWindowsSystray
                           {
                               Application.Run(new SystrayContext());
                           }
-
                           mutex.ReleaseMutex();
                       }
                       else

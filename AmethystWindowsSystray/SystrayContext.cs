@@ -80,10 +80,16 @@ namespace AmethystWindowsSystray
             RefreshUWP();
         }
 
+        private async Task Form_AmethystSysTrayReconnect_Refresh()
+        {
+            await Task.Delay(750);
+            RefreshUWP();
+        }
+
         private async void Form_AmethystSysTrayReconnect(object sender, EventArgs e)
         {
             await ConnectToUWP();
-            RefreshUWP();
+            await Form_AmethystSysTrayReconnect_Refresh();
         }
 
         private void Form_AmethystSystrayHotKey(object sender, int e)
@@ -242,7 +248,6 @@ namespace AmethystWindowsSystray
         {
             if (!Standalone)
             {
-                await ConnectToUWP();
                 await connection.SendMessageAsync(message);
             }
         }

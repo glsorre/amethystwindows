@@ -52,10 +52,6 @@ namespace AmethystWindows
         private async void MainPage_AppServiceConnected(object sender, AppServiceTriggerDetails e)
         {
             App.Connection.RequestReceived += Connection_RequestReceived;
-            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-            {
-                Debug.WriteLine("connected");
-            });
         }
 
         private void Connection_RequestReceived(AppServiceConnection sender, AppServiceRequestReceivedEventArgs args)
