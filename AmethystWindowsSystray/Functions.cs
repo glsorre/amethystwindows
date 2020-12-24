@@ -81,7 +81,7 @@ namespace AmethystWindowsSystray
         private async Task ManageCreated(DesktopWindow desktopWindow)
         {
             await Task.Delay(1000);
-            if (desktopWindow.isRuntimeValuable() || desktopWindow.isPresent())
+            if (desktopWindow.isRuntimeValuable())
             {
                 desktopWindow.GetInfo();
                 DesktopWindowsManager.AddWindow(desktopWindow);
@@ -93,6 +93,7 @@ namespace AmethystWindowsSystray
             void WinEventHookAll(User32.HWINEVENTHOOK hWinEventHook, uint winEvent, HWND hwnd, int idObject, int idChild, uint idEventThread, uint dwmsEventTime)
             {
                 DesktopWindow desktopWindow = new DesktopWindow(hwnd);
+                HWND shellWindow = User32.GetShellWindow();
 
                 if (hwnd != HWND.NULL && idObject == User32.ObjectIdentifiers.OBJID_WINDOW && idChild == 0 && desktopWindow.isRuntimeValuable())
                 {
