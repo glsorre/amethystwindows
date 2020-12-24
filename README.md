@@ -15,8 +15,10 @@ For now the keyboard shortcut configured are:
 |---------------------------|--------------------------------------|
 | `mod1 + space`            | Rotate layouts                       |
 | `mod1 + enter`            | Swap focused window to main window   |
-| `mod1 + H` and `mod1 + J` | Swap focused window counterclockwise |
-| `mod1 + K` and `mod1 + L` | Swap focused window clockwise        |
+| `mod1 + H`                | Swap focused window counterclockwise |
+| `mod1 + L`                | Swap focused window clockwise        |
+| `mod1 + J`                | Change counterclockwise              |
+| `mod1 + K`                | Change clockwise                     |
 
 ## Layouts
 
@@ -35,6 +37,11 @@ This layout places the windows in grid occuping space in vertical when necessary
 ### Monocle
 In this layout, the currently focused window takes up the entire screen, and the other windows are not visible at all.
 
+### Tall
+The default layout. This gives you one "main pane" on the left, and one other pane on the right. The main window is placed in the main pane (extending the full height of the screen), and all remaining windows are placed in the other pane.
+
+### Wide
+The rotated version of tall.
 
 ## Background
 
