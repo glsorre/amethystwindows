@@ -88,7 +88,7 @@ namespace AmethystWindowsSystray
 
         private void Form_AmethystSystrayHotKey(object sender, int e)
         {
-            if (e == 0x20)
+            if (e == 0x20) //space bar
             {
                 HMONITOR currentMonitor = User32.MonitorFromPoint(Control.MousePosition, User32.MonitorFlags.MONITOR_DEFAULTTONEAREST);
                 VirtualDesktop currentDesktop = VirtualDesktop.Current;
@@ -96,7 +96,7 @@ namespace AmethystWindowsSystray
                 Handlers.DesktopWindowsManager.Layouts[currentPair] = Handlers.DesktopWindowsManager.RotateLayout(Handlers.DesktopWindowsManager.Layouts[currentPair]);
                 Handlers.DesktopWindowsManager.Draw(currentPair);
             }
-            if (e == 0x0D)
+            if (e == 0x0D) //enter
             {
                 HWND selectedWindow = User32.GetForegroundWindow();
                 HMONITOR currentMonitor = User32.MonitorFromWindow(selectedWindow, User32.MonitorFlags.MONITOR_DEFAULTTONEAREST);
@@ -108,7 +108,41 @@ namespace AmethystWindowsSystray
                     );
                 Handlers.DesktopWindowsManager.Draw(currentPair);
             }
-            if (e == 0x4B || e == 0x4C)
+            if (e == 0x4A) // j
+            {
+                HWND selectedWindow = User32.GetForegroundWindow();
+                HMONITOR currentMonitor = User32.MonitorFromWindow(selectedWindow, User32.MonitorFlags.MONITOR_DEFAULTTONEAREST);
+                DesktopWindow selected = Handlers.DesktopWindowsManager.GetWindowByHandlers(selectedWindow, currentMonitor, VirtualDesktop.Current);
+                Pair<VirtualDesktop, HMONITOR> currentPair = new Pair<VirtualDesktop, HMONITOR>(VirtualDesktop.Current, currentMonitor);
+                int currentIndex = Handlers.DesktopWindowsManager.Windows[currentPair].IndexOf(selected);
+                int maxIndex = Handlers.DesktopWindowsManager.Windows[currentPair].Count - 1;
+                if (currentIndex == maxIndex)
+                {
+                    User32.SetForegroundWindow(Handlers.DesktopWindowsManager.Windows[currentPair][0].Window);
+                }
+                else
+                {
+                    User32.SetForegroundWindow(Handlers.DesktopWindowsManager.Windows[currentPair][++currentIndex].Window);
+                }
+            }
+            if (e == 0x4B) // j
+            {
+                HWND selectedWindow = User32.GetForegroundWindow();
+                HMONITOR currentMonitor = User32.MonitorFromWindow(selectedWindow, User32.MonitorFlags.MONITOR_DEFAULTTONEAREST);
+                DesktopWindow selected = Handlers.DesktopWindowsManager.GetWindowByHandlers(selectedWindow, currentMonitor, VirtualDesktop.Current);
+                Pair<VirtualDesktop, HMONITOR> currentPair = new Pair<VirtualDesktop, HMONITOR>(VirtualDesktop.Current, currentMonitor);
+                int currentIndex = Handlers.DesktopWindowsManager.Windows[currentPair].IndexOf(selected);
+                int maxIndex = Handlers.DesktopWindowsManager.Windows[currentPair].Count - 1;
+                if (currentIndex == 0)
+                {
+                    User32.SetForegroundWindow(Handlers.DesktopWindowsManager.Windows[currentPair][maxIndex].Window);
+                }
+                else
+                {
+                    User32.SetForegroundWindow(Handlers.DesktopWindowsManager.Windows[currentPair][--currentIndex].Window);
+                }
+            }
+            if (e == 0x4C) // l
             {
                 HWND selectedWindow = User32.GetForegroundWindow();
                 HMONITOR currentMonitor = User32.MonitorFromWindow(selectedWindow, User32.MonitorFlags.MONITOR_DEFAULTTONEAREST);
@@ -126,7 +160,7 @@ namespace AmethystWindowsSystray
                 }
                 Handlers.DesktopWindowsManager.Draw(currentPair);
             }
-            if (e == 0x48 || e == 0x4A)
+            if (e == 0x48) //h
             {
                 HWND selectedWindow = User32.GetForegroundWindow();
                 HMONITOR currentMonitor = User32.MonitorFromWindow(selectedWindow, User32.MonitorFlags.MONITOR_DEFAULTTONEAREST);
