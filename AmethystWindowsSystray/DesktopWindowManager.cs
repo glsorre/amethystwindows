@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -48,6 +50,70 @@ namespace AmethystWindowsSystray
             hashCode = hashCode * -1521134295 + EqualityComparer<V>.Default.GetHashCode(Item2);
             return hashCode;
         }
+
+        public override string ToString()
+        {
+            return base.ToString();
+        }
+    }
+
+    public class LayoutsConverter : JsonConverter
+    {
+        public override bool CanConvert(Type objectType) => objectType == typeof(List<KeyValuePair<Pair<VirtualDesktop, HMONITOR>, Layout>>);
+
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        {
+            var list = value as List<KeyValuePair<Pair<VirtualDesktop, HMONITOR>, Layout>>;
+
+            writer.WriteStartArray();
+            foreach (KeyValuePair<Pair<VirtualDesktop, HMONITOR>, Layout> pair in list)
+            {
+                User32.MONITORINFOEX info = new User32.MONITORINFOEX();
+                info.cbSize = (uint)Marshal.SizeOf(info);
+                User32.GetMonitorInfo(pair.Key.Item2, ref info);
+
+                writer.WriteStartObject();
+                writer.WritePropertyName("Desktop");
+                writer.WriteValue(VirtualDesktop.DesktopNameFromDesktop(pair.Key.Item1));
+                writer.WritePropertyName("MonitorX");
+                writer.WriteValue(info.rcMonitor.X);
+                writer.WritePropertyName("MonitorY");
+                writer.WriteValue(info.rcMonitor.Y);
+                writer.WritePropertyName("Layout");
+                writer.WriteValue((int)pair.Value);
+                writer.WriteEndObject();
+            }
+            writer.WriteEndArray();
+            
+        }
+
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        {
+            List<KeyValuePair<Pair<VirtualDesktop, HMONITOR>, Layout>> list = new List<KeyValuePair<Pair<VirtualDesktop, HMONITOR>, Layout>>();
+
+            JArray array = JArray.Load(reader);
+
+            VirtualDesktop virtualDesktop = null;
+            HMONITOR hMONITOR = HMONITOR.NULL;
+            Layout layout = Layout.Tall;
+
+            foreach (JObject desktopMonitor in array.Children())
+            {
+                var properties = desktopMonitor.Properties().ToList();
+                Point point = new Point(properties[1].Value.ToObject<int>() + 100, properties[2].Value.ToObject<int>() + 100);
+                HMONITOR monitor = User32.MonitorFromPoint(point, User32.MonitorFlags.MONITOR_DEFAULTTONEAREST);
+                
+                virtualDesktop = VirtualDesktop.FromIndex(VirtualDesktop.SearchDesktop(properties[0].Value.ToString()));
+                hMONITOR = monitor;
+                layout = (Layout)properties[3].Value.ToObject<int>();
+            }
+
+            var key = new Pair<VirtualDesktop, HMONITOR>(virtualDesktop, hMONITOR);
+            list.Add(new KeyValuePair<Pair<VirtualDesktop, HMONITOR>, Layout>(key, layout));
+
+            return list;
+        }
+            
     }
 
     class DesktopWindowsManager
@@ -55,11 +121,20 @@ namespace AmethystWindowsSystray
         public Dictionary<Pair<VirtualDesktop, HMONITOR>, Layout> Layouts;
         public Dictionary<Pair<VirtualDesktop, HMONITOR>, ObservableCollection<DesktopWindow>> Windows;
         public Dictionary<Pair<VirtualDesktop, HMONITOR>, bool> WindowsSubcribed;
-        public int Padding;
+        private int padding;
+
+        public int Padding
+        {
+            get { return padding; }
+            set {
+                padding = value;
+                Draw();
+            }
+        }
 
         public DesktopWindowsManager()
         {
-            this.Padding = 5;
+            this.padding = Properties.Settings.Default.Padding;
             this.Layouts = new Dictionary<Pair<VirtualDesktop, HMONITOR>, Layout>();
             this.Windows = new Dictionary<Pair<VirtualDesktop, HMONITOR>, ObservableCollection<DesktopWindow>>();
             this.WindowsSubcribed = new Dictionary<Pair<VirtualDesktop, HMONITOR>, bool>();
@@ -94,6 +169,21 @@ namespace AmethystWindowsSystray
         public DesktopWindow GetWindowByHandlers(HWND hWND, HMONITOR hMONITOR, VirtualDesktop desktop)
         {
             return Windows[new Pair<VirtualDesktop, HMONITOR>(desktop, hMONITOR)].FirstOrDefault(window => window.Window == hWND);
+        }
+
+        public void SaveLayouts()
+        {
+            Properties.Settings.Default.Layouts = JsonConvert.SerializeObject(Layouts.ToList(), Formatting.Indented, new LayoutsConverter());
+            Console.WriteLine(Properties.Settings.Default.Layouts.ToString());
+            Properties.Settings.Default.Save();
+        }
+
+        public void ReadLayouts()
+        {
+            Console.WriteLine(Properties.Settings.Default.Layouts.ToString());
+            Layouts = JsonConvert.DeserializeObject<List<KeyValuePair<Pair<VirtualDesktop, HMONITOR>, Layout>>>(
+                Properties.Settings.Default.Layouts.ToString(), new LayoutsConverter()
+                ).ToDictionary(kv => kv.Key, kv => kv.Value);
         }
 
         private IEnumerable<Tuple<int, int, int, int>> GridGenerator(int mWidth, int mHeight, int windowsCount, Layout layout)
@@ -255,7 +345,7 @@ namespace AmethystWindowsSystray
             }
         }
 
-        public Layout RotateLayout(Layout currentLayout)
+        public Layout RotateLayouts(Layout currentLayout)
         {
             IEnumerable<Layout> values = Enum.GetValues(typeof(Layout)).Cast<Layout>();
             if (currentLayout == values.Max())
@@ -354,17 +444,6 @@ namespace AmethystWindowsSystray
 
         private void DrawWindow(float ScreenScalingFactorVert, int mX, int mY, IEnumerable<Tuple<int, int, int, int>> gridGenerator, Tuple<int, DesktopWindow> w)
         {
-            //Prepare the WINDOWPLACEMENT structure.
-            User32.WINDOWPLACEMENT placement = new User32.WINDOWPLACEMENT();
-            placement.length = (uint)Marshal.SizeOf(placement);
-
-            //Get the window's current placement.
-            User32.GetWindowPlacement(w.Item2.Window, ref placement);
-            placement.showCmd = ShowWindowCommand.SW_RESTORE;
-
-            //Perform the action.
-            User32.SetWindowPlacement(w.Item2.Window, ref placement);
-
             RECT adjustedSize = new RECT(new Rectangle(
                 gridGenerator.ToArray()[w.Item1].Item1,
                 gridGenerator.ToArray()[w.Item1].Item2,
@@ -379,21 +458,34 @@ namespace AmethystWindowsSystray
                 (uint)(ScreenScalingFactorVert / 96)
                 );
 
-            User32.SetWindowPos(
-                w.Item2.Window,
-                HWND.HWND_NOTOPMOST,
-                adjustedSize.X + mX - w.Item2.Borders.left + Padding,
-                adjustedSize.Y + mY - w.Item2.Borders.top + Padding,
-                adjustedSize.Width + w.Item2.Borders.left + w.Item2.Borders.right - 2 * Padding,
-                adjustedSize.Height + w.Item2.Borders.top + w.Item2.Borders.bottom - 2 * Padding,
-                User32.SetWindowPosFlags.SWP_NOACTIVATE
-                );
+            //Prepare the WINDOWPLACEMENT structure.
+            User32.WINDOWPLACEMENT placement = new User32.WINDOWPLACEMENT();
+            placement.length = (uint)Marshal.SizeOf(placement);
+
+            //Get the window's current placement.
+            User32.GetWindowPlacement(w.Item2.Window, ref placement);
+            placement.showCmd = ShowWindowCommand.SW_RESTORE;
+
+            //Perform the action.
+            User32.SetWindowPlacement(w.Item2.Window, ref placement);
 
             User32.SetWindowPos(
                 w.Item2.Window,
                 HWND.HWND_NOTOPMOST,
                 adjustedSize.X + mX - w.Item2.Borders.left + Padding,
                 adjustedSize.Y + mY - w.Item2.Borders.top + Padding,
+                0,
+                0,
+                User32.SetWindowPosFlags.SWP_NOACTIVATE
+                );
+
+            Console.WriteLine(adjustedSize.X + mX - w.Item2.Borders.left + Padding);
+
+            User32.SetWindowPos(
+                w.Item2.Window,
+                HWND.HWND_NOTOPMOST,
+                0,
+                0,
                 adjustedSize.Width + w.Item2.Borders.left + w.Item2.Borders.right - 2 * Padding,
                 adjustedSize.Height + w.Item2.Borders.top + w.Item2.Borders.bottom - 2 * Padding,
                 User32.SetWindowPosFlags.SWP_NOMOVE
@@ -559,7 +651,6 @@ namespace AmethystWindowsSystray
             {
                 Borders.top = 0;
             }
-            Console.WriteLine(Borders);
         }
 
         public override string ToString()

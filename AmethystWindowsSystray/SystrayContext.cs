@@ -54,19 +54,19 @@ namespace AmethystWindowsSystray
             Logger.Information($"connecting to UWP");
             ConnectToUWP();
 
-            Logger.Information($"connecting to UWP");
+            Logger.Information($"generating handlers");
             Handlers = new Functions(new DesktopWindowsManager());
-            Logger.Information($"getting windows and layouts");
-            Handlers.GetWindows();
-            Handlers.GetLayouts();
-            Logger.Information($"refreshing UWP");
-            RefreshUWP();
-
+            Logger.Information($"getting layouts");
+            Handlers.LoadLayouts();
             Logger.Information($"setting hooks");
             Handlers.setWindowsHook();
             Handlers.setKeyboardHook(form.Handle);
-            Logger.Information($"first drawing");
+            Logger.Information($"getting windows");
+            Handlers.GetWindows();
+            Logger.Information($"drawing");
             Handlers.DesktopWindowsManager.Draw();
+            Logger.Information($"refreshing UWP");
+            RefreshUWP();
 
             Logger.Information($"setting virtual desktop change");
             var prova = VirtualDesktop.RegisterListener();
@@ -99,8 +99,9 @@ namespace AmethystWindowsSystray
                 HMONITOR currentMonitor = User32.MonitorFromPoint(Control.MousePosition, User32.MonitorFlags.MONITOR_DEFAULTTONEAREST);
                 VirtualDesktop currentDesktop = VirtualDesktop.Current;
                 Pair<VirtualDesktop, HMONITOR> currentPair = new Pair<VirtualDesktop, HMONITOR>(currentDesktop, currentMonitor);
-                Handlers.DesktopWindowsManager.Layouts[currentPair] = Handlers.DesktopWindowsManager.RotateLayout(Handlers.DesktopWindowsManager.Layouts[currentPair]);
+                Handlers.DesktopWindowsManager.Layouts[currentPair] = Handlers.DesktopWindowsManager.RotateLayouts(Handlers.DesktopWindowsManager.Layouts[currentPair]);
                 Handlers.DesktopWindowsManager.Draw(currentPair);
+                Handlers.DesktopWindowsManager.SaveLayouts();
             }
             if (e == 0x0D) //enter
             {

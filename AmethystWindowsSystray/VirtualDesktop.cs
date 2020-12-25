@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Concurrent;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
@@ -335,7 +336,7 @@ namespace WindowsDesktop
     public partial class VirtualDesktop
     {
         private IVirtualDesktop ivd;
-        private VirtualDesktop(IVirtualDesktop desktop) { this.ivd = desktop; }
+        private VirtualDesktop(IVirtualDesktop desktop) => this.ivd = desktop;
         private static readonly ConcurrentDictionary<Guid, VirtualDesktop> _wrappers = new ConcurrentDictionary<Guid, VirtualDesktop>();
 
         public override int GetHashCode()
@@ -661,7 +662,7 @@ namespace WindowsDesktop
         }
     }
 
-    partial class VirtualDesktop
+    public partial class VirtualDesktop
     {
         internal const int RPC_S_SERVER_UNAVAILABLE = unchecked((int)0x800706BA);
         private static uint? dwCookie;

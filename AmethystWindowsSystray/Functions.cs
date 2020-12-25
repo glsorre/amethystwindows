@@ -5,6 +5,7 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Vanara.PInvoke;
 using WindowsDesktop;
@@ -31,21 +32,19 @@ namespace AmethystWindowsSystray
                     desktopWindow.GetAppName();
                     desktopWindow.GetMonitorInfo();
                     desktopWindow.GetVirtualDesktop();
-                    try
+                    if (DesktopWindowsManager.Windows.ContainsKey(desktopWindow.GetDesktopMonitor()))
                     {
                         if (!DesktopWindowsManager.Windows[desktopWindow.GetDesktopMonitor()].Contains(desktopWindow))
                         {
                             DesktopWindowsManager.Windows[desktopWindow.GetDesktopMonitor()].Add(desktopWindow);
                         }
                     }
-                    catch
+                    else
                     {
                         DesktopWindowsManager.Windows.Add(
                             desktopWindow.GetDesktopMonitor(),
                             new ObservableCollection<DesktopWindow>(new DesktopWindow[] { desktopWindow })
                             );
-                        
-                        DesktopWindowsManager.Windows[desktopWindow.GetDesktopMonitor()].CollectionChanged += Functions_CollectionChanged;
                     }
 
                 }
@@ -53,6 +52,11 @@ namespace AmethystWindowsSystray
             };
 
             User32.EnumWindows(filterDesktopWindows, IntPtr.Zero);
+
+            foreach (var desktopMonitor in DesktopWindowsManager.Windows)
+            {
+                DesktopWindowsManager.Windows[desktopMonitor.Key].CollectionChanged += Functions_CollectionChanged;
+            }
         }
 
         private void Functions_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -69,12 +73,22 @@ namespace AmethystWindowsSystray
             }
         }
 
-        public void GetLayouts()
+        public void LoadLayouts()
         {
+            if (Properties.Settings.Default.Layouts != "")
+            {
+                DesktopWindowsManager.ReadLayouts();
+            }
+        }
+
+        public void UpdateLayouts()
+        { 
             foreach (Pair<VirtualDesktop, HMONITOR> desktopMonitor in DesktopWindowsManager.Windows.Keys)
             {
-                DesktopWindowsManager.Layouts.Clear();
-                DesktopWindowsManager.Layouts.Add(desktopMonitor, Layout.Tall);
+                if (!DesktopWindowsManager.Layouts.ContainsKey(desktopMonitor))
+                {
+                    DesktopWindowsManager.Layouts.Add(desktopMonitor, Layout.Tall);
+                }
             }
         }
 
@@ -83,6 +97,7 @@ namespace AmethystWindowsSystray
             await Task.Delay(1000);
             if (desktopWindow.isRuntimeValuable())
             {
+                SystrayContext.Logger.Information($"window created");
                 desktopWindow.GetInfo();
                 DesktopWindowsManager.AddWindow(desktopWindow);
             }
@@ -93,14 +108,11 @@ namespace AmethystWindowsSystray
             void WinEventHookAll(User32.HWINEVENTHOOK hWinEventHook, uint winEvent, HWND hwnd, int idObject, int idChild, uint idEventThread, uint dwmsEventTime)
             {
                 DesktopWindow desktopWindow = new DesktopWindow(hwnd);
-                HWND shellWindow = User32.GetShellWindow();
-
                 if (hwnd != HWND.NULL && idObject == User32.ObjectIdentifiers.OBJID_WINDOW && idChild == 0 && desktopWindow.isRuntimeValuable())
                 {
                     switch (winEvent)
                     {
                         case User32.EventConstants.EVENT_SYSTEM_MINIMIZEEND:
-                            SystrayContext.Logger.Information($"window maximized");
                             desktopWindow.GetInfo();
                             DesktopWindowsManager.AddWindow(desktopWindow);
                             break;
@@ -140,7 +152,6 @@ namespace AmethystWindowsSystray
                     switch (winEvent)
                     {
                         case User32.EventConstants.EVENT_OBJECT_CREATE:
-                            SystrayContext.Logger.Information($"window created");
                             ManageCreated(desktopWindow);
                             break;
                         default:
