@@ -81,7 +81,6 @@ namespace AmethystWindows
                                     w[6]
                             ));
                         }
-
                         mainViewModel.DesktopWindows = windowsReceived;
                     }
                 }
