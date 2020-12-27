@@ -2,13 +2,14 @@
 using GalaSoft.MvvmLight.Threading;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace AmethystWindows.ViewModels
 {
-    class MainViewModel : ViewModelBase
+    public class MainViewModel : ViewModelBase
     {
         private List<DesktopWindow> desktopWindows;
 
@@ -26,9 +27,26 @@ namespace AmethystWindows.ViewModels
             }
         }
 
+        private int padding;
+
+        public int Padding
+        {
+            get
+            {
+                return padding;
+            }
+            set
+            {
+                DispatcherHelper.CheckBeginInvokeOnUI(() => {
+                    Set(() => Padding, ref padding, value);
+                });
+            }
+        }
+
         public MainViewModel()
         {
             desktopWindows = new List<DesktopWindow>();
+            padding = 5;
         }
     }
 }

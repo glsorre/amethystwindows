@@ -13,7 +13,7 @@ namespace AmethystWindowsSystray
     {
         static Mutex mutex = new Mutex(
             true,
-            "AmethysyWindowsSysTrayService"
+            "AmethysyWindowsSystray"
             );
 
         public class Options

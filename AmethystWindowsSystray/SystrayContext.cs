@@ -1,11 +1,12 @@
-﻿using Serilog;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Serilog;
 using Serilog.Core;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Vanara.PInvoke;
@@ -13,14 +14,15 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.AppService;
 using Windows.ApplicationModel.Core;
 using Windows.Foundation.Collections;
+using Windows.UI.Popups;
 using WindowsDesktop;
 
 namespace AmethystWindowsSystray
 {
     class SystrayContext : ApplicationContext
     {
-        private AppServiceConnection connection = null;
-        private NotifyIcon notifyIcon = null;
+        private AppServiceConnection Connection = null;
+        private NotifyIcon NotifyIcon = null;
         private Functions Handlers = null;
         private bool Standalone = false;
         public static Logger Logger = new LoggerConfiguration().WriteTo.Console().CreateLogger();
@@ -39,23 +41,24 @@ namespace AmethystWindowsSystray
             Logger.Information($"inizializing context menu");
             MenuItem versionMenuItem = new MenuItem("Amethyst Windows 2020.12 Alpha");
             MenuItem separatorMenuItem = new MenuItem("-");
-            MenuItem openMenuItem = new MenuItem("Open", new EventHandler(OpenApp));
-            MenuItem sendMenuItem = new MenuItem("Refresh", new EventHandler(RefreshUWP));
-            MenuItem exitMenuItem = new MenuItem("Exit", new EventHandler(Exit));
+            MenuItem openMenuItem = new MenuItem("Open", new EventHandler(App_Open));
+            MenuItem sendMenuItem = new MenuItem("Refresh", new EventHandler(App_Refresh));
+            MenuItem exitMenuItem = new MenuItem("Exit", new EventHandler(App_Exit));
             openMenuItem.DefaultItem = true;
 
             Logger.Information($"inizializing notify icon");
-            notifyIcon = new NotifyIcon();
-            notifyIcon.DoubleClick += new EventHandler(OpenApp);
-            notifyIcon.Icon = AmethystWindowsSystray.Properties.Resources.SystrayIcon;
-            notifyIcon.ContextMenu = new ContextMenu(new MenuItem[] { versionMenuItem, separatorMenuItem, openMenuItem, sendMenuItem, exitMenuItem });
-            notifyIcon.Visible = true;
+            NotifyIcon = new NotifyIcon();
+            NotifyIcon.DoubleClick += new EventHandler(App_Open);
+            NotifyIcon.Icon = AmethystWindowsSystray.Properties.Resources.SystrayIcon;
+            NotifyIcon.ContextMenu = new ContextMenu(new MenuItem[] { versionMenuItem, separatorMenuItem, openMenuItem, sendMenuItem, exitMenuItem });
+            NotifyIcon.Visible = true;
 
             Logger.Information($"connecting to UWP");
-            ConnectToUWP();
+            App_Connect();
 
             Logger.Information($"generating handlers");
             Handlers = new Functions(new DesktopWindowsManager());
+            Handlers.Changed += Handlers_Changed;
             Logger.Information($"getting layouts");
             Handlers.LoadLayouts();
             Logger.Information($"setting hooks");
@@ -66,29 +69,70 @@ namespace AmethystWindowsSystray
             Logger.Information($"drawing");
             Handlers.DesktopWindowsManager.Draw();
             Logger.Information($"refreshing UWP");
-            RefreshUWP();
+            App_Refresh();
 
             Logger.Information($"setting virtual desktop change");
             var prova = VirtualDesktop.RegisterListener();
             VirtualDesktop.CurrentChanged += VirtualDesktop_CurrentChanged;
+
+            App_SendPadding();
+        }
+
+        private void Handlers_Changed(object sender, string e)
+        {
+            if (Connection != null) {
+                App_Refresh();
+            }
+        }
+
+        private void Connection_RequestReceived(AppServiceConnection sender, AppServiceRequestReceivedEventArgs args)
+        {
+            AppServiceDeferral deferral = args.GetDeferral();
+
+            if (args.Request.Message.ContainsKey("refresh"))
+            {
+                App_Refresh();
+            }
+
+            if (args.Request.Message.ContainsKey("redraw"))
+            {
+                Handlers.DesktopWindowsManager.Draw();
+            }
+
+            if (args.Request.Message.ContainsKey("padding_read"))
+            {
+                App_SendPadding();
+            }
+
+            if (args.Request.Message.ContainsKey("padding_set"))
+            {
+                args.Request.Message.TryGetValue("padding_set", out object message);
+                int newPadding = int.Parse(message.ToString());
+                Handlers.DesktopWindowsManager.Padding = newPadding;
+                Properties.Settings.Default.Padding = newPadding;
+                Properties.Settings.Default.Save();
+            }
+
+            deferral.Complete();
         }
 
         private void VirtualDesktop_CurrentChanged(object sender, VirtualDesktopChangedEventArgs e)
         {
             Handlers.GetWindows();
             Handlers.DesktopWindowsManager.Draw();
-            RefreshUWP();
+            App_Refresh();
         }
 
         private async Task Form_AmethystSysTrayReconnect_Refresh()
         {
             await Task.Delay(750);
-            RefreshUWP();
+            App_Refresh();
+            App_SendPadding();
         }
 
         private async void Form_AmethystSysTrayReconnect(object sender, EventArgs e)
         {
-            await ConnectToUWP();
+            await App_Connect();
             await Form_AmethystSysTrayReconnect_Refresh();
         }
 
@@ -187,13 +231,20 @@ namespace AmethystWindowsSystray
             }
         }
 
-        private async void OpenApp(object sender, EventArgs e)
+        private async void App_Open(object sender, EventArgs e)
         {
             IEnumerable<AppListEntry> appListEntries = await Package.Current.GetAppListEntriesAsync();
             await appListEntries.First().LaunchAsync();
         }
 
-        private async void RefreshUWP()
+        private async void App_SendPadding()
+        {
+            ValueSet message = new ValueSet();
+            message.Add("padding_read", Properties.Settings.Default.Padding);
+            await App_Send(message);
+        }
+
+        private async void App_Refresh()
         {
             ValueSet message = new ValueSet();
             List<List<String>> list = new List<List<String>>();
@@ -212,51 +263,55 @@ namespace AmethystWindowsSystray
                     list.Add(item);
                 }
             }
-            message.Add("refresh", JsonSerializer.Serialize(list));
-            await SendToUWP(message);
+            message.Add("refresh", JsonConvert.SerializeObject(list));
+            await App_Send(message);
         }
 
-        private void RefreshUWP(object sender, EventArgs e)
+        private void App_Refresh(object sender, EventArgs e)
         {
-            RefreshUWP();
+            App_Refresh();
         }
 
-        private async void Exit(object sender, EventArgs e)
+        private async void App_Exit(object sender, EventArgs e)
         {
-            ValueSet message = new ValueSet();
-            message.Add("exit", "");
-            await SendToUWP(message);
+            if (Connection != null)
+            {
+                ValueSet message = new ValueSet();
+                message.Add("exit", "");
+                await App_Send(message);
+            }
             MainForm.Close();
             Application.Exit();
         }
 
-        private async Task ConnectToUWP()
+        private async Task App_Connect()
         {
             if (!Standalone)
             {
-                if (connection == null)
+                if (Connection == null)
                 {
-                    connection = new AppServiceConnection();
-                    connection.PackageFamilyName = Package.Current.Id.FamilyName;
-                    connection.AppServiceName = "AmethystWindowsSystray";
-                    connection.ServiceClosed += Connection_ServiceClosed;
-                    AppServiceConnectionStatus connectionStatus = await connection.OpenAsync();
+                    Connection = new AppServiceConnection();
+                    Connection.PackageFamilyName = Package.Current.Id.FamilyName;
+                    Connection.AppServiceName = "AmethystWindowsSystray";
+                    Connection.ServiceClosed += Connection_ServiceClosed;
+                    Connection.RequestReceived += Connection_RequestReceived;
+                    AppServiceConnectionStatus connectionStatus = await Connection.OpenAsync();
                 }
             }
         }
 
-        private async Task SendToUWP(ValueSet message)
+        private async Task App_Send(ValueSet message)
         {
             if (!Standalone)
             {
-                await connection.SendMessageAsync(message);
+                await Connection.SendMessageAsync(message);
             }
         }
 
         private void Connection_ServiceClosed(AppServiceConnection sender, AppServiceClosedEventArgs args)
         {
-            connection.ServiceClosed -= Connection_ServiceClosed;
-            connection = null;
+            Connection.ServiceClosed -= Connection_ServiceClosed;
+            Connection = null;
         }
     }
 }

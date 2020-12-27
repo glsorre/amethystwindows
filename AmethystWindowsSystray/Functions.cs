@@ -15,6 +15,7 @@ namespace AmethystWindowsSystray
     class Functions
     {
         public DesktopWindowsManager DesktopWindowsManager { get; set; }
+        public event EventHandler<string> Changed;
 
         public Functions(DesktopWindowsManager desktopWindowsManager)
         {
@@ -65,11 +66,13 @@ namespace AmethystWindowsSystray
             {
                 DesktopWindow desktopWindow = (DesktopWindow)e.OldItems[0];
                 DesktopWindowsManager.Draw(desktopWindow);
+                Changed.Invoke(this, "add");
             }
             else if (e.Action.Equals(NotifyCollectionChangedAction.Add))
             {
                 DesktopWindow desktopWindow = (DesktopWindow)e.NewItems[0];
                 DesktopWindowsManager.Draw(desktopWindow);
+                Changed.Invoke(this, "remove");
             }
         }
 
