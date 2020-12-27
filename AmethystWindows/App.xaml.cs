@@ -1,9 +1,11 @@
-﻿using GalaSoft.MvvmLight.Threading;
+﻿using AmethystWindows.ViewModels;
+using GalaSoft.MvvmLight.Threading;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -34,8 +36,8 @@ namespace AmethystWindows
         public static event EventHandler AppServiceDisconnected;
         public static event EventHandler<AppServiceTriggerDetails> AppServiceConnected;
         public static bool IsForeground = false;
-        private Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
 
+        public static MainViewModel mainViewModel = new MainViewModel();
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -45,7 +47,6 @@ namespace AmethystWindows
             this.InitializeComponent();
             AppCenter.Start("d37be467-14e5-48f8-b6be-42080bc64dc9", typeof(Analytics), typeof(Crashes));
             Suspending += App_OnSuspending;
-            Resuming += App_Resuming;
             LeavingBackground += App_LeavingBackground;
             EnteredBackground += App_EnteredBackground;
             Windows.UI.ViewManagement.ApplicationView.PreferredLaunchViewSize = new Windows.Foundation.Size(1000, 500);
@@ -61,11 +62,6 @@ namespace AmethystWindows
             }
         }
 
-        private void App_Resuming(object sender, object e)
-        {
-            App_LaunchSystray();
-        }
-
         private void App_EnteredBackground(object sender, EnteredBackgroundEventArgs e)
         {
             IsForeground = false;
@@ -76,9 +72,14 @@ namespace AmethystWindows
             IsForeground = true;
         }
 
+        private void Connection_ServiceClosed(AppServiceConnection sender, AppServiceClosedEventArgs args)
+        {
+            Connection.ServiceClosed -= Connection_ServiceClosed;
+            Connection = null;
+        }
+
         protected override void OnBackgroundActivated(BackgroundActivatedEventArgs args)
         {
-            // connection established from the fulltrust process
             base.OnBackgroundActivated(args);
             if (args.TaskInstance.TriggerDetails is AppServiceTriggerDetails details)
             {
@@ -88,6 +89,7 @@ namespace AmethystWindows
                     args.TaskInstance.Canceled += Connection_OnTaskCanceled;
                     Connection = details.AppServiceConnection;
                     Connection.RequestReceived += Connection_OnRequestReceived;
+                    Connection.ServiceClosed += Connection_ServiceClosed;
                     AppServiceConnected?.Invoke(this, args.TaskInstance.TriggerDetails as AppServiceTriggerDetails);
                 }
             }
@@ -118,6 +120,7 @@ namespace AmethystWindows
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
             App_LaunchSystray();
+            IsForeground = true;
             DispatcherHelper.Initialize();
             Frame rootFrame = Window.Current.Content as Frame;
 

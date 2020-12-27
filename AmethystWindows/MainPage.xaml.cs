@@ -2,6 +2,7 @@
 using GalaSoft.MvvmLight.Ioc;
 using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Threading;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -10,8 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.AppService;
@@ -39,17 +39,52 @@ namespace AmethystWindows
 
     public sealed partial class MainPage : Page
     {
-        private MainViewModel mainViewModel = new MainViewModel();
-
         public MainPage()
         {
             this.InitializeComponent();
-            this.DataContext = mainViewModel;
+            NavigationCacheMode = Windows.UI.Xaml.Navigation.NavigationCacheMode.Enabled;
+            DataContext = App.mainViewModel;
             ApplicationsBarButton.IsChecked = true;
+            SettingsBarButton.Click += SettingsBarButton_Click;
+            RefreshButton.Click += RefreshButton_Click;
+            RedrawButton.Click += RedrawButton_Click;
             App.AppServiceConnected += MainPage_AppServiceConnected;
         }
 
-        private async void MainPage_AppServiceConnected(object sender, AppServiceTriggerDetails e)
+        private async void RedrawButton_Click(object sender, RoutedEventArgs e)
+        {
+            ValueSet message = new ValueSet();
+            message.Add("redraw", "");
+            await App.Connection.SendMessageAsync(message);
+        }
+
+        private void RefreshButton_Click(object sender, RoutedEventArgs e)
+        {
+            MainPage_Refresh();
+        }
+
+        private async void MainPage_Refresh()
+        {
+            ValueSet message = new ValueSet();
+            message.Add("refresh", "");
+            await App.Connection.SendMessageAsync(message);
+        }
+
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            if (e.Parameter.ToString() == "SettingPage")
+            {
+                MainPage_Refresh();
+            }
+        }
+
+        private void SettingsBarButton_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(SettingPage), "MainPage");
+        }
+
+        private void MainPage_AppServiceConnected(object sender, AppServiceTriggerDetails e)
         {
             App.Connection.RequestReceived += Connection_RequestReceived;
         }
@@ -61,28 +96,30 @@ namespace AmethystWindows
                 if (args.Request.Message.ContainsKey("refresh"))
                 {
                     args.Request.Message.TryGetValue("refresh", out object message);
-                    if (App.IsForeground)
-                    {
-                        byte[] bytes = Encoding.ASCII.GetBytes(message.ToString());
-                        ReadOnlySpan<byte> readOnlySpan = new ReadOnlySpan<byte>(bytes);
-                        List<List<string>> windowsParsed = JsonSerializer.Deserialize<List<List<string>>>(readOnlySpan);
-                        List<DesktopWindow> windowsReceived = new List<DesktopWindow>();
+                    List<List<string>> windowsParsed = JsonConvert.DeserializeObject<List<List<string>>>(message.ToString());
+                    List<DesktopWindow> windowsReceived = new List<DesktopWindow>();
 
-                        foreach (List<string> w in windowsParsed)
-                        {
-                            windowsReceived.Add(
-                                new DesktopWindow(
-                                    w[0],
-                                    w[1],
-                                    w[2],
-                                    w[3],
-                                    w[4],
-                                    w[5],
-                                    w[6]
-                            ));
-                        }
-                        mainViewModel.DesktopWindows = windowsReceived;
+                    foreach (List<string> w in windowsParsed)
+                    {
+                        windowsReceived.Add(
+                            new DesktopWindow(
+                                w[0],
+                                w[1],
+                                w[2],
+                                w[3],
+                                w[4],
+                                w[5],
+                                w[6]
+                        ));
                     }
+
+                    App.mainViewModel.DesktopWindows = windowsReceived;
+                }
+
+                if (args.Request.Message.ContainsKey("padding_read"))
+                {
+                    args.Request.Message.TryGetValue("padding_read", out object message);
+                    App.mainViewModel.Padding = int.Parse(message.ToString());
                 }
             }
         }
