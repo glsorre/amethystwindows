@@ -12,9 +12,9 @@ namespace AmethystWindows
         public string AppName { get; set; }
         public string VirtualDesktop { get; set; }
         public string Monitor { get; set; }
-        public string rcWindow { get; set; }
-        public string dxStyle { get; set; }
-        public string dxExStyle { get; set; }
+        public string RcWindow { get; set; }
+        public string DxStyle { get; set; }
+        public string DxExStyle { get; set; }
 
         public DesktopWindow(string window, string appName, string virtualDesktop, string monitor, string rcWindow, string dxStyle, string dxExStyle)
         {
@@ -22,9 +22,9 @@ namespace AmethystWindows
             AppName = appName;
             VirtualDesktop = virtualDesktop;
             Monitor = monitor;
-            this.rcWindow = rcWindow;
-            this.dxStyle = dxStyle;
-            this.dxExStyle = dxExStyle;
+            RcWindow = rcWindow;
+            DxStyle = dxStyle;
+            DxExStyle = dxExStyle;
         }
     }
 }

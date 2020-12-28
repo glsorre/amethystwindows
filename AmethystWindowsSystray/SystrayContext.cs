@@ -71,7 +71,7 @@ namespace AmethystWindowsSystray
             Logger.Information($"refreshing UWP");
             App_Refresh();
 
-            Logger.Information($"setting virtual desktop change");
+            Logger.Information($"setting virtual desktop change listener");
             var prova = VirtualDesktop.RegisterListener();
             VirtualDesktop.CurrentChanged += VirtualDesktop_CurrentChanged;
 
