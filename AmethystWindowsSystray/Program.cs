@@ -1,4 +1,7 @@
 ﻿using CommandLine;
+using Microsoft.AppCenter;
+using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,6 +35,7 @@ namespace AmethystWindowsSystray
                       {
                           Application.EnableVisualStyles();
                           Application.SetCompatibleTextRenderingDefault(false);
+                          AppCenter.Start("b613d3d4-4ef3-4f7f-b363-161a8aabcf66", typeof(Analytics), typeof(Crashes));
                           if (o.Standalone)
                           {
                               Application.Run(new SystrayContext(o.Standalone));

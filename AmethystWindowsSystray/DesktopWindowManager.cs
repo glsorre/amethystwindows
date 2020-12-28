@@ -208,7 +208,7 @@ namespace AmethystWindowsSystray
                     yield return new Tuple<int, int, int, int>(j, i * vertSize, mWidth, vertSize);
                 }
             }
-            else if (layout == Layout.VertGrid)
+            else if (layout == Layout.HorizGrid)
             {
                 int i = 0;
                 int j = 0;
@@ -260,7 +260,7 @@ namespace AmethystWindowsSystray
                     }
                 }
             }
-            else if (layout == Layout.HorizGrid)
+            else if (layout == Layout.VertGrid)
             {
                 int i = 0;
                 int j = 0;
@@ -319,7 +319,7 @@ namespace AmethystWindowsSystray
                     yield return new Tuple<int, int, int, int>(0, 0, mWidth, mHeight);
                 }
             }
-            else if (layout == Layout.Tall)
+            else if (layout == Layout.Wide)
             {
                 if (windowsCount == 1) yield return new Tuple<int, int, int, int>(0, 0, mWidth, mHeight);
                 else
@@ -332,7 +332,7 @@ namespace AmethystWindowsSystray
                     }
                 } 
             }
-            else if (layout == Layout.Wide)
+            else if (layout == Layout.Tall)
             {
                 if (windowsCount == 1) yield return new Tuple<int, int, int, int>(0, 0, mWidth, mHeight);
                 else
