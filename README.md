@@ -18,8 +18,8 @@ For now the keyboard shortcut configured are:
 | `mod1 + enter`            | Swap focused window to main window   |
 | `mod1 + H`                | Swap focused window counterclockwise |
 | `mod1 + L`                | Swap focused window clockwise        |
-| `mod1 + J`                | Change counterclockwise              |
-| `mod1 + K`                | Change clockwise                     |
+| `mod1 + J`                | Change focus counterclockwise        |
+| `mod1 + K`                | Change focus clockwise               |
 
 ## Layouts
 

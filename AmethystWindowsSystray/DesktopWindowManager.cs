@@ -6,12 +6,14 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using Vanara.PInvoke;
 using WindowsDesktop;
 
+[assembly: InternalsVisibleTo("AmethystWindowsSystrayTests")]
 namespace AmethystWindowsSystray
 {
     public enum Layout : ushort
@@ -186,7 +188,7 @@ namespace AmethystWindowsSystray
                 ).ToDictionary(kv => kv.Key, kv => kv.Value);
         }
 
-        private IEnumerable<Tuple<int, int, int, int>> GridGenerator(int mWidth, int mHeight, int windowsCount, Layout layout)
+        public IEnumerable<Tuple<int, int, int, int>> GridGenerator(int mWidth, int mHeight, int windowsCount, Layout layout)
         {
             if (layout == Layout.Horizontal)
             {
