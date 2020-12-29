@@ -1,13 +1,9 @@
 theme: jekyll-theme-minimal
-plugins:
-  - jekyll-analytics
-  - jekyll-relative-links
+title: Amethyst Windows
+show_downloads: true
+google_analytics: UA-132556016-1
 relative_links:
   enabled: true
   collections: true
-jekyll_analytics:
-  GoogleAnalytics:
-    id: UA-132556016-1
-    anonymizeIp: true
 include:
   - README.md
