@@ -6,6 +6,12 @@ Tiling window manager for Windows 10 along the lines of [xmonad](https://xmonad.
 [![Gitter](https://badges.gitter.im/glsorre/amethystwindows.svg)](https://gitter.im/glsorre/amethystwindows?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 ![GitHub release (by tag)](https://img.shields.io/github/downloads/glsorre/amethystwindows/latest/total?label=download)
 
+## Key Features
+
+- doesn't use DLL injection to manipulate window
+- support for default windows 10 virtual desktop implementation
+- fast and light
+
 ## Keyboard Shortcut
 
 Amethyst Windows uses one modifier: `shift + alt`.

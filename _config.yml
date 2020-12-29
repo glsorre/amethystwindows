@@ -1,8 +1,13 @@
 theme: jekyll-theme-slate
 plugins:
   - jekyll-relative-links
+  - jekyll-analytics
 relative_links:
   enabled: true
   collections: true
+jekyll_analytics:
+  GoogleAnalytics:
+    id: UA-132556016-1
+    anonymizeIp: true
 include:
   - README.md
