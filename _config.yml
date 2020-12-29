@@ -1,7 +1,7 @@
 theme: jekyll-theme-slate
 plugins:
-  - jekyll-relative-links
   - jekyll-analytics
+  - jekyll-relative-links
 relative_links:
   enabled: true
   collections: true
