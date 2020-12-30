@@ -40,10 +40,10 @@ namespace AmethystWindowsSystray
             MainForm = form;
 
             Logger.Information($"inizializing context menu");
-            MenuItem versionMenuItem = new MenuItem("Amethyst Windows 2020.12 Alpha");
+            MenuItem versionMenuItem = new MenuItem("Amethyst Windows");
+            versionMenuItem.Enabled = false;
             MenuItem separatorMenuItem = new MenuItem("-");
             MenuItem openMenuItem = new MenuItem("Open", new EventHandler(App_Open));
-            MenuItem sendMenuItem = new MenuItem("Refresh", new EventHandler(App_Refresh));
             MenuItem exitMenuItem = new MenuItem("Exit", new EventHandler(App_Exit));
             openMenuItem.DefaultItem = true;
 
@@ -51,7 +51,7 @@ namespace AmethystWindowsSystray
             NotifyIcon = new NotifyIcon();
             NotifyIcon.DoubleClick += new EventHandler(App_Open);
             NotifyIcon.Icon = AmethystWindowsSystray.Properties.Resources.SystrayIcon;
-            NotifyIcon.ContextMenu = new ContextMenu(new MenuItem[] { versionMenuItem, separatorMenuItem, openMenuItem, sendMenuItem, exitMenuItem });
+            NotifyIcon.ContextMenu = new ContextMenu(new MenuItem[] { versionMenuItem, separatorMenuItem, openMenuItem, exitMenuItem });
             NotifyIcon.Visible = true;
 
             Logger.Information($"connecting to UWP");
