@@ -18,7 +18,7 @@ namespace AmethystWindowsSystray
         public DesktopWindowsManager DesktopWindowsManager { get; set; }
         public event EventHandler<string> Changed;
 
-        private readonly string[] MainAppName = new string[] { "Amethyst Windows", "AmethystWindows Packaging" };
+        private readonly string[] MainAppName = new string[] { "Amethyst Windows", "AmethystWindowsPackaging" };
 
         public Functions(DesktopWindowsManager desktopWindowsManager)
         {
