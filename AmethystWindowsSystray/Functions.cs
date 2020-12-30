@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DesktopWindowManager.Internal;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -17,6 +18,8 @@ namespace AmethystWindowsSystray
         public DesktopWindowsManager DesktopWindowsManager { get; set; }
         public event EventHandler<string> Changed;
 
+        private readonly string[] MainAppName = new string[] { "Amethyst Windows", "AmethystWindows Packaging" };
+
         public Functions(DesktopWindowsManager desktopWindowsManager)
         {
             DesktopWindowsManager = desktopWindowsManager;
@@ -33,21 +36,23 @@ namespace AmethystWindowsSystray
                     desktopWindow.GetAppName();
                     desktopWindow.GetMonitorInfo();
                     desktopWindow.GetVirtualDesktop();
-                    if (DesktopWindowsManager.Windows.ContainsKey(desktopWindow.GetDesktopMonitor()))
+                    if (!MainAppName.Contains(desktopWindow.AppName))
                     {
-                        if (!DesktopWindowsManager.Windows[desktopWindow.GetDesktopMonitor()].Contains(desktopWindow))
+                        if (DesktopWindowsManager.Windows.ContainsKey(desktopWindow.GetDesktopMonitor()))
                         {
-                            DesktopWindowsManager.Windows[desktopWindow.GetDesktopMonitor()].Add(desktopWindow);
+                            if (!DesktopWindowsManager.Windows[desktopWindow.GetDesktopMonitor()].Contains(desktopWindow))
+                            {
+                                DesktopWindowsManager.Windows[desktopWindow.GetDesktopMonitor()].Add(desktopWindow);
+                            }
+                        }
+                        else
+                        {
+                            DesktopWindowsManager.Windows.Add(
+                                desktopWindow.GetDesktopMonitor(),
+                                new ObservableCollection<DesktopWindow>(new DesktopWindow[] { desktopWindow })
+                                );
                         }
                     }
-                    else
-                    {
-                        DesktopWindowsManager.Windows.Add(
-                            desktopWindow.GetDesktopMonitor(),
-                            new ObservableCollection<DesktopWindow>(new DesktopWindow[] { desktopWindow })
-                            );
-                    }
-
                 }
                 return true;
             };
@@ -102,7 +107,10 @@ namespace AmethystWindowsSystray
             {
                 SystrayContext.Logger.Information($"window created");
                 desktopWindow.GetInfo();
-                DesktopWindowsManager.AddWindow(desktopWindow);
+                if (!MainAppName.Contains(desktopWindow.AppName))
+                {
+                    DesktopWindowsManager.AddWindow(desktopWindow);
+                }
             }
         }
 
@@ -117,7 +125,10 @@ namespace AmethystWindowsSystray
                     {
                         case User32.EventConstants.EVENT_SYSTEM_MINIMIZEEND:
                             desktopWindow.GetInfo();
-                            DesktopWindowsManager.AddWindow(desktopWindow);
+                            if (!MainAppName.Contains(desktopWindow.AppName))
+                            {
+                                DesktopWindowsManager.AddWindow(desktopWindow);
+                            }
                             break;
                         case User32.EventConstants.EVENT_SYSTEM_MINIMIZESTART:
                         case User32.EventConstants.EVENT_OBJECT_HIDE:

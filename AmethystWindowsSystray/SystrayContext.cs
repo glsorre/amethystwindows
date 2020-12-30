@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using DesktopWindowManager.Internal;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Serilog;
 using Serilog.Core;
@@ -14,8 +15,8 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.AppService;
 using Windows.ApplicationModel.Core;
 using Windows.Foundation.Collections;
-using Windows.UI.Popups;
 using WindowsDesktop;
+using WindowsDesktop.Internal;
 
 namespace AmethystWindowsSystray
 {
@@ -125,7 +126,7 @@ namespace AmethystWindowsSystray
 
         private async Task Form_AmethystSysTrayReconnect_Refresh()
         {
-            await Task.Delay(750);
+            await Task.Delay(500);
             App_Refresh();
             App_SendPadding();
         }
