@@ -1,4 +1,5 @@
 ﻿using AmethystWindowsSystray;
+using DesktopWindowManager.Internal;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;

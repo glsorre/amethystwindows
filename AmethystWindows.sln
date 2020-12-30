@@ -4,9 +4,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmethystWindows", "AmethystWindows\AmethystWindows.csproj", "{91D248A1-BDAE-4964-9D7F-77203E1E491E}"
-	ProjectSection(ProjectDependencies) = postProject
-		{B950A0AA-BBBF-4A3E-AAC8-5E0C6714FE3C} = {B950A0AA-BBBF-4A3E-AAC8-5E0C6714FE3C}
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmethystWindowsSystray", "AmethystWindowsSystray\AmethystWindowsSystray.csproj", "{B950A0AA-BBBF-4A3E-AAC8-5E0C6714FE3C}"
 EndProject
