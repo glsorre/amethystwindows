@@ -57,11 +57,11 @@
     <AppxPackageSigningEnabled>false</AppxPackageSigningEnabled>
     <EntryPointProjectUniqueName>..\AmethystWindows\AmethystWindows.csproj</EntryPointProjectUniqueName>
     <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
-    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
     <GenerateTestArtifacts>True</GenerateTestArtifacts>
     <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
-    <UapAppxPackageBuildMode>StoreAndSideload</UapAppxPackageBuildMode>
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
+    <UapAppxPackageBuildMode>StoreAndSideload</UapAppxPackageBuildMode>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <AppxBundle>Always</AppxBundle>

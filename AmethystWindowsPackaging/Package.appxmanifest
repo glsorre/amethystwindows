@@ -10,7 +10,7 @@
   <Identity
     Name="e7e2fe78-574a-47c3-81a2-66484cda1c60"
     Publisher="CN=giuse"
-    Version="1.0.0.0" />
+    Version="1.0.1.0" />
 
   <Properties>
     <DisplayName>AmethystWindowsPackaging</DisplayName>
