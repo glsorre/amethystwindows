@@ -70,13 +70,13 @@ namespace AmethystWindowsSystray
             if (e.Action.Equals(NotifyCollectionChangedAction.Remove))
             {
                 DesktopWindow desktopWindow = (DesktopWindow)e.OldItems[0];
-                DesktopWindowsManager.Draw(desktopWindow);
+                DesktopWindowsManager.Draw(desktopWindow.GetDesktopMonitor());
                 Changed.Invoke(this, "add");
             }
             else if (e.Action.Equals(NotifyCollectionChangedAction.Add))
             {
                 DesktopWindow desktopWindow = (DesktopWindow)e.NewItems[0];
-                DesktopWindowsManager.Draw(desktopWindow);
+                DesktopWindowsManager.Draw(desktopWindow.GetDesktopMonitor());
                 Changed.Invoke(this, "remove");
             }
         }
