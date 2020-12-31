@@ -1,4 +1,5 @@
 ﻿using AmethystWindows.ViewModels;
+using DebounceThrottle;
 using GalaSoft.MvvmLight.Threading;
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,8 @@ namespace AmethystWindows
     /// </summary>
     public sealed partial class SettingPage : Page
     {
+        private DebounceDispatcher debounceDispatcher = new DebounceDispatcher(500);
+
         public SettingPage()
         {
             this.InitializeComponent();
@@ -48,10 +51,14 @@ namespace AmethystWindows
 
         private void PaddingNumberBox_ValueChanged(Microsoft.UI.Xaml.Controls.NumberBox sender, Microsoft.UI.Xaml.Controls.NumberBoxValueChangedEventArgs args)
         {
-            DispatcherHelper.CheckBeginInvokeOnUI(async () => {
-                ValueSet message = new ValueSet();
-                message.Add("padding_set", args.NewValue);
-                await App.Connection.SendMessageAsync(message);
+            debounceDispatcher.Debounce(() =>
+            {
+                DispatcherHelper.CheckBeginInvokeOnUI(async () =>
+                {
+                    ValueSet message = new ValueSet();
+                    message.Add("padding_set", args.NewValue);
+                    await App.Connection.SendMessageAsync(message);
+                });
             });
         }
 
