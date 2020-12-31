@@ -209,7 +209,7 @@ namespace AmethystWindowsSystray
                     else
                     {
                         int size = mWidth / (windowsCount - 1);
-                        for (int i = 0; i < windowsCount - 1; i++)
+                        for (i = 0; i < windowsCount - 1; i++)
                         {
                             if (i == 0) yield return new Tuple<int, int, int, int>(0, 0, mWidth, mHeight / 2);
                             yield return new Tuple<int, int, int, int>(i * size, mHeight / 2, size, mHeight / 2);
@@ -221,7 +221,7 @@ namespace AmethystWindowsSystray
                     else
                     {
                         int size = mHeight / (windowsCount - 1);
-                        for (int i = 0; i < windowsCount - 1; i++)
+                        for (i = 0; i < windowsCount - 1; i++)
                         {
                             if (i == 0) yield return new Tuple<int, int, int, int>(0, 0, mWidth / 2, mHeight);
                             yield return new Tuple<int, int, int, int>(mWidth / 2, i * size, mWidth / 2, size);
@@ -244,22 +244,6 @@ namespace AmethystWindowsSystray
             }
         }
 
-        public void Draw(DesktopWindow dekstopWindow)
-        {
-            Pair<VirtualDesktop, HMONITOR> key = new Pair<VirtualDesktop, HMONITOR>(dekstopWindow.VirtualDesktop, dekstopWindow.MonitorHandle);
-            ObservableCollection<DesktopWindow> windows = Windows[key];
-            KeyValuePair<Pair<VirtualDesktop, HMONITOR>, ObservableCollection<DesktopWindow>> desktopMonitor = new KeyValuePair<Pair<VirtualDesktop, HMONITOR>, ObservableCollection<DesktopWindow>>(key, windows);
-            float ScreenScalingFactorVert;
-            int mX, mY;
-            IEnumerable<Tuple<int, int, int, int>> gridGenerator;
-            DrawMonitor(desktopMonitor, out ScreenScalingFactorVert, out mX, out mY, out gridGenerator);
-
-            foreach (var w in desktopMonitor.Value.Select((value, i) => new Tuple<int, DesktopWindow>(i, value)))
-            {
-                DrawWindow(ScreenScalingFactorVert, mX, mY, gridGenerator, w);
-            }
-        }
-
         public void Draw(Pair<VirtualDesktop, HMONITOR> key)
         {
             ObservableCollection<DesktopWindow> windows = Windows[key];
@@ -269,10 +253,12 @@ namespace AmethystWindowsSystray
             IEnumerable<Tuple<int, int, int, int>> gridGenerator;
             DrawMonitor(desktopMonitor, out ScreenScalingFactorVert, out mX, out mY, out gridGenerator);
 
+            HDWP hDWP = User32.BeginDeferWindowPos(windows.Count);
             foreach (var w in desktopMonitor.Value.Select((value, i) => new Tuple<int, DesktopWindow>(i, value)))
             {
-                DrawWindow(ScreenScalingFactorVert, mX, mY, gridGenerator, w);
+                DrawWindow(ScreenScalingFactorVert, mX, mY, gridGenerator, w, hDWP);
             }
+            User32.EndDeferWindowPos(hDWP.DangerousGetHandle());
         }
 
         public void Draw()
@@ -327,7 +313,7 @@ namespace AmethystWindowsSystray
                 mCurrentLayout = Layouts[desktopMonitor.Key];
             }
 
-            gridGenerator = GridGenerator(mWidth, mHeight, windowsCount, mCurrentLayout, hDWP);
+            gridGenerator = GridGenerator(mWidth, mHeight, windowsCount, mCurrentLayout);
         }
 
         private void DrawWindow(float ScreenScalingFactorVert, int mX, int mY, IEnumerable<Tuple<int, int, int, int>> gridGenerator, Tuple<int, DesktopWindow> w, HDWP hDWP)
