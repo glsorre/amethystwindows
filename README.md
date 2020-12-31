@@ -8,8 +8,8 @@ Tiling window manager for Windows 10 along the lines of [xmonad](https://xmonad.
 
 ## Key Features
 
-- doesn't use DLL injection to manipulate window
-- support for default windows 10 virtual desktop implementation
+- doesn't use DLL injection to manipulate windows
+- supports windows 10 virtual desktops
 - fast and light
 
 ## Keyboard Shortcut
