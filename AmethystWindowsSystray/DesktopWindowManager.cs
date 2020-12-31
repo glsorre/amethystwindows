@@ -299,10 +299,12 @@ namespace AmethystWindowsSystray
                 IEnumerable<Tuple<int, int, int, int>> gridGenerator;
                 DrawMonitor(desktopMonitor, out ScreenScalingFactorVert, out mX, out mY, out gridGenerator);
 
+                HDWP hDWP = User32.BeginDeferWindowPos(Windows.Count);
                 foreach (var w in desktopMonitor.Value.Select((value, i) => new Tuple<int, DesktopWindow>(i, value)))
                 {
-                    DrawWindow(ScreenScalingFactorVert, mX, mY, gridGenerator, w);
+                    DrawWindow(ScreenScalingFactorVert, mX, mY, gridGenerator, w, hDWP);
                 }
+                User32.EndDeferWindowPos(hDWP.DangerousGetHandle());
             }
         }
 
@@ -340,10 +342,10 @@ namespace AmethystWindowsSystray
                 mCurrentLayout = Layouts[desktopMonitor.Key];
             }
 
-            gridGenerator = GridGenerator(mWidth, mHeight, windowsCount, mCurrentLayout);
+            gridGenerator = GridGenerator(mWidth, mHeight, windowsCount, mCurrentLayout, hDWP);
         }
 
-        private void DrawWindow(float ScreenScalingFactorVert, int mX, int mY, IEnumerable<Tuple<int, int, int, int>> gridGenerator, Tuple<int, DesktopWindow> w)
+        private void DrawWindow(float ScreenScalingFactorVert, int mX, int mY, IEnumerable<Tuple<int, int, int, int>> gridGenerator, Tuple<int, DesktopWindow> w, HDWP hDWP)
         {
             RECT adjustedSize = new RECT(new Rectangle(
                 gridGenerator.ToArray()[w.Item1].Item1,
@@ -370,29 +372,19 @@ namespace AmethystWindowsSystray
             //Perform the action.
             User32.SetWindowPlacement(w.Item2.Window, ref placement);
 
-            User32.SetWindowPos(
+            User32.DeferWindowPos(
+                hDWP,
                 w.Item2.Window,
                 HWND.HWND_NOTOPMOST,
                 adjustedSize.X + mX - w.Item2.Borders.left + Padding,
                 adjustedSize.Y + mY - w.Item2.Borders.top + Padding,
-                0,
-                0,
-                User32.SetWindowPosFlags.SWP_NOACTIVATE
-                );
-
-            Console.WriteLine(adjustedSize.X + mX - w.Item2.Borders.left + Padding);
-
-            User32.SetWindowPos(
-                w.Item2.Window,
-                HWND.HWND_NOTOPMOST,
-                0,
-                0,
                 adjustedSize.Width + w.Item2.Borders.left + w.Item2.Borders.right - 2 * Padding,
                 adjustedSize.Height + w.Item2.Borders.top + w.Item2.Borders.bottom - 2 * Padding,
-                User32.SetWindowPosFlags.SWP_NOMOVE
+                User32.SetWindowPosFlags.SWP_ASYNCWINDOWPOS
                 );
 
             w.Item2.GetInfo();
+            
         }
     }
 }
