@@ -6,15 +6,30 @@ Tiling window manager for Windows 10 along the lines of [xmonad](https://xmonad.
 [![Gitter](https://badges.gitter.im/glsorre/amethystwindows.svg)](https://gitter.im/glsorre/amethystwindows?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 [![GitHub release (by tag)](https://img.shields.io/github/downloads/glsorre/amethystwindows/latest/total?label=download)](https://github.com/glsorre/amethystwindows/releases)
 
+## Status
+
+It's far from being production ready but functional for my need.
+
+**I am looking for testers and contributors.**
+
 ## Key Features
 
 - doesn't use DLL injection to manipulate windows
 - supports windows 10 virtual desktops
 - fast and light
 
+## Background
+
+The starting idea was to have a copy of [Amethyst](https://ianyh.com/amethyst/) working on Windows 10. Then it mixed with the concept of a more minimalist apporach in terms of Keyboard shortcuts.
+
+To obtain that I got ideas and code snippets from the following projects:
+- [MScholtes/VirtualDesktop](https://github.com/MScholtes/VirtualDesktop);
+- [Grabacr07/VirtualDesktop ](https://github.com/Grabacr07/VirtualDesktop);
+- [losttech/VirtualDesktop ](https://github.com/losttech/VirtualDesktop).
+
 ## Keyboard Shortcut
 
-Amethyst Windows uses one modifier: `shift + alt`.
+Amethyst Windows uses one modifier: `shift + alt` known as `mod1`.
 
 For now the keyboard shortcut configured are:
 
@@ -50,15 +65,10 @@ The default layout. This gives you one "main pane" on the left, and one other pa
 ### Wide
 The rotated version of tall.
 
-## Background
-
-The starting idea was to have a copy of [Amethyst](https://ianyh.com/amethyst/) working on Windows 10. Then it mixed with the concept of a more minimalist apporach in terms of Keyboard shortcuts.
-
-To obtain that I got ideas and code snippets from the following projects:
-- [MScholtes/VirtualDesktop](https://github.com/MScholtes/VirtualDesktop);
-- [Grabacr07/VirtualDesktop ](https://github.com/Grabacr07/VirtualDesktop);
-- [losttech/VirtualDesktop ](https://github.com/losttech/VirtualDesktop).
-
 ## License
 
 This software is released with the MIT license.
+
+## Contributing
+
+Feel free to fork and open a PR.
