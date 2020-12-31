@@ -89,37 +89,42 @@ namespace AmethystWindowsSystray
 
         public IEnumerable<Tuple<int, int, int, int>> GridGenerator(int mWidth, int mHeight, int windowsCount, Layout layout)
         {
-            if (layout == Layout.Horizontal)
-            {
-                int horizSize = mWidth / windowsCount;
-                int j = 0;
-                for (int i = 0; i < windowsCount; i++)
-                {
-                    yield return new Tuple<int, int, int, int>(i * horizSize, j, horizSize, mHeight);
-                }
-            }
-            else if (layout == Layout.Vertical)
-            {
-                int vertSize = mHeight / windowsCount;
-                int j = 0;
-                for (int i = 0; i < windowsCount; i++)
-                {
-                    yield return new Tuple<int, int, int, int>(j, i * vertSize, mWidth, vertSize);
-                }
-            }
-            else if (layout == Layout.HorizGrid)
-            {
-                int i = 0;
-                int j = 0;
-                int horizStep = Math.Max((int)Math.Sqrt(windowsCount), 1);
-                int vertStep = Math.Max(windowsCount / horizStep, 1);
-                int tiles = horizStep * vertStep;
-                int horizSize = mWidth / horizStep;
-                int vertSize = mHeight / vertStep;
-                bool isFirstLine = true;
+            int i = 0;
+            int j = 0;
+            int horizStep;
+            int vertStep;
+            int tiles;
+            int horizSize;
+            int vertSize;
+            bool isFirstLine;
 
-                if (windowsCount != tiles || windowsCount == 3)
-                {
+
+            switch (layout)
+            {
+                case Layout.Horizontal:
+                    horizSize = mWidth / windowsCount;
+                    j = 0;
+                    for (i = 0; i < windowsCount; i++)
+                    {
+                        yield return new Tuple<int, int, int, int>(i * horizSize, j, horizSize, mHeight);
+                    }
+                    break;
+                case Layout.Vertical:
+                    vertSize = mHeight / windowsCount;
+                    j = 0;
+                    for (i = 0; i < windowsCount; i++)
+                    {
+                        yield return new Tuple<int, int, int, int>(j, i * vertSize, mWidth, vertSize);
+                    }
+                    break;
+                case Layout.HorizGrid:
+                    horizStep = Math.Max((int)Math.Sqrt(windowsCount), 1);
+                    vertStep = Math.Max(windowsCount / horizStep, 1);
+                    tiles = horizStep * vertStep;
+                    horizSize = mWidth / horizStep;
+                    vertSize = mHeight / vertStep;
+                    isFirstLine = true;
+
                     if (windowsCount == 3)
                     {
                         vertStep--;
@@ -143,106 +148,86 @@ namespace AmethystWindowsSystray
                         }
                         windowsCount--;
                     }
-                }
-                else
-                {
-                    while (windowsCount > 0)
+                    break;
+                case Layout.VertGrid:
+                    vertStep = Math.Max((int)Math.Sqrt(windowsCount), 1);
+                    horizStep = Math.Max(windowsCount / vertStep, 1);
+                    tiles = horizStep * vertStep;
+                    vertSize = mHeight / vertStep;
+                    horizSize = mWidth / horizStep;
+                    isFirstLine = true;
+
+                    if (windowsCount != tiles || windowsCount == 3)
                     {
-                        yield return new Tuple<int, int, int, int>(i * horizSize, j * vertSize, horizSize, vertSize);
-                        i++;
-                        if (i >= horizStep)
+                        if (windowsCount == 3)
                         {
-                            i = 0;
+                            horizStep--;
+                            horizSize = mWidth / horizStep;
+                        }
+
+                        while (windowsCount > 0)
+                        {
+                            yield return new Tuple<int, int, int, int>(i * horizSize, j * vertSize, horizSize, vertSize);
                             j++;
+                            if (j >= vertStep)
+                            {
+                                j = 0;
+                                i++;
+                            }
+                            if (i == horizStep - 1 && isFirstLine)
+                            {
+                                vertStep++;
+                                vertSize = mHeight / vertStep;
+                                isFirstLine = false;
+                            }
+                            windowsCount--;
                         }
-                        windowsCount--;
                     }
-                }
-            }
-            else if (layout == Layout.VertGrid)
-            {
-                int i = 0;
-                int j = 0;
-                int vertStep = Math.Max((int)Math.Sqrt(windowsCount), 1);
-                int horizStep = Math.Max(windowsCount / vertStep, 1);
-                int tiles = horizStep * vertStep;
-                int vertSize = mHeight / vertStep;
-                int horizSize = mWidth / horizStep;
-                bool isFirstLine = true;
-
-                if (windowsCount != tiles || windowsCount == 3)
-                {
-                    if (windowsCount == 3)
+                    else
                     {
-                        horizStep--;
-                        horizSize = mWidth / horizStep;
-                    }
-
-                    while (windowsCount > 0)
-                    {
-                        yield return new Tuple<int, int, int, int>(i * horizSize, j * vertSize, horizSize, vertSize);
-                        j++;
-                        if (j >= vertStep)
+                        while (windowsCount > 0)
                         {
-                            j = 0;
-                            i++;
+                            yield return new Tuple<int, int, int, int>(i * horizSize, j * vertSize, horizSize, vertSize);
+                            j++;
+                            if (j >= vertStep)
+                            {
+                                j = 0;
+                                i++;
+                            }
+                            windowsCount--;
                         }
-                        if (i == horizStep - 1 && isFirstLine)
+                    }
+                    break;
+                case Layout.Monocle:
+                    for (i = 0; i < windowsCount; i++)
+                    {
+                        yield return new Tuple<int, int, int, int>(0, 0, mWidth, mHeight);
+                    }
+                    break;
+                case Layout.Wide:
+                    if (windowsCount == 1) yield return new Tuple<int, int, int, int>(0, 0, mWidth, mHeight);
+                    else
+                    {
+                        int size = mWidth / (windowsCount - 1);
+                        for (int i = 0; i < windowsCount - 1; i++)
                         {
-                            vertStep++;
-                            vertSize = mHeight / vertStep;
-                            isFirstLine = false;
+                            if (i == 0) yield return new Tuple<int, int, int, int>(0, 0, mWidth, mHeight / 2);
+                            yield return new Tuple<int, int, int, int>(i * size, mHeight / 2, size, mHeight / 2);
                         }
-                        windowsCount--;
                     }
-                }
-                else
-                {
-                    while (windowsCount > 0)
+                    break;
+                case Layout.Tall:
+                    if (windowsCount == 1) yield return new Tuple<int, int, int, int>(0, 0, mWidth, mHeight);
+                    else
                     {
-                        yield return new Tuple<int, int, int, int>(i * horizSize, j * vertSize, horizSize, vertSize);
-                        j++;
-                        if (j >= vertStep)
+                        int size = mHeight / (windowsCount - 1);
+                        for (int i = 0; i < windowsCount - 1; i++)
                         {
-                            j = 0;
-                            i++;
+                            if (i == 0) yield return new Tuple<int, int, int, int>(0, 0, mWidth / 2, mHeight);
+                            yield return new Tuple<int, int, int, int>(mWidth / 2, i * size, mWidth / 2, size);
                         }
-                        windowsCount--;
                     }
-                }
-            }
-            else if (layout == Layout.Monocle)
-            {
-                for (int i = 0; i < windowsCount; i++)
-                {
-                    yield return new Tuple<int, int, int, int>(0, 0, mWidth, mHeight);
-                }
-            }
-            else if (layout == Layout.Wide)
-            {
-                if (windowsCount == 1) yield return new Tuple<int, int, int, int>(0, 0, mWidth, mHeight);
-                else
-                {
-                    int size = mWidth / (windowsCount - 1);
-                    for (int i = 0; i < windowsCount - 1; i++)
-                    {
-                        if (i == 0) yield return new Tuple<int, int, int, int>(0, 0, mWidth, mHeight / 2);
-                        yield return new Tuple<int, int, int, int>(i * size, mHeight / 2, size, mHeight / 2);
-                    }
-                } 
-            }
-            else if (layout == Layout.Tall)
-            {
-                if (windowsCount == 1) yield return new Tuple<int, int, int, int>(0, 0, mWidth, mHeight);
-                else
-                {
-                    int size = mHeight / (windowsCount - 1);
-                    for (int i = 0; i < windowsCount - 1; i++)
-                    {
-                        if (i == 0) yield return new Tuple<int, int, int, int>(0, 0, mWidth / 2, mHeight);
-                        yield return new Tuple<int, int, int, int>(mWidth / 2, i * size, mWidth / 2, size);
-                    }
-                }
+                    break;
             }
         }
 
