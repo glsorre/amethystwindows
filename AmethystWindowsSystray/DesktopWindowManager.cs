@@ -97,8 +97,6 @@ namespace AmethystWindowsSystray
             int horizSize;
             int vertSize;
             bool isFirstLine;
-
-
             switch (layout)
             {
                 case Layout.Horizontal:
@@ -125,28 +123,45 @@ namespace AmethystWindowsSystray
                     vertSize = mHeight / vertStep;
                     isFirstLine = true;
 
-                    if (windowsCount == 3)
+                    if (windowsCount != tiles || windowsCount == 3)
                     {
-                        vertStep--;
-                        vertSize = mHeight / vertStep;
-                    }
+                        if (windowsCount == 3)
+                        {
+                            vertStep--;
+                            vertSize = mHeight / vertStep;
+                        }
 
-                    while (windowsCount > 0)
+                        while (windowsCount > 0)
+                        {
+                            yield return new Tuple<int, int, int, int>(i * horizSize, j * vertSize, horizSize, vertSize);
+                            i++;
+                            if (i >= horizStep)
+                            {
+                                i = 0;
+                                j++;
+                            }
+                            if (j == vertStep - 1 && isFirstLine)
+                            {
+                                horizStep++;
+                                horizSize = mWidth / horizStep;
+                                isFirstLine = false;
+                            }
+                            windowsCount--;
+                        }
+                    }
+                    else
                     {
-                        yield return new Tuple<int, int, int, int>(i * horizSize, j * vertSize, horizSize, vertSize);
-                        i++;
-                        if (i >= horizStep)
+                        while (windowsCount > 0)
                         {
-                            i = 0;
-                            j++;
+                            yield return new Tuple<int, int, int, int>(i * horizSize, j * vertSize, horizSize, vertSize);
+                            i++;
+                            if (i >= horizStep)
+                            {
+                                i = 0;
+                                j++;
+                            }
+                            windowsCount--;
                         }
-                        if (j == vertStep - 1 && isFirstLine)
-                        {
-                            horizStep++;
-                            horizSize = mWidth / horizStep;
-                            isFirstLine = false;
-                        }
-                        windowsCount--;
                     }
                     break;
                 case Layout.VertGrid:
@@ -351,7 +366,7 @@ namespace AmethystWindowsSystray
                 adjustedSize.Y + mY - w.Item2.Borders.top + Padding,
                 adjustedSize.Width + w.Item2.Borders.left + w.Item2.Borders.right - 2 * Padding,
                 adjustedSize.Height + w.Item2.Borders.top + w.Item2.Borders.bottom - 2 * Padding,
-                User32.SetWindowPosFlags.SWP_ASYNCWINDOWPOS
+                0
                 );
 
             w.Item2.GetInfo();
