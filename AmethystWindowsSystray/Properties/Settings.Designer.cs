@@ -46,5 +46,17 @@ namespace AmethystWindowsSystray.Properties {
                 this["Layouts"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Filters {
+            get {
+                return ((string)(this["Filters"]));
+            }
+            set {
+                this["Filters"] = value;
+            }
+        }
     }
 }

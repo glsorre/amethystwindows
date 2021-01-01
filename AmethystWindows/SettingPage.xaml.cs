@@ -1,6 +1,7 @@
 ﻿using AmethystWindows.ViewModels;
 using DebounceThrottle;
 using GalaSoft.MvvmLight.Threading;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -46,6 +47,22 @@ namespace AmethystWindows
             int index = filters.IndexOf((Filter)item);
             filters.RemoveAt(index);
             App.mainViewModel.Filters = filters;
+            SettingPage_SendFilters();
+        }
+
+        private async void SettingPage_SendFilters()
+        {
+            ValueSet message = new ValueSet();
+            List<List<String>> list = new List<List<String>>();
+            foreach (var f in App.mainViewModel.Filters)
+            {
+                List<String> item = new List<string>();
+                item.Add(f.AppName);
+                item.Add(f.ClassName);
+                list.Add(item);
+            }
+            message.Add("filters_set", JsonConvert.SerializeObject(list));
+            await App.Connection.SendMessageAsync(message);
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)

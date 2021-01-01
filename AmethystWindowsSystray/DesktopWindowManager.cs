@@ -27,7 +27,7 @@ namespace AmethystWindowsSystray
             "Amethyst Windows", 
             "AmethystWindowsPackaging", 
             "Task Manager" };
-        private List<Pair<string, string>> ConfigurableFilters = new List<Pair<string, string>>();
+        public List<Pair<string, string>> ConfigurableFilters = new List<Pair<string, string>>();
 
         private int padding;
 
@@ -43,6 +43,7 @@ namespace AmethystWindowsSystray
         public DesktopWindowsManager()
         {
             this.padding = Properties.Settings.Default.Padding;
+            this.ConfigurableFilters = JsonConvert.DeserializeObject <List<Pair<string, string>>>(Properties.Settings.Default.Filters);
             this.Layouts = new Dictionary<Pair<VirtualDesktop, HMONITOR>, Layout>();
             this.Windows = new Dictionary<Pair<VirtualDesktop, HMONITOR>, ObservableCollection<DesktopWindow>>();
             this.WindowsSubcribed = new Dictionary<Pair<VirtualDesktop, HMONITOR>, bool>();
@@ -50,12 +51,21 @@ namespace AmethystWindowsSystray
 
         public void AddWindow(DesktopWindow desktopWindow)
         {
-            if (!FixedFilters.Contains(desktopWindow.AppName) &&
-                !ConfigurableFilters.Contains(new Pair<string, string>(
-                    desktopWindow.AppName,
-                    desktopWindow.ClassName)))
-            {
-                Windows[new Pair<VirtualDesktop, HMONITOR>(desktopWindow.VirtualDesktop, desktopWindow.MonitorHandle)].Add(desktopWindow);
+            Pair<string, string> configurableFilter = ConfigurableFilters.FirstOrDefault(f => f.Item1 == desktopWindow.AppName);
+
+            if (!FixedFilters.Contains(desktopWindow.AppName))
+            { 
+                if (configurableFilter.Equals(null))
+                {
+                    Windows[new Pair<VirtualDesktop, HMONITOR>(desktopWindow.VirtualDesktop, desktopWindow.MonitorHandle)].Add(desktopWindow);
+                }
+                else
+                {
+                    if (configurableFilter.Item2 != "*" && configurableFilter.Item2 != desktopWindow.ClassName)
+                    {
+                        Windows[new Pair<VirtualDesktop, HMONITOR>(desktopWindow.VirtualDesktop, desktopWindow.MonitorHandle)].Add(desktopWindow);
+                    }
+                }
             }
         }
 
@@ -70,17 +80,11 @@ namespace AmethystWindowsSystray
             AddWindow(newDesktopWindow);
         }
 
-        public void AddFilter(string appName, string className = "*")
+        public void Clear()
         {
-            ConfigurableFilters.Add(new Pair<string, string>(appName, className));
-        }
-
-        public void RemoveFilter(string appName, string className = "*")
-        {
-            Pair<string, string> pair = new Pair<string, string>(appName, className);
-            if (ConfigurableFilters.Contains(pair))
+            foreach (var desktopMonitor in Windows)
             {
-                ConfigurableFilters.Remove(pair);
+                desktopMonitor.Value.Clear();
             }
         }
 
