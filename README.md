@@ -10,8 +10,6 @@ Tiling window manager for Windows 10 along the lines of [xmonad](https://xmonad.
 
 It's far from being production ready but functional for my need.
 
-**I am looking for testers and contributors.**
-
 ## Key Features
 
 - doesn't use DLL injection to manipulate windows
