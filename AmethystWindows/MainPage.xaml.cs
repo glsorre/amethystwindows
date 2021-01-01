@@ -109,7 +109,8 @@ namespace AmethystWindows
                                 w[3],
                                 w[4],
                                 w[5],
-                                w[6]
+                                w[6],
+                                w[7]
                         ));
                     }
 

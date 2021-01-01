@@ -256,6 +256,7 @@ namespace AmethystWindowsSystray
                     List<String> item = new List<string>();
                     item.Add(w.value.Window.ToString());
                     item.Add(w.value.AppName);
+                    item.Add(w.value.ClassName);
                     item.Add(w.value.VirtualDesktop.ToString());
                     item.Add(w.value.Monitor.rcMonitor.ToString());
                     item.Add(w.value.Info.rcWindow.ToString());

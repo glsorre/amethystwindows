@@ -10,16 +10,18 @@ namespace AmethystWindows
     {
         public string Window { get; set; }
         public string AppName { get; set; }
+        public string ClassName { get; set; }
         public string VirtualDesktop { get; set; }
         public string Monitor { get; set; }
         public string RcWindow { get; set; }
         public string DxStyle { get; set; }
         public string DxExStyle { get; set; }
 
-        public DesktopWindow(string window, string appName, string virtualDesktop, string monitor, string rcWindow, string dxStyle, string dxExStyle)
+        public DesktopWindow(string window, string appName, string className, string virtualDesktop, string monitor, string rcWindow, string dxStyle, string dxExStyle)
         {
             Window = window;
             AppName = appName;
+            ClassName = className;
             VirtualDesktop = virtualDesktop;
             Monitor = monitor;
             RcWindow = rcWindow;

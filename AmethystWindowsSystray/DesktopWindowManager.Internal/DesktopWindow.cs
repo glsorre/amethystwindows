@@ -17,8 +17,9 @@ namespace DesktopWindowManager.Internal
         public HMONITOR MonitorHandle { get; set; }
         public HWND Window { get; set; }
         public User32.WINDOWINFO Info { get; set; }
-        public String AppName { get; set; }
+        public string AppName { get; set; }
         public RECT Borders;
+        public string ClassName { get; set; }
 
         private static readonly string[] WindowsClassNamesToSkip =
         {
@@ -89,6 +90,7 @@ namespace DesktopWindowManager.Internal
             GetMonitorInfo();
             GetVirtualDesktop();
             GetAppName();
+            GetClassName();
             GetBorders();
         }
 
@@ -113,6 +115,14 @@ namespace DesktopWindowManager.Internal
         {
             VirtualDesktop virtualDesktop = VirtualDesktop.FromHwnd(Window);
             VirtualDesktop = virtualDesktop;
+        }
+
+        public void GetClassName()
+        {
+            uint capacity = 1024;
+            StringBuilder stringBuilder = new StringBuilder((int)capacity);
+            User32.GetClassName(Window, stringBuilder, (int)capacity);
+            ClassName = stringBuilder.ToString();
         }
 
         public void GetAppName()
