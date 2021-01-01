@@ -69,14 +69,15 @@ namespace AmethystWindowsSystray
             Handlers.GetWindows();
             Logger.Information($"drawing");
             Handlers.DesktopWindowsManager.Draw();
-            Logger.Information($"refreshing UWP");
-            App_Refresh();
-
+            
             Logger.Information($"setting virtual desktop change listener");
             var prova = VirtualDesktop.RegisterListener();
             VirtualDesktop.CurrentChanged += VirtualDesktop_CurrentChanged;
 
+            Logger.Information($"refreshing UWP");
+            App_Refresh();
             App_SendPadding();
+            App_SendFilters();
         }
 
         private void Handlers_Changed(object sender, string e)
@@ -112,6 +113,29 @@ namespace AmethystWindowsSystray
                 Handlers.DesktopWindowsManager.Padding = newPadding;
                 Properties.Settings.Default.Padding = newPadding;
                 Properties.Settings.Default.Save();
+            }
+
+            if (args.Request.Message.ContainsKey("filters_set"))
+            {
+                args.Request.Message.TryGetValue("filters_set", out object message);
+                List<List<string>> receivedFilters = JsonConvert.DeserializeObject<List<List<string>>>(message.ToString());
+                List<Pair<string, string>> parsedFilters = new List<Pair<string, string>>();
+
+                foreach (List<string> f in receivedFilters)
+                {
+                    parsedFilters.Add(new Pair<string, string>(
+                        f[0],
+                        f[1]
+                        ));
+                }
+
+                Handlers.DesktopWindowsManager.ConfigurableFilters = parsedFilters;
+                Properties.Settings.Default.Filters = JsonConvert.SerializeObject(parsedFilters);
+                Properties.Settings.Default.Save();
+
+                Handlers.DesktopWindowsManager.Clear();
+                Handlers.GetWindows();
+                Handlers.DesktopWindowsManager.Draw();
             }
 
             deferral.Complete();
@@ -242,6 +266,21 @@ namespace AmethystWindowsSystray
         {
             ValueSet message = new ValueSet();
             message.Add("padding_read", Properties.Settings.Default.Padding);
+            await App_Send(message);
+        }
+
+        private async void App_SendFilters()
+        {
+            ValueSet message = new ValueSet();
+            List<List<String>> list = new List<List<String>>();
+            foreach (var f in Handlers.DesktopWindowsManager.ConfigurableFilters)
+            {
+                List<String> item = new List<string>();
+                item.Add(f.Item1);
+                item.Add(f.Item2);
+                list.Add(item);        
+            }
+            message.Add("filters_read", JsonConvert.SerializeObject(list));
             await App_Send(message);
         }
 

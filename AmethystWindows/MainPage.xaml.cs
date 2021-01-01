@@ -48,6 +48,21 @@ namespace AmethystWindows
             await App.Connection.SendMessageAsync(message);
         }
 
+        private async void MainPage_SendFilters()
+        {
+            ValueSet message = new ValueSet();
+            List<List<String>> list = new List<List<String>>();
+            foreach (var f in App.mainViewModel.Filters)
+            {
+                List<String> item = new List<string>();
+                item.Add(f.AppName);
+                item.Add(f.ClassName);
+                list.Add(item);
+            }
+            message.Add("filters_set", JsonConvert.SerializeObject(list));
+            await App.Connection.SendMessageAsync(message);
+        }
+
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
@@ -95,6 +110,24 @@ namespace AmethystWindows
                     App.mainViewModel.DesktopWindows = windowsReceived;
                 }
 
+                if (args.Request.Message.ContainsKey("filters_read"))
+                {
+                    args.Request.Message.TryGetValue("filters_read", out object message);
+                    List<List<string>> filtersParsed = JsonConvert.DeserializeObject<List<List<string>>>(message.ToString());
+                    List<Filter> filtersReceived = new List<Filter>();
+
+                    foreach (List<string> f in filtersParsed)
+                    {
+                        filtersReceived.Add(
+                            new Filter(
+                                f[0],
+                                f[1]
+                        ));
+                    }
+
+                    App.mainViewModel.Filters = filtersReceived;
+                }
+
                 if (args.Request.Message.ContainsKey("padding_read"))
                 {
                     args.Request.Message.TryGetValue("padding_read", out object message);
@@ -116,6 +149,7 @@ namespace AmethystWindows
             }
  
             App.mainViewModel.Filters = filters;
+            MainPage_SendFilters();
         }
 
         private void FilterClassButton_Click(object sender, RoutedEventArgs e)
@@ -131,6 +165,7 @@ namespace AmethystWindows
             }
 
             App.mainViewModel.Filters = filters;
+            MainPage_SendFilters();
         }
     }
 
