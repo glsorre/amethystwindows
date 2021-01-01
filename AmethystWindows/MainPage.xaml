@@ -19,12 +19,14 @@
         <Grid x:Name="DesktopWindowsListHeaders" HorizontalAlignment="Stretch" VerticalAlignment="Top" Padding="20">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <TextBlock Grid.Column="0" Style="{ThemeResource TitleTextBlockStyle}" Text="Application Name" />
-            <TextBlock Grid.Column="1" Style="{ThemeResource TitleTextBlockStyle}" Text="Virtual Desktop" />
-            <TextBlock Grid.Column="2" Style="{ThemeResource TitleTextBlockStyle}" Text="Monitor" />
+            <TextBlock Grid.Column="1" Style="{ThemeResource TitleTextBlockStyle}" Text="Class Name" />
+            <TextBlock Grid.Column="2" Style="{ThemeResource TitleTextBlockStyle}" Text="Virtual Desktop" />
+            <TextBlock Grid.Column="3" Style="{ThemeResource TitleTextBlockStyle}" Text="Monitor" />
         </Grid>
         <ScrollViewer Height="Auto">
             <ListView x:Name="DesktopWindowsList" ItemsSource="{Binding DesktopWindows}">
@@ -42,10 +44,12 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Column="0" Style="{ThemeResource BodyTextBlockStyle}" Text="{Binding AppName}" />
-                            <TextBlock Grid.Column="1" Style="{ThemeResource BodyTextBlockStyle}" Text="{Binding VirtualDesktop}" />
-                            <TextBlock Grid.Column="2" Style="{ThemeResource BodyTextBlockStyle}" Text="{Binding Monitor}" />
+                            <TextBlock Grid.Column="1" Style="{ThemeResource BodyTextBlockStyle}" Text="{Binding ClassName}" />
+                            <TextBlock Grid.Column="2" Style="{ThemeResource BodyTextBlockStyle}" Text="{Binding VirtualDesktop}" />
+                            <TextBlock Grid.Column="3" Style="{ThemeResource BodyTextBlockStyle}" Text="{Binding Monitor}" />
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>
