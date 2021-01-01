@@ -5,6 +5,7 @@
     xmlns:local="using:AmethystWindows"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -22,13 +23,15 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <TextBlock Grid.Column="0" Style="{ThemeResource TitleTextBlockStyle}" Text="Application Name" />
             <TextBlock Grid.Column="1" Style="{ThemeResource TitleTextBlockStyle}" Text="Class Name" />
             <TextBlock Grid.Column="2" Style="{ThemeResource TitleTextBlockStyle}" Text="Virtual Desktop" />
             <TextBlock Grid.Column="3" Style="{ThemeResource TitleTextBlockStyle}" Text="Monitor" />
+            <TextBlock Grid.Column="4" Style="{ThemeResource TitleTextBlockStyle}" Text="Actions" />
         </Grid>
-        <ScrollViewer Height="Auto">
+        <ScrollViewer Height="Auto" MinHeight="100" MaxHeight="500">
             <ListView x:Name="DesktopWindowsList" ItemsSource="{Binding DesktopWindows}">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
@@ -45,11 +48,20 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Column="0" Style="{ThemeResource BodyTextBlockStyle}" Text="{Binding AppName}" />
                             <TextBlock Grid.Column="1" Style="{ThemeResource BodyTextBlockStyle}" Text="{Binding ClassName}" />
                             <TextBlock Grid.Column="2" Style="{ThemeResource BodyTextBlockStyle}" Text="{Binding VirtualDesktop}" />
                             <TextBlock Grid.Column="3" Style="{ThemeResource BodyTextBlockStyle}" Text="{Binding Monitor}" />
+                            <muxc:DropDownButton Grid.Column="4"  Content="Filter">
+                                <muxc:DropDownButton.Flyout>
+                                    <MenuFlyout Placement="Bottom">
+                                        <MenuFlyoutItem Text="All windows" Click="FilterWindowsButton_Click"/>
+                                        <MenuFlyoutItem Text="Only this class" Click="FilterClassButton_Click"/>
+                                    </MenuFlyout>
+                                </muxc:DropDownButton.Flyout>
+                            </muxc:DropDownButton>
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>

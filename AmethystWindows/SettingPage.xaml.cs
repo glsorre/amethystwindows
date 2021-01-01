@@ -36,19 +36,16 @@ namespace AmethystWindows
             NavigationCacheMode = Windows.UI.Xaml.Navigation.NavigationCacheMode.Enabled;
             SettingsBarButton.IsChecked = true;
             ApplicationsBarButton.Click += SettingsBarButton_Click;
-            FilterAddButton.Click += FilterAddButton_Click;
             PaddingNumberBox.Loaded += PaddingNumberBox_Loaded;
         }
 
-        private void FilterAddButton_Click(object sender, RoutedEventArgs e)
+        private void FilterRemoveButton_Click(object sender, RoutedEventArgs e)
         {
+            var item = (sender as FrameworkElement).DataContext;
             List<Filter> filters = new List<Filter>(App.mainViewModel.Filters);
-            filters.Add(new Filter(
-                FilterAddAppNameTextBox.Text,
-                FilterAddClassNameTextBox.Text));
+            int index = filters.IndexOf((Filter)item);
+            filters.RemoveAt(index);
             App.mainViewModel.Filters = filters;
-            FilterAddAppNameTextBox.Text = "";
-            FilterAddClassNameTextBox.Text = "";
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)

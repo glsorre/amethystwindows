@@ -1,32 +1,10 @@
-﻿using AmethystWindows.ViewModels;
-using GalaSoft.MvvmLight.Ioc;
-using GalaSoft.MvvmLight.Messaging;
-using GalaSoft.MvvmLight.Threading;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Text;
-using System.Threading.Tasks;
-using Windows.ApplicationModel;
-using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.AppService;
-using Windows.ApplicationModel.Background;
-using Windows.Foundation;
 using Windows.Foundation.Collections;
-using Windows.Foundation.Metadata;
-using Windows.UI.Core;
-using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
@@ -123,6 +101,36 @@ namespace AmethystWindows
                     App.mainViewModel.Padding = int.Parse(message.ToString());
                 }
             }
+        }
+
+        private void FilterWindowsButton_Click(object sender, RoutedEventArgs e)
+        {
+            var item = (sender as FrameworkElement).DataContext;
+            DesktopWindow desktopWindow = (DesktopWindow)item;
+            List<Filter> filters = new List<Filter>(App.mainViewModel.Filters);
+
+            Filter filter = new Filter(desktopWindow.AppName);
+            if (!filters.Contains(filter))
+            {
+                filters.Add(filter);
+            }
+ 
+            App.mainViewModel.Filters = filters;
+        }
+
+        private void FilterClassButton_Click(object sender, RoutedEventArgs e)
+        {
+            var item = (sender as FrameworkElement).DataContext;
+            DesktopWindow desktopWindow = (DesktopWindow)item;
+            List<Filter> filters = new List<Filter>(App.mainViewModel.Filters);
+
+            Filter filter = new Filter(desktopWindow.AppName, desktopWindow.ClassName);
+            if (!filters.Contains(filter))
+            {
+                filters.Add(filter);
+            }
+
+            App.mainViewModel.Filters = filters;
         }
     }
 
