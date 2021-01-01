@@ -43,9 +43,26 @@ namespace AmethystWindows.ViewModels
             }
         }
 
+        private List<Filter> filters;
+
+        public List<Filter> Filters
+        {
+            get
+            {
+                return filters;
+            }
+            set
+            {
+                DispatcherHelper.CheckBeginInvokeOnUI(() => {
+                    Set(() => Filters, ref filters, value);
+                });
+            }
+        }
+
         public MainViewModel()
         {
             desktopWindows = new List<DesktopWindow>();
+            filters = new List<Filter>();
             padding = 5;
         }
     }
