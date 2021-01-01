@@ -11,6 +11,12 @@ namespace AmethystWindows
         public string AppName { get; set; }
         public string ClassName { get; set; }
 
+        public Filter(string appName)
+        {
+            AppName = appName;
+            ClassName = "*";
+        }
+
         public Filter(string appName, string className)
         {
             AppName = appName;
