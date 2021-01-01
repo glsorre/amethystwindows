@@ -22,6 +22,13 @@ namespace AmethystWindowsSystray
         public Dictionary<Pair<VirtualDesktop, HMONITOR>, Layout> Layouts;
         public Dictionary<Pair<VirtualDesktop, HMONITOR>, ObservableCollection<DesktopWindow>> Windows;
         public Dictionary<Pair<VirtualDesktop, HMONITOR>, bool> WindowsSubcribed;
+
+        private readonly string[] FixedFilters = new string[] { 
+            "Amethyst Windows", 
+            "AmethystWindowsPackaging", 
+            "Task Manager" };
+        private List<Pair<string, string>> ConfigurableFilters = new List<Pair<string, string>>();
+
         private int padding;
 
         public int Padding
@@ -43,7 +50,13 @@ namespace AmethystWindowsSystray
 
         public void AddWindow(DesktopWindow desktopWindow)
         {
-            Windows[new Pair<VirtualDesktop, HMONITOR>(desktopWindow.VirtualDesktop, desktopWindow.MonitorHandle)].Add(desktopWindow);
+            if (!FixedFilters.Contains(desktopWindow.AppName) &&
+                !ConfigurableFilters.Contains(new Pair<string, string>(
+                    desktopWindow.AppName,
+                    desktopWindow.ClassName)))
+            {
+                Windows[new Pair<VirtualDesktop, HMONITOR>(desktopWindow.VirtualDesktop, desktopWindow.MonitorHandle)].Add(desktopWindow);
+            }
         }
 
         public void RemoveWindow(DesktopWindow desktopWindow)
@@ -55,6 +68,20 @@ namespace AmethystWindowsSystray
         {
             RemoveWindow(oldDesktopWindow);
             AddWindow(newDesktopWindow);
+        }
+
+        public void AddFilter(string appName, string className = "*")
+        {
+            ConfigurableFilters.Add(new Pair<string, string>(appName, className));
+        }
+
+        public void RemoveFilter(string appName, string className = "*")
+        {
+            Pair<string, string> pair = new Pair<string, string>(appName, className);
+            if (ConfigurableFilters.Contains(pair))
+            {
+                ConfigurableFilters.Remove(pair);
+            }
         }
 
         public DesktopWindow FindWindow(HWND hWND)

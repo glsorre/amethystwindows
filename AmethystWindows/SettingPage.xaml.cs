@@ -32,11 +32,23 @@ namespace AmethystWindows
         public SettingPage()
         {
             this.InitializeComponent();
+            DataContext = App.mainViewModel;
             NavigationCacheMode = Windows.UI.Xaml.Navigation.NavigationCacheMode.Enabled;
             SettingsBarButton.IsChecked = true;
             ApplicationsBarButton.Click += SettingsBarButton_Click;
-            DataContext = App.mainViewModel;
+            FilterAddButton.Click += FilterAddButton_Click;
             PaddingNumberBox.Loaded += PaddingNumberBox_Loaded;
+        }
+
+        private void FilterAddButton_Click(object sender, RoutedEventArgs e)
+        {
+            List<Filter> filters = new List<Filter>(App.mainViewModel.Filters);
+            filters.Add(new Filter(
+                FilterAddAppNameTextBox.Text,
+                FilterAddClassNameTextBox.Text));
+            App.mainViewModel.Filters = filters;
+            FilterAddAppNameTextBox.Text = "";
+            FilterAddClassNameTextBox.Text = "";
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)

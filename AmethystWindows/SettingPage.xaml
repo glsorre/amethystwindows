@@ -29,5 +29,50 @@
                 Padding="10">
             </muxc:NumberBox >
         </StackPanel>
+        <StackPanel Orientation="Vertical" Padding="10 10 0 10" Height="Auto">
+            <StackPanel Orientation="Horizontal">
+                <Border BorderBrush="{x:Null}" Padding="10">
+                    <TextBlock Text="Filters" VerticalAlignment="Center"/>
+                </Border>
+                <TextBox x:Name="FilterAddAppNameTextBox" PlaceholderText="App Name" Padding="10" Width="250"/>
+                <TextBox x:Name="FilterAddClassNameTextBox" PlaceholderText="Class Name (* is wildcard)" Padding="10" Margin="10 0" Width="250"/>
+                <Button x:Name="FilterAddButton" Padding="10" Content="Add"/>
+            </StackPanel>
+            <StackPanel Orientation="Vertical" Height="Auto">
+                <Grid x:Name="FiltersListHeaders" HorizontalAlignment="Stretch" VerticalAlignment="Top" Padding="20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Style="{ThemeResource BaseTextBlockStyle}" Text="Application Name" />
+                    <TextBlock Grid.Column="1" Style="{ThemeResource BaseTextBlockStyle}" Text="Class Name" />
+                    <TextBlock Grid.Column="2" Style="{ThemeResource BaseTextBlockStyle}" Text="Actions" />
+                </Grid>
+                <ListView x:Name="FilterList" ItemsSource="{Binding Filters}" Height="Auto">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="VerticalContentAlignment" Value="Top"/>
+                            <Setter Property="Padding" Value="0,0,0,0"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Top" Padding="20">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Style="{ThemeResource BodyTextBlockStyle}" Text="{Binding AppName}" />
+                                <TextBlock Grid.Column="1" Style="{ThemeResource BodyTextBlockStyle}" Text="{Binding ClassName}" />
+                                <Button Grid.Column="2" Content="Remove"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackPanel>
+        </StackPanel>
     </StackPanel>
 </Page>
