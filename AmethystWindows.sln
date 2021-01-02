@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmethystWindowsSystray", "A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmethystWindowsSystrayTests", "AmethystWindowsSystrayTests\AmethystWindowsSystrayTests.csproj", "{5A59E7D9-D58B-496F-A2C4-858AB68713D4}"
 EndProject
-Project("{C7167F0D-BC9F-4E6E-AFE1-012C56B48DB5}") = "AmethystWindowsPackaging", "AmethystWIndowsPackaging\AmethystWindowsPackaging.wapproj", "{A6037E67-30B9-4808-9586-4924ACAE54CD}"
+Project("{C7167F0D-BC9F-4E6E-AFE1-012C56B48DB5}") = "AmethystWindowsPackaging", "AmethystWindowsPackaging\AmethystWindowsPackaging.wapproj", "{A6037E67-30B9-4808-9586-4924ACAE54CD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
