@@ -3,8 +3,9 @@
 # Add steps that test and distribute an app, save build artifacts, and more:
 # https://aka.ms/yaml
 
-trigger:
-- master
+trigger: none
+pr: none
+name: $(MajorVersion).$(MinorVersion).$(date:yy)$(DayOfYear)$(rev:.r)
 
 pool:
   vmImage: 'windows-latest'
