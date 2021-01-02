@@ -92,3 +92,13 @@ steps:
     archiveType: 'zip'
     archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
     replaceExistingArchive: true
+
+- task: AppCenterDistribute@3
+  inputs:
+    serverEndpoint: 'giuseppe.sorrentino@gmail.com - Visual Studio App Center'
+    appSlug: 'Amethyst-Windows'
+    appFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    buildVersion: '$(Build.BuildNumber)'
+    releaseNotesOption: 'input'
+    releaseNotesInput: 'New release!'
+    destinationType: 'groups'
