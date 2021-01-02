@@ -10,7 +10,7 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
-- group: codesignin
+- group: codesigning
 - name: solution
   value: '**/*.sln'
 - name: buildPlatform
