@@ -99,6 +99,7 @@ steps:
     appSlug: 'Amethyst-Windows'
     appFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
     buildVersion: '$(Build.BuildNumber)'
+    symbolsOption: 'UWP'
     releaseNotesOption: 'input'
     releaseNotesInput: 'New release!'
     destinationType: 'groups'
