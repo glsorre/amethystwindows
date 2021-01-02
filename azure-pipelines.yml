@@ -96,7 +96,7 @@ steps:
 - task: AppCenterDistribute@3
   inputs:
     serverEndpoint: 'giuseppe.sorrentino@gmail.com - Visual Studio App Center'
-    appSlug: 'Amethyst-Windows'
+    appSlug: 'glsorre/Amethyst-Windows'
     appFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
     buildVersion: '$(Build.BuildNumber)'
     symbolsOption: 'UWP'
