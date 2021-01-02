@@ -10,14 +10,14 @@
 
   <Identity
     Name="eeab3c4d-ac83-4ba8-8a3d-acda6a061b07"
-    Publisher="CN=giuse"
+    Publisher="CN=Giuseppe Sorrentino"
     Version="1.0.0.0" />
 
   <mp:PhoneIdentity PhoneProductId="eeab3c4d-ac83-4ba8-8a3d-acda6a061b07" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>AmethystWindows</DisplayName>
-    <PublisherDisplayName>giuse</PublisherDisplayName>
+    <PublisherDisplayName>Giuseppe Sorrentino</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
