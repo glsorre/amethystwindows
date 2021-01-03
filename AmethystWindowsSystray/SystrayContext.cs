@@ -135,7 +135,7 @@ namespace AmethystWindowsSystray
                 Properties.Settings.Default.Filters = JsonConvert.SerializeObject(parsedFilters);
                 Properties.Settings.Default.Save();
 
-                DWM.Clear();
+                DWM.ClearWindows();
                 DWM.GetWindows();
                 DWM.Draw();
             }
