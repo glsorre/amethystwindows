@@ -1,4 +1,5 @@
-﻿using DesktopWindowManager.Internal;
+﻿using DebounceThrottle;
+using DesktopWindowManager.Internal;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Serilog;
@@ -28,6 +29,7 @@ namespace AmethystWindowsSystray
         private HooksHelper hooksHelper = null;
         private bool Standalone = false;
         public static Logger Logger = new LoggerConfiguration().WriteTo.Console().CreateLogger();
+        private DebounceDispatcher debounceDispatcher = new DebounceDispatcher(250);
 
         public SystrayContext(bool standalone = false)
         {
@@ -223,17 +225,23 @@ namespace AmethystWindowsSystray
             }
             if (e == 0x0) //win + h
             {
-                HMONITOR currentMonitor = User32.MonitorFromPoint(Control.MousePosition, User32.MonitorFlags.MONITOR_DEFAULTTONEAREST);
-                Pair<VirtualDesktop, HMONITOR> currentPair = new Pair<VirtualDesktop, HMONITOR>(VirtualDesktop.Current, currentMonitor);
-                DWM.ExpandMainPane(currentPair);
-                DWM.Draw(currentPair);
+                debounceDispatcher.Debounce(() =>
+                {
+                    HMONITOR currentMonitor = User32.MonitorFromPoint(Control.MousePosition, User32.MonitorFlags.MONITOR_DEFAULTTONEAREST);
+                    Pair<VirtualDesktop, HMONITOR> currentPair = new Pair<VirtualDesktop, HMONITOR>(VirtualDesktop.Current, currentMonitor);
+                    DWM.ExpandMainPane(currentPair);
+                    DWM.Draw(currentPair);
+                });
             }
             if (e == 0x1) //win + l
             {
-                HMONITOR currentMonitor = User32.MonitorFromPoint(Control.MousePosition, User32.MonitorFlags.MONITOR_DEFAULTTONEAREST);
-                Pair<VirtualDesktop, HMONITOR> currentPair = new Pair<VirtualDesktop, HMONITOR>(VirtualDesktop.Current, currentMonitor);
-                DWM.ShrinkMainPane(currentPair);
-                DWM.Draw(currentPair);
+                debounceDispatcher.Debounce(() =>
+                {
+                    HMONITOR currentMonitor = User32.MonitorFromPoint(Control.MousePosition, User32.MonitorFlags.MONITOR_DEFAULTTONEAREST);
+                    Pair<VirtualDesktop, HMONITOR> currentPair = new Pair<VirtualDesktop, HMONITOR>(VirtualDesktop.Current, currentMonitor);
+                    DWM.ShrinkMainPane(currentPair);
+                    DWM.Draw(currentPair);
+                });
             }
         }
 
