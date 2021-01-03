@@ -13,89 +13,14 @@ using WindowsDesktop;
 
 namespace AmethystWindowsSystray
 {
-    class Functions
+    class HooksHelper
     {
         public DesktopWindowsManager DesktopWindowsManager { get; set; }
-        public event EventHandler<string> Changed;
+        
 
-        public Functions(DesktopWindowsManager desktopWindowsManager)
+        public HooksHelper(DesktopWindowsManager desktopWindowsManager)
         {
             DesktopWindowsManager = desktopWindowsManager;
-        }
-
-        public void GetWindows()
-        {
-            User32.EnumWindowsProc filterDesktopWindows = delegate (HWND windowHandle, IntPtr lparam)
-            {
-                DesktopWindow desktopWindow = new DesktopWindow(windowHandle);
-
-                if (desktopWindow.isPresent())
-                {
-                    desktopWindow.GetAppName();
-                    desktopWindow.GetClassName();
-                    desktopWindow.GetMonitorInfo();
-                    desktopWindow.GetVirtualDesktop();
-
-                    if (DesktopWindowsManager.Windows.ContainsKey(desktopWindow.GetDesktopMonitor()))
-                    {
-                        if (!DesktopWindowsManager.Windows[desktopWindow.GetDesktopMonitor()].Contains(desktopWindow))
-                        {
-                            DesktopWindowsManager.AddWindow(desktopWindow);
-                        }
-                    }
-                    else
-                    {
-                        DesktopWindowsManager.Windows.Add(
-                            desktopWindow.GetDesktopMonitor(),
-                            new ObservableCollection<DesktopWindow>(new DesktopWindow[] { })
-                            );
-                        DesktopWindowsManager.AddWindow(desktopWindow);
-                    }
-                }
-                return true;
-            };
-
-            User32.EnumWindows(filterDesktopWindows, IntPtr.Zero);
-
-            foreach (var desktopMonitor in DesktopWindowsManager.Windows)
-            {
-                DesktopWindowsManager.Windows[desktopMonitor.Key].CollectionChanged += Functions_CollectionChanged;
-            }
-        }
-
-        private void Functions_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            if (e.Action.Equals(NotifyCollectionChangedAction.Remove))
-            {
-                DesktopWindow desktopWindow = (DesktopWindow)e.OldItems[0];
-                DesktopWindowsManager.Draw(desktopWindow.GetDesktopMonitor());
-                Changed.Invoke(this, "add");
-            }
-            else if (e.Action.Equals(NotifyCollectionChangedAction.Add))
-            {
-                DesktopWindow desktopWindow = (DesktopWindow)e.NewItems[0];
-                DesktopWindowsManager.Draw(desktopWindow.GetDesktopMonitor());
-                Changed.Invoke(this, "remove");
-            }
-        }
-
-        public void LoadLayouts()
-        {
-            if (Properties.Settings.Default.Layouts != "")
-            {
-                DesktopWindowsManager.ReadLayouts();
-            }
-        }
-
-        public void UpdateLayouts()
-        { 
-            foreach (Pair<VirtualDesktop, HMONITOR> desktopMonitor in DesktopWindowsManager.Windows.Keys)
-            {
-                if (!DesktopWindowsManager.Layouts.ContainsKey(desktopMonitor))
-                {
-                    DesktopWindowsManager.Layouts.Add(desktopMonitor, Layout.Tall);
-                }
-            }
         }
 
         private async Task ManageCreated(DesktopWindow desktopWindow)
