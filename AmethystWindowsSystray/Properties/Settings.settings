@@ -3,13 +3,16 @@
   <Profiles />
   <Settings>
     <Setting Name="Padding" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">5</Value>
+      <Value Profile="(Default)">4</Value>
     </Setting>
     <Setting Name="Layouts" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="Filters" Type="System.String" Scope="User">
       <Value Profile="(Default)">[]</Value>
+    </Setting>
+    <Setting Name="Step" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">25</Value>
     </Setting>
   </Settings>
 </SettingsFile>

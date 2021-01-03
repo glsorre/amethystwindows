@@ -20,10 +20,10 @@ namespace AmethystWindowsSystray
 {
     partial class DesktopWindowsManager
     {
-        public Dictionary<Pair<VirtualDesktop, HMONITOR>, Layout> Layouts;
-        public Dictionary<Pair<VirtualDesktop, HMONITOR>, ObservableCollection<DesktopWindow>> Windows;
-        public Dictionary<Pair<VirtualDesktop, HMONITOR>, bool> WindowsSubcribed;
+        private Dictionary<Pair<VirtualDesktop, HMONITOR>, Layout> Layouts;
+        public Dictionary<Pair<VirtualDesktop, HMONITOR>, ObservableCollection<DesktopWindow>> Windows { get; }
         public event EventHandler<string> Changed;
+        private Dictionary<Pair<VirtualDesktop, HMONITOR>, int> Factors;
 
         private readonly string[] FixedFilters = new string[] {
             "Amethyst Windows",
@@ -49,7 +49,7 @@ namespace AmethystWindowsSystray
             this.ConfigurableFilters = JsonConvert.DeserializeObject<List<Pair<string, string>>>(Properties.Settings.Default.Filters);
             this.Layouts = new Dictionary<Pair<VirtualDesktop, HMONITOR>, Layout>();
             this.Windows = new Dictionary<Pair<VirtualDesktop, HMONITOR>, ObservableCollection<DesktopWindow>>();
-            this.WindowsSubcribed = new Dictionary<Pair<VirtualDesktop, HMONITOR>, bool>();
+            this.Factors = new Dictionary<Pair<VirtualDesktop, HMONITOR>, int>();
         }
 
     }

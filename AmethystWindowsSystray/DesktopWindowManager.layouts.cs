@@ -52,7 +52,7 @@ namespace AmethystWindowsSystray
             }
         }
 
-        public Layout RotateLayouts(Layout currentLayout)
+        private Layout RotateLayouts(Layout currentLayout)
         {
             IEnumerable<Layout> values = Enum.GetValues(typeof(Layout)).Cast<Layout>();
             if (currentLayout == values.Max())
@@ -63,6 +63,11 @@ namespace AmethystWindowsSystray
             {
                 return ++currentLayout;
             }
+        }
+
+        public void RotateLayout(Pair<VirtualDesktop, HMONITOR> desktopMonitor)
+        {
+            Layouts[desktopMonitor] = RotateLayouts(Layouts[desktopMonitor]);
         }
     }
 }
