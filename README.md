@@ -6,10 +6,6 @@ Tiling window manager for Windows 10 along the lines of [xmonad](https://xmonad.
 [![Gitter](https://badges.gitter.im/glsorre/amethystwindows.svg)](https://gitter.im/glsorre/amethystwindows?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 [![GitHub release (by tag)](https://img.shields.io/github/downloads/glsorre/amethystwindows/latest/total?label=download)](https://github.com/glsorre/amethystwindows/releases)
 
-## Status
-
-It's far from being production ready but functional for my need.
-
 ## Key Features
 
 - doesn't use DLL injection to manipulate windows
