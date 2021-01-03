@@ -388,6 +388,11 @@ namespace AmethystWindowsSystray
                 DrawWindow(ScreenScalingFactorVert, mX, mY, gridGenerator, w, hDWP);
             }
             User32.EndDeferWindowPos(hDWP.DangerousGetHandle());
+
+            foreach (var w in desktopMonitor.Value.Select((value, i) => new Tuple<int, DesktopWindow>(i, value)))
+            {
+                w.Item2.GetWindowInfo();
+            }
         }
 
         public void Draw()
@@ -405,6 +410,11 @@ namespace AmethystWindowsSystray
                     DrawWindow(ScreenScalingFactorVert, mX, mY, gridGenerator, w, hDWP);
                 }
                 User32.EndDeferWindowPos(hDWP.DangerousGetHandle());
+
+                foreach (var w in desktopMonitor.Value.Select((value, i) => new Tuple<int, DesktopWindow>(i, value)))
+                {
+                    w.Item2.GetWindowInfo();
+                }
             }
         }
 
@@ -480,11 +490,20 @@ namespace AmethystWindowsSystray
                 adjustedSize.Y + mY - w.Item2.Borders.top + Padding,
                 adjustedSize.Width + w.Item2.Borders.left + w.Item2.Borders.right - 2 * Padding,
                 adjustedSize.Height + w.Item2.Borders.top + w.Item2.Borders.bottom - 2 * Padding,
-                0
+                User32.SetWindowPosFlags.SWP_NOACTIVATE
                 );
 
-            w.Item2.GetInfo();
-            
+            User32.DeferWindowPos(
+                hDWP,
+                w.Item2.Window,
+                HWND.HWND_NOTOPMOST,
+                adjustedSize.X + mX - w.Item2.Borders.left + Padding,
+                adjustedSize.Y + mY - w.Item2.Borders.top + Padding,
+                adjustedSize.Width + w.Item2.Borders.left + w.Item2.Borders.right - 2 * Padding,
+                adjustedSize.Height + w.Item2.Borders.top + w.Item2.Borders.bottom - 2 * Padding,
+                User32.SetWindowPosFlags.SWP_NOREPOSITION
+                );
+
         }
     }
 }
