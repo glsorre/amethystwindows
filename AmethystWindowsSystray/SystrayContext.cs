@@ -165,12 +165,14 @@ namespace AmethystWindowsSystray
 
         private void Form_AmethystSystrayHotKey(object sender, int e)
         {
+            Console.WriteLine(e);
+
             if (e == 0x20) //space bar
             {
                 HMONITOR currentMonitor = User32.MonitorFromPoint(Control.MousePosition, User32.MonitorFlags.MONITOR_DEFAULTTONEAREST);
                 VirtualDesktop currentDesktop = VirtualDesktop.Current;
                 Pair<VirtualDesktop, HMONITOR> currentPair = new Pair<VirtualDesktop, HMONITOR>(currentDesktop, currentMonitor);
-                DWM.Layouts[currentPair] = DWM.RotateLayouts(DWM.Layouts[currentPair]);
+                DWM.RotateLayout(currentPair);
                 DWM.Draw(currentPair);
                 DWM.SaveLayouts();
             }
@@ -180,10 +182,7 @@ namespace AmethystWindowsSystray
                 HMONITOR currentMonitor = User32.MonitorFromWindow(selectedWindow, User32.MonitorFlags.MONITOR_DEFAULTTONEAREST);
                 DesktopWindow selected = DWM.GetWindowByHandlers(selectedWindow, currentMonitor, VirtualDesktop.Current);
                 Pair<VirtualDesktop, HMONITOR> currentPair = new Pair<VirtualDesktop, HMONITOR>(VirtualDesktop.Current, currentMonitor);
-                DWM.Windows[currentPair].Move(
-                    DWM.Windows[currentPair].IndexOf(selected),
-                    0
-                    );
+                DWM.SetMainWindow(currentPair, selected);
                 DWM.Draw(currentPair);
             }
             if (e == 0x4A) // j
@@ -192,16 +191,8 @@ namespace AmethystWindowsSystray
                 HMONITOR currentMonitor = User32.MonitorFromWindow(selectedWindow, User32.MonitorFlags.MONITOR_DEFAULTTONEAREST);
                 DesktopWindow selected = DWM.GetWindowByHandlers(selectedWindow, currentMonitor, VirtualDesktop.Current);
                 Pair<VirtualDesktop, HMONITOR> currentPair = new Pair<VirtualDesktop, HMONITOR>(VirtualDesktop.Current, currentMonitor);
-                int currentIndex = DWM.Windows[currentPair].IndexOf(selected);
-                int maxIndex = DWM.Windows[currentPair].Count - 1;
-                if (currentIndex == maxIndex)
-                {
-                    User32.SetForegroundWindow(DWM.Windows[currentPair][0].Window);
-                }
-                else
-                {
-                    User32.SetForegroundWindow(DWM.Windows[currentPair][++currentIndex].Window);
-                }
+                DWM.RotateFocusedWindowClockwise(currentPair, selected);
+                DWM.Draw(currentPair);
             }
             if (e == 0x4B) // j
             {
@@ -209,16 +200,8 @@ namespace AmethystWindowsSystray
                 HMONITOR currentMonitor = User32.MonitorFromWindow(selectedWindow, User32.MonitorFlags.MONITOR_DEFAULTTONEAREST);
                 DesktopWindow selected = DWM.GetWindowByHandlers(selectedWindow, currentMonitor, VirtualDesktop.Current);
                 Pair<VirtualDesktop, HMONITOR> currentPair = new Pair<VirtualDesktop, HMONITOR>(VirtualDesktop.Current, currentMonitor);
-                int currentIndex = DWM.Windows[currentPair].IndexOf(selected);
-                int maxIndex = DWM.Windows[currentPair].Count - 1;
-                if (currentIndex == 0)
-                {
-                    User32.SetForegroundWindow(DWM.Windows[currentPair][maxIndex].Window);
-                }
-                else
-                {
-                    User32.SetForegroundWindow(DWM.Windows[currentPair][--currentIndex].Window);
-                }
+                DWM.RotateFocusedWindowCounterClockwise(currentPair, selected);
+                DWM.Draw(currentPair);
             }
             if (e == 0x4C) // l
             {
@@ -226,16 +209,7 @@ namespace AmethystWindowsSystray
                 HMONITOR currentMonitor = User32.MonitorFromWindow(selectedWindow, User32.MonitorFlags.MONITOR_DEFAULTTONEAREST);
                 DesktopWindow selected = DWM.GetWindowByHandlers(selectedWindow, currentMonitor, VirtualDesktop.Current);
                 Pair<VirtualDesktop, HMONITOR> currentPair = new Pair<VirtualDesktop, HMONITOR>(VirtualDesktop.Current, currentMonitor);
-                int currentIndex = DWM.Windows[currentPair].IndexOf(selected);
-                int maxIndex = DWM.Windows[currentPair].Count - 1;
-                if (currentIndex == maxIndex)
-                {
-                    DWM.Windows[currentPair].Move(currentIndex, 0);
-                }
-                else
-                {
-                    DWM.Windows[currentPair].Move(currentIndex, ++currentIndex);
-                }
+                DWM.MoveWindowClockwise(currentPair, selected);
                 DWM.Draw(currentPair);
             }
             if (e == 0x48) //h
@@ -244,16 +218,21 @@ namespace AmethystWindowsSystray
                 HMONITOR currentMonitor = User32.MonitorFromWindow(selectedWindow, User32.MonitorFlags.MONITOR_DEFAULTTONEAREST);
                 DesktopWindow selected = DWM.GetWindowByHandlers(selectedWindow, currentMonitor, VirtualDesktop.Current);
                 Pair<VirtualDesktop, HMONITOR> currentPair = new Pair<VirtualDesktop, HMONITOR>(VirtualDesktop.Current, currentMonitor);
-                int currentIndex = DWM.Windows[currentPair].IndexOf(selected);
-                int maxIndex = DWM.Windows[currentPair].Count - 1;
-                if (currentIndex == 0)
-                {
-                    DWM.Windows[currentPair].Move(currentIndex, maxIndex);
-                }
-                else
-                {
-                    DWM.Windows[currentPair].Move(currentIndex, --currentIndex);
-                }
+                DWM.MoveWindowCounterClockwise(currentPair, selected);
+                DWM.Draw(currentPair);
+            }
+            if (e == 0x0) //win + h
+            {
+                HMONITOR currentMonitor = User32.MonitorFromPoint(Control.MousePosition, User32.MonitorFlags.MONITOR_DEFAULTTONEAREST);
+                Pair<VirtualDesktop, HMONITOR> currentPair = new Pair<VirtualDesktop, HMONITOR>(VirtualDesktop.Current, currentMonitor);
+                DWM.ExpandMainPane(currentPair);
+                DWM.Draw(currentPair);
+            }
+            if (e == 0x1) //win + l
+            {
+                HMONITOR currentMonitor = User32.MonitorFromPoint(Control.MousePosition, User32.MonitorFlags.MONITOR_DEFAULTTONEAREST);
+                Pair<VirtualDesktop, HMONITOR> currentPair = new Pair<VirtualDesktop, HMONITOR>(VirtualDesktop.Current, currentMonitor);
+                DWM.ShrinkMainPane(currentPair);
                 DWM.Draw(currentPair);
             }
         }

@@ -135,5 +135,69 @@ namespace AmethystWindowsSystray
         {
             return Windows[new Pair<VirtualDesktop, HMONITOR>(desktop, hMONITOR)].FirstOrDefault(window => window.Window == hWND);
         }
+
+        public void SetMainWindow(Pair<VirtualDesktop, HMONITOR> desktopMonitor, DesktopWindow window)
+        {
+            Windows[desktopMonitor].Move(
+                    Windows[desktopMonitor].IndexOf(window),
+                    0
+                    );
+        }
+
+        public void RotateFocusedWindowClockwise(Pair<VirtualDesktop, HMONITOR> desktopMonitor, DesktopWindow window)
+        {
+            int currentIndex = Windows[desktopMonitor].IndexOf(window);
+            int maxIndex = Windows[desktopMonitor].Count - 1;
+            if (currentIndex == maxIndex)
+            {
+                User32.SetForegroundWindow(Windows[desktopMonitor][0].Window);
+            }
+            else
+            {
+                User32.SetForegroundWindow(Windows[desktopMonitor][++currentIndex].Window);
+            }
+        }
+
+        public void RotateFocusedWindowCounterClockwise(Pair<VirtualDesktop, HMONITOR> desktopMonitor, DesktopWindow window)
+        {
+            int currentIndex = Windows[desktopMonitor].IndexOf(window);
+            int maxIndex = Windows[desktopMonitor].Count - 1;
+            if (currentIndex == 0)
+            {
+                User32.SetForegroundWindow(Windows[desktopMonitor][maxIndex].Window);
+            }
+            else
+            {
+                User32.SetForegroundWindow(Windows[desktopMonitor][--currentIndex].Window);
+            }
+        }
+
+        public void MoveWindowClockwise(Pair<VirtualDesktop, HMONITOR> desktopMonitor, DesktopWindow window)
+        {
+            int currentIndex = Windows[desktopMonitor].IndexOf(window);
+            int maxIndex = Windows[desktopMonitor].Count - 1;
+            if (currentIndex == maxIndex)
+            {
+                Windows[desktopMonitor].Move(currentIndex, 0);
+            }
+            else
+            {
+                Windows[desktopMonitor].Move(currentIndex, ++currentIndex);
+            }
+        }
+
+        public void MoveWindowCounterClockwise(Pair<VirtualDesktop, HMONITOR> desktopMonitor, DesktopWindow window)
+        {
+            int currentIndex = Windows[desktopMonitor].IndexOf(window);
+            int maxIndex = Windows[desktopMonitor].Count - 1;
+            if (currentIndex == 0)
+            {
+                Windows[desktopMonitor].Move(currentIndex, maxIndex);
+            }
+            else
+            {
+                Windows[desktopMonitor].Move(currentIndex, --currentIndex);
+            }
+        }
     }
 }

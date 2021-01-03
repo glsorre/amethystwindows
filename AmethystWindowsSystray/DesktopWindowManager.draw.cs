@@ -99,7 +99,12 @@ namespace AmethystWindowsSystray
                 mCurrentLayout = Layouts[desktopMonitor.Key];
             }
 
-            gridGenerator = GridGenerator(mWidth, mHeight, windowsCount, mCurrentLayout);
+            if (!Factors.ContainsKey(desktopMonitor.Key))
+            {
+                Factors[desktopMonitor.Key] = 0;
+            }
+
+            gridGenerator = GridGenerator(mWidth, mHeight, windowsCount, Factors[desktopMonitor.Key], mCurrentLayout);
         }
 
         private void DrawWindow(float ScreenScalingFactorVert, int mX, int mY, IEnumerable<Tuple<int, int, int, int>> gridGenerator, Tuple<int, DesktopWindow> w, HDWP hDWP)
@@ -139,18 +144,6 @@ namespace AmethystWindowsSystray
                 adjustedSize.Height + w.Item2.Borders.top + w.Item2.Borders.bottom - 2 * Padding,
                 User32.SetWindowPosFlags.SWP_NOACTIVATE
                 );
-
-            User32.DeferWindowPos(
-                hDWP,
-                w.Item2.Window,
-                HWND.HWND_NOTOPMOST,
-                adjustedSize.X + mX - w.Item2.Borders.left + Padding,
-                adjustedSize.Y + mY - w.Item2.Borders.top + Padding,
-                adjustedSize.Width + w.Item2.Borders.left + w.Item2.Borders.right - 2 * Padding,
-                adjustedSize.Height + w.Item2.Borders.top + w.Item2.Borders.bottom - 2 * Padding,
-                User32.SetWindowPosFlags.SWP_NOREPOSITION
-                );
-
         }
     }
 }

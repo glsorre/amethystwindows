@@ -20,7 +20,17 @@ namespace AmethystWindowsSystray
 {
     partial class DesktopWindowsManager
     {
-        public IEnumerable<Tuple<int, int, int, int>> GridGenerator(int mWidth, int mHeight, int windowsCount, Layout layout)
+        public void ShrinkMainPane(Pair<VirtualDesktop, HMONITOR> key)
+        {
+            Factors[key] = ++Factors[key];
+        }
+
+        public void ExpandMainPane(Pair<VirtualDesktop, HMONITOR> key)
+        {
+            Factors[key] = --Factors[key];
+        }
+
+        public IEnumerable<Tuple<int, int, int, int>> GridGenerator(int mWidth, int mHeight, int windowsCount, int factor, Layout layout)
         {
             int i = 0;
             int j = 0;
@@ -159,8 +169,8 @@ namespace AmethystWindowsSystray
                         int size = mWidth / (windowsCount - 1);
                         for (i = 0; i < windowsCount - 1; i++)
                         {
-                            if (i == 0) yield return new Tuple<int, int, int, int>(0, 0, mWidth, mHeight / 2);
-                            yield return new Tuple<int, int, int, int>(i * size, mHeight / 2, size, mHeight / 2);
+                            if (i == 0) yield return new Tuple<int, int, int, int>(0, 0, mWidth, mHeight / 2 + factor * Properties.Settings.Default.Step);
+                            yield return new Tuple<int, int, int, int>(i * size, mHeight / 2 + factor * Properties.Settings.Default.Step, size, mHeight / 2 - factor * Properties.Settings.Default.Step);
                         }
                     }
                     break;
@@ -171,8 +181,8 @@ namespace AmethystWindowsSystray
                         int size = mHeight / (windowsCount - 1);
                         for (i = 0; i < windowsCount - 1; i++)
                         {
-                            if (i == 0) yield return new Tuple<int, int, int, int>(0, 0, mWidth / 2, mHeight);
-                            yield return new Tuple<int, int, int, int>(mWidth / 2, i * size, mWidth / 2, size);
+                            if (i == 0) yield return new Tuple<int, int, int, int>(0, 0, mWidth / 2 + factor * Properties.Settings.Default.Step, mHeight);
+                            yield return new Tuple<int, int, int, int>(mWidth / 2 + factor * Properties.Settings.Default.Step, i * size, mWidth / 2 - factor * Properties.Settings.Default.Step, size);
                         }
                     }
                     break;

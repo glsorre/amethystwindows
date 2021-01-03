@@ -23,7 +23,13 @@ To obtain that I got ideas and code snippets from the following projects:
 
 ## Keyboard Shortcut
 
-Amethyst Windows uses one modifier: `shift + alt` known as `mod1`.
+Amethyst Windows uses two modifiers.
+
+| Shortcut                  | Description                          |
+|---------------------------|--------------------------------------|
+| `alt + shift`             | `mod1`                               |
+| `alt + shift + win`       | `mod2`                               |
+
 
 For now the keyboard shortcut configured are:
 
@@ -35,6 +41,9 @@ For now the keyboard shortcut configured are:
 | `mod1 + L`                | Swap focused window clockwise        |
 | `mod1 + J`                | Change focus counterclockwise        |
 | `mod1 + K`                | Change focus clockwise               |
+| `mod2 + J` and `mod2 + L` | Expand main pane                     |
+| `mod2 + K` and `mod2 + J` | Shrink main pane                     |
+
 
 ## Layouts
 
@@ -54,7 +63,7 @@ This layout places the windows in grid occuping space in vertical when necessary
 In this layout, the currently focused window takes up the entire screen, and the other windows are not visible at all.
 
 ### Tall
-The default layout. This gives you one "main pane" on the left, and one other pane on the right. The main window is placed in the main pane (extending the full height of the screen), and all remaining windows are placed in the other pane.
+The default layout. This gives you one "main pane" on the left, and one other pane on the right. The main window is placed in the main pane (extending the full height of the screen), and all remaining windows are placed in the other pane. The main pane can be shrinked/expanded.
 
 ### Wide
 The rotated version of tall.
