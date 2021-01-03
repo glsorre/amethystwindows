@@ -141,7 +141,6 @@ namespace WindowsDesktop.Internal
 	IVirtualDesktop2 ivd2;
 	string desktopName;
 	ivd2.GetName(out desktopName);
-	Console.WriteLine("Name of desktop: " + desktopName);
 
 		[ComImport]
 		[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
