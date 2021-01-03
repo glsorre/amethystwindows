@@ -25,7 +25,7 @@ namespace AmethystWindowsSystray.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        [global::System.Configuration.DefaultSettingValueAttribute("5")]
         public int Padding {
             get {
                 return ((int)(this["Padding"]));
@@ -49,7 +49,7 @@ namespace AmethystWindowsSystray.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("[]")]
         public string Filters {
             get {
                 return ((string)(this["Filters"]));
