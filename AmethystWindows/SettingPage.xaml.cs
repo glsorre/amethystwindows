@@ -28,7 +28,7 @@ namespace AmethystWindows
     /// </summary>
     public sealed partial class SettingPage : Page
     {
-        private DebounceDispatcher debounceDispatcher = new DebounceDispatcher(500);
+        private DebounceDispatcher debounceDispatcher = new DebounceDispatcher(250);
 
         public SettingPage()
         {
