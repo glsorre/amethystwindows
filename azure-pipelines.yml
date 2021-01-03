@@ -102,4 +102,5 @@ steps:
     symbolsOption: 'UWP'
     releaseNotesOption: 'input'
     releaseNotesInput: 'New release!'
+    isMandatory: true
     destinationType: 'groups'
