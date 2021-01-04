@@ -62,9 +62,9 @@ The default layout. This gives you one "main pane" on the left, and one other pa
 ### Wide
 The rotated version of tall.
 
-## License
+## Contacts
 
-Please contact me trough [twitter](https://twitter.com/glsorre) or [gitter](https://gitter.im/glsorre/amethystwindows)
+Please contact me trough [twitter](https://twitter.com/glsorre) or [gitter](https://gitter.im/glsorre/amethystwindows).
 
 ## License
 
