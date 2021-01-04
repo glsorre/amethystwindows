@@ -1,7 +1,9 @@
 theme: jekyll-theme-cayman
 title: Amethyst Windows
-show_downloads: false
 google_analytics: UA-132556016-1
+show_downloads: true
+github:
+  appxbundle_url: https://github.com/glsorre/amethystwindows/releases/latest
 relative_links:
   enabled: true
   collections: true
