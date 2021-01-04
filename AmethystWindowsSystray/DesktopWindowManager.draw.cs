@@ -116,13 +116,6 @@ namespace AmethystWindowsSystray
                 gridGenerator.ToArray()[w.Item1].Item4
                 ));
 
-            User32.AdjustWindowRectExForDpi(
-                ref adjustedSize,
-                w.Item2.Info.dwStyle,
-                false, w.Item2.Info.dwExStyle,
-                (uint)(ScreenScalingFactorVert / 96)
-                );
-
             //Prepare the WINDOWPLACEMENT structure.
             User32.WINDOWPLACEMENT placement = new User32.WINDOWPLACEMENT();
             placement.length = (uint)Marshal.SizeOf(placement);
@@ -142,7 +135,11 @@ namespace AmethystWindowsSystray
                 adjustedSize.Y + mY - w.Item2.Borders.top + Padding,
                 adjustedSize.Width + w.Item2.Borders.left + w.Item2.Borders.right - 2 * Padding,
                 adjustedSize.Height + w.Item2.Borders.top + w.Item2.Borders.bottom - 2 * Padding,
-                User32.SetWindowPosFlags.SWP_NOACTIVATE
+                User32.SetWindowPosFlags.SWP_FRAMECHANGED | 
+                User32.SetWindowPosFlags.SWP_NOACTIVATE |
+                User32.SetWindowPosFlags.SWP_NOCOPYBITS |
+                User32.SetWindowPosFlags.SWP_NOZORDER |
+                User32.SetWindowPosFlags.SWP_NOOWNERZORDER
                 );
         }
     }
