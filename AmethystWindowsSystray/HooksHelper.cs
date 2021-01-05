@@ -23,17 +23,6 @@ namespace AmethystWindowsSystray
             DesktopWindowsManager = desktopWindowsManager;
         }
 
-        private async Task ManageCreated(DesktopWindow desktopWindow)
-        {
-            await Task.Delay(1000);
-            if (desktopWindow.isRuntimeValuable())
-            {
-                SystrayContext.Logger.Information($"window created");
-                desktopWindow.GetInfo();
-                DesktopWindowsManager.AddWindow(desktopWindow);
-            }
-        }
-
         public void setWindowsHook()
         {
             void WinEventHookAll(User32.HWINEVENTHOOK hWinEventHook, uint winEvent, HWND hwnd, int idObject, int idChild, uint idEventThread, uint dwmsEventTime)
@@ -43,7 +32,13 @@ namespace AmethystWindowsSystray
                 {
                     switch (winEvent)
                     {
+                        case User32.EventConstants.EVENT_OBJECT_SHOW:
+                            SystrayContext.Logger.Information($"window shown");
+                            desktopWindow.GetInfo();
+                            DesktopWindowsManager.AddWindow(desktopWindow);
+                            break;
                         case User32.EventConstants.EVENT_SYSTEM_MINIMIZEEND:
+                            SystrayContext.Logger.Information($"window maximized");
                             desktopWindow.GetInfo();
                             DesktopWindowsManager.AddWindow(desktopWindow);
                             break;
@@ -74,31 +69,10 @@ namespace AmethystWindowsSystray
                 }
             }
 
-            void WinEventHookCreate(User32.HWINEVENTHOOK hWinEventHook, uint winEvent, HWND hwnd, int idObject, int idChild, uint idEventThread, uint dwmsEventTime)
-            {
-                DesktopWindow desktopWindow = new DesktopWindow(hwnd);
-
-                if (hwnd != HWND.NULL && idObject == User32.ObjectIdentifiers.OBJID_WINDOW && idChild == 0)
-                {
-                    switch (winEvent)
-                    {
-                        case User32.EventConstants.EVENT_OBJECT_CREATE:
-                            ManageCreated(desktopWindow);
-                            break;
-                        default:
-                            break;
-                    }
-                }
-            }
-
-            User32.WinEventProc winEventHookCreate = new User32.WinEventProc(WinEventHookCreate);
-            GCHandle gchAll = GCHandle.Alloc(winEventHookCreate);
-
             User32.WinEventProc winEventHookAll = new User32.WinEventProc(WinEventHookAll);
             GCHandle gchCreate = GCHandle.Alloc(winEventHookAll);
 
             User32.HWINEVENTHOOK hookAll = User32.SetWinEventHook(User32.EventConstants.EVENT_MIN, User32.EventConstants.EVENT_MAX, HINSTANCE.NULL, winEventHookAll, 0, 0, User32.WINEVENT.WINEVENT_OUTOFCONTEXT | User32.WINEVENT.WINEVENT_SKIPOWNPROCESS);
-            User32.HWINEVENTHOOK hookCreate = User32.SetWinEventHook(User32.EventConstants.EVENT_OBJECT_CREATE, User32.EventConstants.EVENT_OBJECT_CREATE, HINSTANCE.NULL, winEventHookCreate, 0, 0, User32.WINEVENT.WINEVENT_OUTOFCONTEXT | User32.WINEVENT.WINEVENT_SKIPOWNPROCESS);
         }
 
         public void setKeyboardHook(HWND hWND)
