@@ -36,8 +36,10 @@ The keyboard shortcuts configured are:
 | `mod1 + L`                | Swap focused window clockwise        |
 | `mod1 + J`                | Change focus counterclockwise        |
 | `mod1 + K`                | Change focus clockwise               |
-| `mod2 + J` and `mod2 + L` | Expand main pane                     |
-| `mod2 + K` and `mod2 + J` | Shrink main pane                     |
+| `mod2 + L`                | Expand main pane                     |
+| `mod2 + H`                | Shrink main pane                     |
+| `mod2 + K`                | Move window to next screen           |
+| `mod2 + J`                | Move window to previous screen       |
 
 ## Layouts
 
@@ -62,9 +64,9 @@ The default layout. This gives you one "main pane" on the left, and one other pa
 ### Wide
 The rotated version of tall.
 
-## Contacts
+## Contact
 
-Please contact me trough [twitter](https://twitter.com/glsorre) or [gitter](https://gitter.im/glsorre/amethystwindows).
+Please contact me trough [twitter](https://twitter.com/glsorre) or [gitter](https://gitter.im/glsorre/amethystwindows)
 
 ## License
 
