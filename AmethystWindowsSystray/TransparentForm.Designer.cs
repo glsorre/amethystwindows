@@ -37,37 +37,49 @@ namespace AmethystWindowsSystray
 
             if (m.Msg == (uint)User32.WindowMessage.WM_HOTKEY)
             {
-                if (m.WParam.ToInt32() == 0x20)
-                {
-                    AmethystSystrayHotKey.Invoke(this, 0x20);
-                }
-                if (m.WParam.ToInt32() == 0x0D)
-                {
-                    AmethystSystrayHotKey.Invoke(this, 0x0D);
-                }
-                if (m.WParam.ToInt32() == 0x48)
-                {
-                    AmethystSystrayHotKey.Invoke(this, 0x48);
-                }
-                if (m.WParam.ToInt32() == 0x4A)
-                {
-                    AmethystSystrayHotKey.Invoke(this, 0x4A);
-                }
-                if (m.WParam.ToInt32() == 0x4B)
-                {
-                    AmethystSystrayHotKey.Invoke(this, 0x4B);
-                }
-                if (m.WParam.ToInt32() == 0x4C)
-                {
-                    AmethystSystrayHotKey.Invoke(this, 0x4C);
-                }
-                if (m.WParam.ToInt32() == 0x0)
-                {
-                    AmethystSystrayHotKey.Invoke(this, 0x0);
-                }
                 if (m.WParam.ToInt32() == 0x1)
                 {
                     AmethystSystrayHotKey.Invoke(this, 0x1);
+                }
+                if (m.WParam.ToInt32() == 0x2)
+                {
+                    AmethystSystrayHotKey.Invoke(this, 0x2);
+                }
+                if (m.WParam.ToInt32() == 0x3)
+                {
+                    AmethystSystrayHotKey.Invoke(this, 0x3);
+                }
+                if (m.WParam.ToInt32() == 0x4)
+                {
+                    AmethystSystrayHotKey.Invoke(this, 0x4);
+                }
+                if (m.WParam.ToInt32() == 0x5)
+                {
+                    AmethystSystrayHotKey.Invoke(this, 0x5);
+                }
+                if (m.WParam.ToInt32() == 0x6)
+                {
+                    AmethystSystrayHotKey.Invoke(this, 0x6);
+                }
+                if (m.WParam.ToInt32() == 0x21)
+                {
+                    AmethystSystrayHotKey.Invoke(this, 0x21);
+                }
+                if (m.WParam.ToInt32() == 0x22)
+                {
+                    AmethystSystrayHotKey.Invoke(this, 0x22);
+                }
+                if (m.WParam.ToInt32() == 0x23)
+                {
+                    AmethystSystrayHotKey.Invoke(this, 0x23);
+                }
+                if (m.WParam.ToInt32() == 0x24)
+                {
+                    AmethystSystrayHotKey.Invoke(this, 0x24);
+                }
+                if (m.WParam.ToInt32() == 0x25)
+                {
+                    AmethystSystrayHotKey.Invoke(this, 0x25);
                 }
             }
 
