@@ -52,7 +52,7 @@ namespace AmethystWindowsSystray
             }
         }
 
-        private Layout RotateLayouts(Layout currentLayout)
+        private Layout RotateLayoutsClockwise(Layout currentLayout)
         {
             IEnumerable<Layout> values = Enum.GetValues(typeof(Layout)).Cast<Layout>();
             if (currentLayout == values.Max())
@@ -65,9 +65,27 @@ namespace AmethystWindowsSystray
             }
         }
 
-        public void RotateLayout(Pair<VirtualDesktop, HMONITOR> desktopMonitor)
+        private Layout RotateLayoutsCounterClockwise(Layout currentLayout)
         {
-            Layouts[desktopMonitor] = RotateLayouts(Layouts[desktopMonitor]);
+            IEnumerable<Layout> values = Enum.GetValues(typeof(Layout)).Cast<Layout>();
+            if (currentLayout == 0)
+            {
+                return Layout.Tall;
+            }
+            else
+            {
+                return --currentLayout;
+            }
+        }
+
+        public void RotateLayoutClockwise(Pair<VirtualDesktop, HMONITOR> desktopMonitor)
+        {
+            Layouts[desktopMonitor] = RotateLayoutsClockwise(Layouts[desktopMonitor]);
+        }
+
+        public void RotateLayoutCounterClockwise(Pair<VirtualDesktop, HMONITOR> desktopMonitor)
+        {
+            Layouts[desktopMonitor] = RotateLayoutsCounterClockwise(Layouts[desktopMonitor]);
         }
     }
 }

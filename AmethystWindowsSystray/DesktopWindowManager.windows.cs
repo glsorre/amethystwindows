@@ -199,5 +199,44 @@ namespace AmethystWindowsSystray
                 Windows[desktopMonitor].Move(currentIndex, --currentIndex);
             }
         }
+
+        public void MoveWindowNextScreen(DesktopWindow window)
+        {
+            List<Pair<VirtualDesktop, HMONITOR>> desktopMonitors = Windows.Keys.Where(dM => dM.Item1.ToString() == VirtualDesktop.Current.ToString()).ToList();
+            int currentMonitorIndex = desktopMonitors.IndexOf(window.GetDesktopMonitor());
+            int maxIndex = desktopMonitors.Count - 1;
+            if (currentMonitorIndex == maxIndex)
+            {
+                RemoveWindow(window);
+                window.MonitorHandle = desktopMonitors[0].Item2;
+                AddWindow(window);
+            }
+            else
+            {
+                RemoveWindow(window);
+                window.MonitorHandle = desktopMonitors[++currentMonitorIndex].Item2;
+                AddWindow(window);
+            }
+        }
+
+        public void MoveWindowPreviousScreen(DesktopWindow window)
+        {
+            List<Pair<VirtualDesktop, HMONITOR>> desktopMonitors = Windows.Keys.Where(dM => dM.Item1.ToString() == VirtualDesktop.Current.ToString()).ToList();
+            int currentMonitorIndex = desktopMonitors.IndexOf(window.GetDesktopMonitor());
+            int maxIndex = desktopMonitors.Count - 1;
+            Console.WriteLine(desktopMonitors.Count);
+            if (currentMonitorIndex == 0)
+            {
+                RemoveWindow(window);
+                window.MonitorHandle = desktopMonitors[maxIndex].Item2;
+                AddWindow(window);
+            }
+            else
+            {
+                RemoveWindow(window);
+                window.MonitorHandle = desktopMonitors[--currentMonitorIndex].Item2;
+                AddWindow(window);
+            }
+        }
     }
 }

@@ -23,6 +23,14 @@ namespace AmethystWindowsSystray
             DesktopWindowsManager = desktopWindowsManager;
         }
 
+        private async Task ManageShown(DesktopWindow desktopWindow)
+        {
+            await Task.Delay(100);
+            SystrayContext.Logger.Information($"window created");
+            desktopWindow.GetInfo();
+            DesktopWindowsManager.AddWindow(desktopWindow);
+        }
+
         public void setWindowsHook()
         {
             void WinEventHookAll(User32.HWINEVENTHOOK hWinEventHook, uint winEvent, HWND hwnd, int idObject, int idChild, uint idEventThread, uint dwmsEventTime)
@@ -33,9 +41,7 @@ namespace AmethystWindowsSystray
                     switch (winEvent)
                     {
                         case User32.EventConstants.EVENT_OBJECT_SHOW:
-                            SystrayContext.Logger.Information($"window shown");
-                            desktopWindow.GetInfo();
-                            DesktopWindowsManager.AddWindow(desktopWindow);
+                            ManageShown(desktopWindow);
                             break;
                         case User32.EventConstants.EVENT_SYSTEM_MINIMIZEEND:
                             SystrayContext.Logger.Information($"window maximized");
@@ -77,17 +83,18 @@ namespace AmethystWindowsSystray
 
         public void setKeyboardHook(HWND hWND)
         {
-            User32.RegisterHotKey(hWND, 0x20, User32.HotKeyModifiers.MOD_SHIFT | User32.HotKeyModifiers.MOD_ALT, 0x20);
-            User32.RegisterHotKey(hWND, 0x0D, User32.HotKeyModifiers.MOD_SHIFT | User32.HotKeyModifiers.MOD_ALT, 0x0D);
-            User32.RegisterHotKey(hWND, 0x48, User32.HotKeyModifiers.MOD_SHIFT | User32.HotKeyModifiers.MOD_ALT, 0x48);
-            User32.RegisterHotKey(hWND, 0x4A, User32.HotKeyModifiers.MOD_SHIFT | User32.HotKeyModifiers.MOD_ALT, 0x4A);
-            User32.RegisterHotKey(hWND, 0x4B, User32.HotKeyModifiers.MOD_SHIFT | User32.HotKeyModifiers.MOD_ALT, 0x4B);
-            User32.RegisterHotKey(hWND, 0x4C, User32.HotKeyModifiers.MOD_SHIFT | User32.HotKeyModifiers.MOD_ALT, 0x4C);
+            User32.RegisterHotKey(hWND, 0x1, User32.HotKeyModifiers.MOD_SHIFT | User32.HotKeyModifiers.MOD_ALT, 0x20); //space
+            User32.RegisterHotKey(hWND, 0x2, User32.HotKeyModifiers.MOD_SHIFT | User32.HotKeyModifiers.MOD_ALT, 0x0D); //enter
+            User32.RegisterHotKey(hWND, 0x3, User32.HotKeyModifiers.MOD_SHIFT | User32.HotKeyModifiers.MOD_ALT, 0x48); //H
+            User32.RegisterHotKey(hWND, 0x4, User32.HotKeyModifiers.MOD_SHIFT | User32.HotKeyModifiers.MOD_ALT, 0x4A); //J 
+            User32.RegisterHotKey(hWND, 0x5, User32.HotKeyModifiers.MOD_SHIFT | User32.HotKeyModifiers.MOD_ALT, 0x4B); //K
+            User32.RegisterHotKey(hWND, 0x6, User32.HotKeyModifiers.MOD_SHIFT | User32.HotKeyModifiers.MOD_ALT, 0x4C); //L
 
-            User32.RegisterHotKey(hWND, 0x0, User32.HotKeyModifiers.MOD_SHIFT | User32.HotKeyModifiers.MOD_ALT | User32.HotKeyModifiers.MOD_WIN, 0x48);
-            User32.RegisterHotKey(hWND, 0x1, User32.HotKeyModifiers.MOD_SHIFT | User32.HotKeyModifiers.MOD_ALT | User32.HotKeyModifiers.MOD_WIN, 0x4C);
-            User32.RegisterHotKey(hWND, 0x0, User32.HotKeyModifiers.MOD_SHIFT | User32.HotKeyModifiers.MOD_ALT | User32.HotKeyModifiers.MOD_WIN, 0x4A);
-            User32.RegisterHotKey(hWND, 0x1, User32.HotKeyModifiers.MOD_SHIFT | User32.HotKeyModifiers.MOD_ALT | User32.HotKeyModifiers.MOD_WIN, 0x4B);
+            User32.RegisterHotKey(hWND, 0x21, User32.HotKeyModifiers.MOD_SHIFT | User32.HotKeyModifiers.MOD_ALT | User32.HotKeyModifiers.MOD_WIN, 0x20); //space
+            User32.RegisterHotKey(hWND, 0x22, User32.HotKeyModifiers.MOD_SHIFT | User32.HotKeyModifiers.MOD_ALT | User32.HotKeyModifiers.MOD_WIN, 0x48); //H
+            User32.RegisterHotKey(hWND, 0x23, User32.HotKeyModifiers.MOD_SHIFT | User32.HotKeyModifiers.MOD_ALT | User32.HotKeyModifiers.MOD_WIN, 0x4C); //L
+            User32.RegisterHotKey(hWND, 0x24, User32.HotKeyModifiers.MOD_SHIFT | User32.HotKeyModifiers.MOD_ALT | User32.HotKeyModifiers.MOD_WIN, 0x4A); //J
+            User32.RegisterHotKey(hWND, 0x25, User32.HotKeyModifiers.MOD_SHIFT | User32.HotKeyModifiers.MOD_ALT | User32.HotKeyModifiers.MOD_WIN, 0x4B); //K
         }
     }
 }
