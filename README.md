@@ -40,6 +40,9 @@ The keyboard shortcuts configured are:
 | `mod2 + H`                | Shrink main pane                     |
 | `mod2 + K`                | Move window to next screen           |
 | `mod2 + J`                | Move window to previous screen       |
+| `mod1 + Z`                | Force windows to be revalutated      |
+| `mod2 + left `            | Throw focused window to space left   |
+| `mod2 + right`            | Throw focused window to space right  |
 
 ## Layouts
 

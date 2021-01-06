@@ -238,5 +238,29 @@ namespace AmethystWindowsSystray
                 AddWindow(window);
             }
         }
+
+        public void MoveWindowNextVirtualDesktop(DesktopWindow window)
+        {
+            VirtualDesktop nextVirtualDesktop = window.VirtualDesktop.Right;
+            if (nextVirtualDesktop == null) nextVirtualDesktop = VirtualDesktop.Create();
+            RemoveWindow(window);
+            nextVirtualDesktop.MoveWindow(window.Window);
+            window.VirtualDesktop = nextVirtualDesktop;
+            AddWindow(window);
+            nextVirtualDesktop.MakeVisible();
+        }
+
+        public void MoveWindowPreviousVirtualDesktop(DesktopWindow window)
+        {
+            VirtualDesktop nextVirtualDesktop = window.VirtualDesktop.Left;
+            if (nextVirtualDesktop != null)
+            {
+                RemoveWindow(window);
+                nextVirtualDesktop.MoveWindow(window.Window);
+                window.VirtualDesktop = nextVirtualDesktop;
+                AddWindow(window);
+                nextVirtualDesktop.MakeVisible();
+            } 
+        }
     }
 }

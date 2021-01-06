@@ -97,6 +97,8 @@ namespace AmethystWindowsSystray
             User32.RegisterHotKey(hWND, 0x23, User32.HotKeyModifiers.MOD_SHIFT | User32.HotKeyModifiers.MOD_ALT | User32.HotKeyModifiers.MOD_WIN, 0x4C); //L
             User32.RegisterHotKey(hWND, 0x24, User32.HotKeyModifiers.MOD_SHIFT | User32.HotKeyModifiers.MOD_ALT | User32.HotKeyModifiers.MOD_WIN, 0x4A); //J
             User32.RegisterHotKey(hWND, 0x25, User32.HotKeyModifiers.MOD_SHIFT | User32.HotKeyModifiers.MOD_ALT | User32.HotKeyModifiers.MOD_WIN, 0x4B); //K
+            User32.RegisterHotKey(hWND, 0x26, User32.HotKeyModifiers.MOD_SHIFT | User32.HotKeyModifiers.MOD_ALT | User32.HotKeyModifiers.MOD_WIN, 0x27); //right
+            User32.RegisterHotKey(hWND, 0x27, User32.HotKeyModifiers.MOD_SHIFT | User32.HotKeyModifiers.MOD_ALT | User32.HotKeyModifiers.MOD_WIN, 0x25); //left
         }
     }
 }
