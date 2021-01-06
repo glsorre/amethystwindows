@@ -221,6 +221,10 @@ namespace AmethystWindowsSystray
                 DWM.MoveWindowCounterClockwise(currentPair, selected);
                 DWM.Draw(currentPair);
             }
+            if (e == 0x7) //z
+            {
+                DWM.Draw();
+            }
             if (e == 0x22) //h
             {
                 debounceDispatcher.Debounce(() =>

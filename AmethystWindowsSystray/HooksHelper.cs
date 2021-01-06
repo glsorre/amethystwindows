@@ -51,8 +51,9 @@ namespace AmethystWindowsSystray
                         case User32.EventConstants.EVENT_SYSTEM_MINIMIZESTART:
                         case User32.EventConstants.EVENT_OBJECT_HIDE:
                             SystrayContext.Logger.Information($"window minimized/hide");
-                            HMONITOR removedMonitorHandle = User32.MonitorFromWindow(hwnd, User32.MonitorFlags.MONITOR_DEFAULTTONEAREST);
-                            DesktopWindow remove = DesktopWindowsManager.GetWindowByHandlers(hwnd, removedMonitorHandle, VirtualDesktop.Current);
+                            HMONITOR monitorHandle = User32.MonitorFromWindow(hwnd, User32.MonitorFlags.MONITOR_DEFAULTTONEAREST);
+                            VirtualDesktop virtualDesktop = VirtualDesktop.FromHwnd(hwnd);
+                            DesktopWindow remove = DesktopWindowsManager.GetWindowByHandlers(hwnd, monitorHandle, virtualDesktop);
                             if (remove != null)DesktopWindowsManager.RemoveWindow(remove);
                             break;
                         case User32.EventConstants.EVENT_SYSTEM_MOVESIZEEND:
@@ -89,6 +90,7 @@ namespace AmethystWindowsSystray
             User32.RegisterHotKey(hWND, 0x4, User32.HotKeyModifiers.MOD_SHIFT | User32.HotKeyModifiers.MOD_ALT, 0x4A); //J 
             User32.RegisterHotKey(hWND, 0x5, User32.HotKeyModifiers.MOD_SHIFT | User32.HotKeyModifiers.MOD_ALT, 0x4B); //K
             User32.RegisterHotKey(hWND, 0x6, User32.HotKeyModifiers.MOD_SHIFT | User32.HotKeyModifiers.MOD_ALT, 0x4C); //L
+            User32.RegisterHotKey(hWND, 0x7, User32.HotKeyModifiers.MOD_SHIFT | User32.HotKeyModifiers.MOD_ALT, 0x5A); //Z
 
             User32.RegisterHotKey(hWND, 0x21, User32.HotKeyModifiers.MOD_SHIFT | User32.HotKeyModifiers.MOD_ALT | User32.HotKeyModifiers.MOD_WIN, 0x20); //space
             User32.RegisterHotKey(hWND, 0x22, User32.HotKeyModifiers.MOD_SHIFT | User32.HotKeyModifiers.MOD_ALT | User32.HotKeyModifiers.MOD_WIN, 0x48); //H
