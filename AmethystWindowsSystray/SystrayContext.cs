@@ -223,6 +223,8 @@ namespace AmethystWindowsSystray
             }
             if (e == 0x7) //z
             {
+                DWM.ClearWindows();
+                DWM.GetWindows();
                 DWM.Draw();
             }
             if (e == 0x22) //h
@@ -267,6 +269,20 @@ namespace AmethystWindowsSystray
                 DWM.RotateLayoutCounterClockwise(currentPair);
                 DWM.Draw(currentPair);
                 DWM.SaveLayouts();
+            }
+            if (e == 0x26) //right
+            {
+                HWND selectedWindow = User32.GetForegroundWindow();
+                DesktopWindow selected = DWM.FindWindow(selectedWindow);
+                DWM.MoveWindowPreviousVirtualDesktop(selected);
+                DWM.Draw();
+            }
+            if (e == 0x27) //right
+            {
+                HWND selectedWindow = User32.GetForegroundWindow();
+                DesktopWindow selected = DWM.FindWindow(selectedWindow);
+                DWM.MoveWindowPreviousVirtualDesktop(selected);
+                DWM.Draw();
             }
         }
 
