@@ -48,7 +48,7 @@ namespace AmethystWindowsSystray
 
         public void RemoveWindow(DesktopWindow desktopWindow)
         {
-            Windows[new Pair<VirtualDesktop, HMONITOR>(desktopWindow.VirtualDesktop, desktopWindow.MonitorHandle)].Remove(desktopWindow);
+            Windows[desktopWindow.GetDesktopMonitor()].Remove(desktopWindow);
         }
 
         public void RepositionWindow(DesktopWindow oldDesktopWindow, DesktopWindow newDesktopWindow)
