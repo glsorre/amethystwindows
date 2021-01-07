@@ -241,26 +241,47 @@ namespace AmethystWindowsSystray
 
         public void MoveWindowNextVirtualDesktop(DesktopWindow window)
         {
+            Console.WriteLine("next");
             VirtualDesktop nextVirtualDesktop = window.VirtualDesktop.Right;
-            if (nextVirtualDesktop == null) nextVirtualDesktop = VirtualDesktop.Create();
-            RemoveWindow(window);
-            nextVirtualDesktop.MoveWindow(window.Window);
-            window.VirtualDesktop = nextVirtualDesktop;
-            AddWindow(window);
-            nextVirtualDesktop.MakeVisible();
-        }
-
-        public void MoveWindowPreviousVirtualDesktop(DesktopWindow window)
-        {
-            VirtualDesktop nextVirtualDesktop = window.VirtualDesktop.Left;
             if (nextVirtualDesktop != null)
             {
+                Console.WriteLine("ci sono");
                 RemoveWindow(window);
                 nextVirtualDesktop.MoveWindow(window.Window);
                 window.VirtualDesktop = nextVirtualDesktop;
                 AddWindow(window);
                 nextVirtualDesktop.MakeVisible();
-            } 
+            }
+        }
+
+        public void MoveWindowPreviousVirtualDesktop(DesktopWindow window)
+        {
+            Console.WriteLine("prev");
+            VirtualDesktop nextVirtualDesktop = window.VirtualDesktop.Left;
+            if (nextVirtualDesktop != null) 
+            {
+                Console.WriteLine("ci sono");
+                RemoveWindow(window);
+                nextVirtualDesktop.MoveWindow(window.Window);
+                window.VirtualDesktop = nextVirtualDesktop;
+                AddWindow(window);
+                nextVirtualDesktop.MakeVisible();
+            }
+        }
+
+        public void MoveWindowSpecificVirtualDesktop(DesktopWindow window, int id)
+        {
+            Console.WriteLine("prev");
+            VirtualDesktop nextVirtualDesktop = VirtualDesktop.FromIndex(id);
+            if (nextVirtualDesktop != null)
+            {
+                Console.WriteLine("ci sono");
+                RemoveWindow(window);
+                nextVirtualDesktop.MoveWindow(window.Window);
+                window.VirtualDesktop = nextVirtualDesktop;
+                AddWindow(window);
+                nextVirtualDesktop.MakeVisible();
+            }
         }
     }
 }
