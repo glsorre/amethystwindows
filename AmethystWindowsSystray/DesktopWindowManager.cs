@@ -28,7 +28,8 @@ namespace AmethystWindowsSystray
         private readonly string[] FixedFilters = new string[] {
             "Amethyst Windows",
             "AmethystWindowsPackaging",
-            "Task Manager" };
+            "Task Manager",
+            "Cortana" };
         public List<Pair<string, string>> ConfigurableFilters = new List<Pair<string, string>>();
 
         private int padding;

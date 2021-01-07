@@ -75,8 +75,20 @@ namespace AmethystWindowsSystray
             DWM.Draw();
             
             Logger.Information($"setting virtual desktop change listener");
-            var prova = VirtualDesktop.RegisterListener();
+            IDisposable listener = VirtualDesktop.RegisterListener();
             VirtualDesktop.CurrentChanged += VirtualDesktop_CurrentChanged;
+
+            Logger.Information($"setting virtual desktops");
+            int virtualDesktopsExisting = VirtualDesktop.Count;
+            int virtualDesktopsToCreate = Properties.Settings.Default.VirtualDesktops - virtualDesktopsExisting;
+
+            if (virtualDesktopsExisting < Properties.Settings.Default.VirtualDesktops)
+            {
+                for (int i = 1; i <= virtualDesktopsToCreate; i++)
+                {
+                    VirtualDesktop.Create();
+                }
+            }
 
             Logger.Information($"refreshing UWP");
             App_Refresh();
@@ -167,7 +179,7 @@ namespace AmethystWindowsSystray
 
         private void Form_AmethystSystrayHotKey(object sender, int e)
         {
-            if (e == 0x1) //space bar
+            if (e == 0x11) //space bar
             {
                 HMONITOR currentMonitor = User32.MonitorFromPoint(Control.MousePosition, User32.MonitorFlags.MONITOR_DEFAULTTONEAREST);
                 VirtualDesktop currentDesktop = VirtualDesktop.Current;
@@ -176,7 +188,7 @@ namespace AmethystWindowsSystray
                 DWM.Draw(currentPair);
                 DWM.SaveLayouts();
             }
-            if (e == 0x2) //enter
+            if (e == 0x12) //enter
             {
                 HWND selectedWindow = User32.GetForegroundWindow();
                 HMONITOR currentMonitor = User32.MonitorFromWindow(selectedWindow, User32.MonitorFlags.MONITOR_DEFAULTTONEAREST);
@@ -185,7 +197,7 @@ namespace AmethystWindowsSystray
                 DWM.SetMainWindow(currentPair, selected);
                 DWM.Draw(currentPair);
             }
-            if (e == 0x5) // j
+            if (e == 0x15) // j
             {
                 HWND selectedWindow = User32.GetForegroundWindow();
                 HMONITOR currentMonitor = User32.MonitorFromWindow(selectedWindow, User32.MonitorFlags.MONITOR_DEFAULTTONEAREST);
@@ -194,7 +206,7 @@ namespace AmethystWindowsSystray
                 DWM.RotateFocusedWindowClockwise(currentPair, selected);
                 DWM.Draw(currentPair);
             }
-            if (e == 0x4) // k
+            if (e == 0x14) // k
             {
                 HWND selectedWindow = User32.GetForegroundWindow();
                 HMONITOR currentMonitor = User32.MonitorFromWindow(selectedWindow, User32.MonitorFlags.MONITOR_DEFAULTTONEAREST);
@@ -203,7 +215,7 @@ namespace AmethystWindowsSystray
                 DWM.RotateFocusedWindowCounterClockwise(currentPair, selected);
                 DWM.Draw(currentPair);
             }
-            if (e == 0x3) // l
+            if (e == 0x13) // l
             {
                 HWND selectedWindow = User32.GetForegroundWindow();
                 HMONITOR currentMonitor = User32.MonitorFromWindow(selectedWindow, User32.MonitorFlags.MONITOR_DEFAULTTONEAREST);
@@ -212,7 +224,7 @@ namespace AmethystWindowsSystray
                 DWM.MoveWindowClockwise(currentPair, selected);
                 DWM.Draw(currentPair);
             }
-            if (e == 0x6) //h
+            if (e == 0x16) //h
             {
                 HWND selectedWindow = User32.GetForegroundWindow();
                 HMONITOR currentMonitor = User32.MonitorFromWindow(selectedWindow, User32.MonitorFlags.MONITOR_DEFAULTTONEAREST);
@@ -221,11 +233,20 @@ namespace AmethystWindowsSystray
                 DWM.MoveWindowCounterClockwise(currentPair, selected);
                 DWM.Draw(currentPair);
             }
-            if (e == 0x7) //z
+            if (e == 0x17) //z
             {
                 DWM.ClearWindows();
                 DWM.GetWindows();
                 DWM.Draw();
+            }
+            if (e == 0x21) //space bar
+            {
+                HMONITOR currentMonitor = User32.MonitorFromPoint(Control.MousePosition, User32.MonitorFlags.MONITOR_DEFAULTTONEAREST);
+                VirtualDesktop currentDesktop = VirtualDesktop.Current;
+                Pair<VirtualDesktop, HMONITOR> currentPair = new Pair<VirtualDesktop, HMONITOR>(currentDesktop, currentMonitor);
+                DWM.RotateLayoutCounterClockwise(currentPair);
+                DWM.Draw(currentPair);
+                DWM.SaveLayouts();
             }
             if (e == 0x22) //h
             {
@@ -272,17 +293,33 @@ namespace AmethystWindowsSystray
             }
             if (e == 0x26) //right
             {
-                HWND selectedWindow = User32.GetForegroundWindow();
-                DesktopWindow selected = DWM.FindWindow(selectedWindow);
-                DWM.MoveWindowPreviousVirtualDesktop(selected);
-                DWM.Draw();
+                debounceDispatcher.Debounce(() =>
+                {
+                    HWND selectedWindow = User32.GetForegroundWindow();
+                    DesktopWindow selected = DWM.FindWindow(selectedWindow);
+                    DWM.MoveWindowNextVirtualDesktop(selected);
+                    DWM.Draw();
+                });
             }
             if (e == 0x27) //right
             {
-                HWND selectedWindow = User32.GetForegroundWindow();
-                DesktopWindow selected = DWM.FindWindow(selectedWindow);
-                DWM.MoveWindowPreviousVirtualDesktop(selected);
-                DWM.Draw();
+                debounceDispatcher.Debounce(() =>
+                {
+                    HWND selectedWindow = User32.GetForegroundWindow();
+                    DesktopWindow selected = DWM.FindWindow(selectedWindow);
+                    DWM.MoveWindowPreviousVirtualDesktop(selected);
+                    DWM.Draw();
+                });
+            }
+            if (e == 0x1 || e == 0x2 || e == 0x3 || e == 0x4 || e == 0x5) //1,2,3,4,5
+            {
+                debounceDispatcher.Debounce(() =>
+                {
+                    HWND selectedWindow = User32.GetForegroundWindow();
+                    DesktopWindow selected = DWM.FindWindow(selectedWindow);
+                    DWM.MoveWindowSpecificVirtualDesktop(selected, e - 1);
+                    DWM.Draw();
+                });
             }
         }
 

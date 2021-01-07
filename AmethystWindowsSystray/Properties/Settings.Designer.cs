@@ -70,5 +70,17 @@ namespace AmethystWindowsSystray.Properties {
                 this["Step"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("5")]
+        public int VirtualDesktops {
+            get {
+                return ((int)(this["VirtualDesktops"]));
+            }
+            set {
+                this["VirtualDesktops"] = value;
+            }
+        }
     }
 }
