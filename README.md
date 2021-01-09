@@ -30,7 +30,8 @@ The keyboard shortcuts configured are:
 
 | Shortcut                  | Description                          |
 |---------------------------|--------------------------------------|
-| `mod1 + space`            | Rotate layouts                       |
+| `mod1 + space`            | Rotate layouts clockwise             |
+| `mod2 + space`            | Rotate layouts counterclockwise      |
 | `mod1 + enter`            | Swap focused window to main window   |
 | `mod1 + H`                | Swap focused window counterclockwise |
 | `mod1 + L`                | Swap focused window clockwise        |
@@ -41,9 +42,9 @@ The keyboard shortcuts configured are:
 | `mod2 + K`                | Move window to next screen           |
 | `mod2 + J`                | Move window to previous screen       |
 | `mod1 + Z`                | Force windows to be revalutated      |
-| `mod2 + left `            | Throw focused window to space left   |
+| `mod2 + left`             | Throw focused window to space left   |
 | `mod2 + right`            | Throw focused window to space right  |
-| `mod2 + 1` to `mod2 + 5`  | Throw focused window to space 1-5    |
+| `mod2 + 1` to `mod2 + 5`  | Throw focused window to space 1 to 5 |
 
 ## Layouts
 
@@ -62,11 +63,11 @@ This layout places the windows in grid occuping space in vertical when necessary
 ### Monocle
 In this layout, the currently focused window takes up the entire screen, and the other windows are not visible at all.
 
-### Tall
-The default layout. This gives you one "main pane" on the left, and one other pane on the right. The main window is placed in the main pane (extending the full height of the screen), and all remaining windows are placed in the other pane. The main pane can be shrinked/expanded.
-
 ### Wide
 The rotated version of tall.
+
+### Tall
+The default layout. This gives you one "main pane" on the left, and one other pane on the right. The main window is placed in the main pane (extending the full height of the screen), and all remaining windows are placed in the other pane. The main pane can be shrinked/expanded.
 
 ## Contact
 
