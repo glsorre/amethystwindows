@@ -23,11 +23,16 @@ namespace AmethystWindowsSystray
             DesktopWindowsManager = desktopWindowsManager;
         }
 
-        private async Task ManageShown(DesktopWindow desktopWindow)
+        private async Task ManageShown(HWND hWND)
         {
-            await Task.Delay(100);
+            await Task.Delay(200);
+            DesktopWindow desktopWindow = new DesktopWindow(hWND);
             desktopWindow.GetInfo();
-            if (desktopWindow.isPresent() || desktopWindow.IsUWP)
+            if ((User32.IsWindowVisible(hWND) &&
+                !User32.IsIconic(hWND) &&
+                desktopWindow.IsAltTabWindow() &&
+                desktopWindow.Info.dwExStyle.HasFlag(User32.WindowStylesEx.WS_EX_WINDOWEDGE)) ||
+                desktopWindow.IsUWP)
             {
                 SystrayContext.Logger.Information($"window created");
                 DesktopWindowsManager.AddWindow(desktopWindow);
@@ -44,7 +49,7 @@ namespace AmethystWindowsSystray
                     switch (winEvent)
                     {
                         case User32.EventConstants.EVENT_OBJECT_SHOW:
-                            ManageShown(desktopWindow);
+                            ManageShown(hwnd);
                             break;
                         case User32.EventConstants.EVENT_SYSTEM_MINIMIZEEND:
                             SystrayContext.Logger.Information($"window maximized");
