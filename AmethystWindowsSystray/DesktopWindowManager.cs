@@ -29,7 +29,9 @@ namespace AmethystWindowsSystray
             "Amethyst Windows",
             "AmethystWindowsPackaging",
             "Task Manager",
-            "Cortana" };
+            "Cortana",
+            "Microsoft Spy++ - [Windows 1]"
+        };
         public List<Pair<string, string>> ConfigurableFilters = new List<Pair<string, string>>();
 
         private int padding;
