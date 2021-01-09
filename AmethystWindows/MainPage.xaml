@@ -6,18 +6,19 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <StackPanel Orientation="Vertical" >
-        <CommandBar>
+    <controls:DockPanel LastChildFill="True">
+        <CommandBar controls:DockPanel.Dock="Top">
             <AppBarButton x:Name="RefreshButton" Icon="Refresh" Label="Refresh"/>
             <AppBarButton x:Name="RedrawButton" Icon="Sync" Label="Redraw"/>
             <AppBarSeparator/>
             <local:AppBarLockableToggleButton LockToggle="True" x:Name="ApplicationsBarButton" Icon="List" Label="Home"/>
             <local:AppBarLockableToggleButton LockToggle="True" x:Name="SettingsBarButton" Icon="Setting" Label="Settings"/>
         </CommandBar>
-        <Grid x:Name="DesktopWindowsListHeaders" HorizontalAlignment="Stretch" VerticalAlignment="Top" Padding="20">
+        <Grid controls:DockPanel.Dock="Top" x:Name="DesktopWindowsListHeaders" HorizontalAlignment="Stretch" VerticalAlignment="Top" Padding="20">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
@@ -31,7 +32,7 @@
             <TextBlock Grid.Column="3" Style="{ThemeResource TitleTextBlockStyle}" Text="Monitor" />
             <TextBlock Grid.Column="4" Style="{ThemeResource TitleTextBlockStyle}" Text="Actions" />
         </Grid>
-        <ScrollViewer Height="Auto" MinHeight="100" MaxHeight="500">
+        <ScrollViewer controls:DockPanel.Dock="Top">
             <ListView x:Name="DesktopWindowsList" ItemsSource="{Binding DesktopWindows}">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
@@ -67,5 +68,5 @@
                 </ListView.ItemTemplate>
             </ListView>
         </ScrollViewer>
-    </StackPanel>
+    </controls:DockPanel>
 </Page>

@@ -6,15 +6,16 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <StackPanel Orientation="Vertical">
-        <CommandBar>
+    <controls:DockPanel LastChildFill="True">
+        <CommandBar controls:DockPanel.Dock="Top">
             <local:AppBarLockableToggleButton LockToggle="True" x:Name="ApplicationsBarButton" Icon="List" Label="Home"/>
             <local:AppBarLockableToggleButton LockToggle="True" x:Name="SettingsBarButton" Icon="Setting" Label="About"/>
         </CommandBar>
-        <StackPanel Orientation="Horizontal" Padding="10 10 0 10">
+        <StackPanel controls:DockPanel.Dock="Top" Orientation="Horizontal" Padding="10 10 0 10">
             <Border BorderBrush="{x:Null}" Padding="10">
                 <TextBlock Text="Padding" VerticalAlignment="Center"/>
             </Border>
@@ -29,13 +30,13 @@
                 Padding="10">
             </muxc:NumberBox >
         </StackPanel>
-        <StackPanel Orientation="Vertical" Padding="10 10 0 10" Height="Auto">
+        <StackPanel controls:DockPanel.Dock="Top" Orientation="Vertical" Padding="10 10 0 10" Height="Auto">
             <StackPanel Orientation="Horizontal">
                 <Border BorderBrush="{x:Null}" Padding="10">
                     <TextBlock Text="Filters" VerticalAlignment="Center"/>
                 </Border>
             </StackPanel>
-            <StackPanel Orientation="Vertical" Height="Auto">
+            <StackPanel Orientation="Vertical">
                 <Grid x:Name="FiltersListHeaders" HorizontalAlignment="Stretch" VerticalAlignment="Top" Padding="20">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -46,7 +47,7 @@
                     <TextBlock Grid.Column="1" Style="{ThemeResource BaseTextBlockStyle}" Text="Class Name" />
                     <TextBlock Grid.Column="2" Style="{ThemeResource BaseTextBlockStyle}" Text="Actions" />
                 </Grid>
-                <ScrollViewer Height="Auto" MinHeight="100" MaxHeight="500">
+                <ScrollViewer Height="Auto">
                     <ListView x:Name="FilterList" ItemsSource="{Binding Filters}" Height="Auto">
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem">
@@ -73,5 +74,5 @@
                 </ScrollViewer>
             </StackPanel>
         </StackPanel>
-    </StackPanel>
+    </controls:DockPanel>
 </Page>
