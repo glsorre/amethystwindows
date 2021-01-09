@@ -26,9 +26,12 @@ namespace AmethystWindowsSystray
         private async Task ManageShown(DesktopWindow desktopWindow)
         {
             await Task.Delay(100);
-            SystrayContext.Logger.Information($"window created");
             desktopWindow.GetInfo();
-            DesktopWindowsManager.AddWindow(desktopWindow);
+            if (desktopWindow.isPresent())
+            {
+                SystrayContext.Logger.Information($"window created");
+                DesktopWindowsManager.AddWindow(desktopWindow);
+            }
         }
 
         public void setWindowsHook()

@@ -116,16 +116,7 @@ namespace AmethystWindowsSystray
                 gridGenerator.ToArray()[w.Item1].Item4
                 ));
 
-            //Prepare the WINDOWPLACEMENT structure.
-            User32.WINDOWPLACEMENT placement = new User32.WINDOWPLACEMENT();
-            placement.length = (uint)Marshal.SizeOf(placement);
-
-            //Get the window's current placement.
-            User32.GetWindowPlacement(w.Item2.Window, ref placement);
-            placement.showCmd = ShowWindowCommand.SW_RESTORE;
-
-            //Perform the action.
-            User32.SetWindowPlacement(w.Item2.Window, ref placement);
+            User32.ShowWindow(w.Item2.Window, ShowWindowCommand.SW_RESTORE);
 
             User32.DeferWindowPos(
                 hDWP,
