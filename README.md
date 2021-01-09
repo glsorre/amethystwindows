@@ -13,7 +13,7 @@ Amethyst Windows is available for direct download as appxbundle on the [release 
 ## Key Features
 
 - doesn't use DLL injection to manipulate windows
-- supports windows 10 virtual desktops
+- integrated with windows 10 virtual desktops
 - fast and light
 
 ## Keyboard Shortcut
