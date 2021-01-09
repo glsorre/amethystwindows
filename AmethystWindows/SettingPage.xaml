@@ -47,8 +47,8 @@
                     <TextBlock Grid.Column="1" Style="{ThemeResource BaseTextBlockStyle}" Text="Class Name" />
                     <TextBlock Grid.Column="2" Style="{ThemeResource BaseTextBlockStyle}" Text="Actions" />
                 </Grid>
-                <ScrollViewer Height="Auto">
-                    <ListView x:Name="FilterList" ItemsSource="{Binding Filters}" Height="Auto">
+                <ScrollViewer>
+                    <ListView x:Name="FilterList" ItemsSource="{Binding Filters}">
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem">
                                 <Setter Property="HorizontalContentAlignment" Value="Stretch"/>

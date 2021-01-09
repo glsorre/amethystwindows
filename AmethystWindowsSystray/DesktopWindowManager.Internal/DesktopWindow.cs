@@ -63,7 +63,7 @@ namespace DesktopWindowManager.Internal
             return CloakedVal != 0 ? true : false;
         }
 
-        private bool IsAltTabWindow()
+        public bool IsAltTabWindow()
         {
             if (Info.dwExStyle.HasFlag(User32.WindowStylesEx.WS_EX_TOOLWINDOW)) return false;
 
