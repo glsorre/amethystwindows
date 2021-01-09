@@ -27,7 +27,7 @@ namespace AmethystWindowsSystray
         {
             await Task.Delay(100);
             desktopWindow.GetInfo();
-            if (desktopWindow.isPresent())
+            if (desktopWindow.isPresent() || desktopWindow.IsUWP)
             {
                 SystrayContext.Logger.Information($"window created");
                 DesktopWindowsManager.AddWindow(desktopWindow);

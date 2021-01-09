@@ -20,6 +20,7 @@ namespace DesktopWindowManager.Internal
         public string AppName { get; set; }
         public RECT Borders;
         public string ClassName { get; set; }
+        public Boolean IsUWP { get; set; }
 
         private static readonly string[] WindowsClassNamesToSkip =
         {
@@ -33,6 +34,7 @@ namespace DesktopWindowManager.Internal
         public DesktopWindow(HWND window)
         {
             Window = window;
+            IsUWP = false;
             GetWindowInfo();
         }
 
@@ -41,7 +43,8 @@ namespace DesktopWindowManager.Internal
             return User32.IsWindowVisible(Window) &&
                 !User32.IsIconic(Window) &&
                 !IsBackgroundAppWindow() &&
-                IsAltTabWindow();
+                IsAltTabWindow() &&
+                Info.dwExStyle.HasFlag(User32.WindowStylesEx.WS_EX_WINDOWEDGE);
         }
 
         public bool isRuntimeValuable()
@@ -123,6 +126,12 @@ namespace DesktopWindowManager.Internal
             StringBuilder stringBuilder = new StringBuilder((int)capacity);
             User32.GetClassName(Window, stringBuilder, (int)capacity);
             ClassName = stringBuilder.ToString();
+            switch (ClassName)
+            {
+                case "ApplicationFrameWindow":
+                    IsUWP = true;
+                    break;
+            }
         }
 
         public void GetAppName()
