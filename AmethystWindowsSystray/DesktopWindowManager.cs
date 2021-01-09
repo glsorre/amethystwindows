@@ -30,7 +30,6 @@ namespace AmethystWindowsSystray
             "AmethystWindowsPackaging",
             "Cortana",
             "Microsoft Spy++",
-            "Microsoft Spy++ - [Windows 1]",
             "Task Manager"
         };
         public List<Pair<string, string>> ConfigurableFilters = new List<Pair<string, string>>();
