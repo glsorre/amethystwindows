@@ -1,4 +1,4 @@
-![hero image](_assets/heroImage.png)
+![hero image](https://cdn.jsdelivr.net/gh/glsorre/amethystwindows@master/_assets/heroImage.png)
 
 Tiling window manager for Windows 10 along the lines of [xmonad](https://xmonad.org/) and [Amethyst](https://ianyh.com/amethyst/).
 
