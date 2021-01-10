@@ -13,6 +13,31 @@
     {% endif %}
     <meta charset="UTF-8">
 
+    <style>
+      .p_large {
+        font-size: 23px;
+        line-height: 34.5px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+      }
+
+      .button_large {
+        font-size: 17px;
+        padding: 12px;
+      }
+
+      .bg {
+        background: #ddd;
+        padding: 20px;
+        text-align: center;
+        margin-bottom: 15px
+      }
+
+      .spaced {
+        margin-bottom: 80px;
+      }
+    </style>
+
 {% seo %}
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#157878">
@@ -21,7 +46,7 @@
   </head>
   <body>
     <div class="grid">
-      <div class="unit whole spaced">
+      <div class="unit whole">
         <header class="page-header" role="banner">
           <h1 class="project-name">{{ page.title | default: site.title | default: site.github.repository_name }}
             <small>
