@@ -28,12 +28,7 @@ namespace AmethystWindowsSystray
             await Task.Delay(200);
             DesktopWindow desktopWindow = new DesktopWindow(hWND);
             desktopWindow.GetInfo();
-            if ((User32.IsWindowVisible(hWND) &&
-                !User32.IsIconic(hWND) &&
-                desktopWindow.IsAltTabWindow() &&
-                desktopWindow.Info.dwExStyle.HasFlag(User32.WindowStylesEx.WS_EX_WINDOWEDGE) &&
-                !desktopWindow.Info.dwStyle.HasFlag(User32.WindowStyles.WS_POPUP)) ||
-                desktopWindow.IsUWP)
+            if (desktopWindow.IsRuntimePresent())
             {
                 SystrayContext.Logger.Information($"window created");
                 DesktopWindowsManager.AddWindow(desktopWindow);
@@ -45,7 +40,7 @@ namespace AmethystWindowsSystray
             void WinEventHookAll(User32.HWINEVENTHOOK hWinEventHook, uint winEvent, HWND hwnd, int idObject, int idChild, uint idEventThread, uint dwmsEventTime)
             {
                 DesktopWindow desktopWindow = new DesktopWindow(hwnd);
-                if (hwnd != HWND.NULL && idObject == User32.ObjectIdentifiers.OBJID_WINDOW && idChild == 0 && desktopWindow.isRuntimeValuable())
+                if (hwnd != HWND.NULL && idObject == User32.ObjectIdentifiers.OBJID_WINDOW && idChild == 0 && desktopWindow.IsRuntimeValuable())
                 {
                     switch (winEvent)
                     {

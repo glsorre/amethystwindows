@@ -71,7 +71,7 @@ namespace AmethystWindowsSystray
             {
                 DesktopWindow desktopWindow = new DesktopWindow(windowHandle);
 
-                if (desktopWindow.isPresent())
+                if (desktopWindow.IsPresent())
                 {
                     desktopWindow.GetAppName();
                     desktopWindow.GetClassName();

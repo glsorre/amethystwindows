@@ -116,7 +116,7 @@ namespace AmethystWindowsSystray
                 gridGenerator.ToArray()[w.Item1].Item4
                 ));
 
-            User32.ShowWindow(w.Item2.Window, ShowWindowCommand.SW_RESTORE);
+            User32.ShowWindow(w.Item2.Window, ShowWindowCommand.SW_NORMAL);
 
             User32.DeferWindowPos(
                 hDWP,
