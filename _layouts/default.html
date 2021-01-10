@@ -14,13 +14,6 @@
     <meta charset="UTF-8">
 
     <style>
-      .p_large {
-        font-size: 23px;
-        line-height: 34.5px;
-        margin-top: 20px;
-        margin-bottom: 20px;
-      }
-
       .button_large {
         font-size: 17px;
         padding: 12px;
@@ -36,6 +29,10 @@
       .spaced {
         margin-bottom: 80px;
       }
+
+      header {
+        margin-top: 80px;
+      }
     </style>
 
 {% seo %}
@@ -46,18 +43,18 @@
   </head>
   <body>
     <div class="grid">
-      <div class="unit whole">
+      <div class="unit whole spaced">
         <header class="page-header" role="banner">
           <h1 class="project-name">{{ page.title | default: site.title | default: site.github.repository_name }}
             <small>
               {{ page.description | default: site.description | default: site.github.project_tagline }}
             </small>
           </h1>
-          {% if site.github.is_project_page %}
-            <a href="{{ site.github.repository_url }}" class="button button_large">View on GitHub</a>
-          {% endif %}
           {% if site.show_downloads %}
             <a href="{{ site.github.appxbundle_url }}" class="button button_large">Download</a>
+          {% endif %}
+          {% if site.github.is_project_page %}
+            <a href="{{ site.github.repository_url }}" class="button button_large">View on GitHub</a>
           {% endif %}
         </header>
       </div>
