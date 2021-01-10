@@ -20,7 +20,7 @@ namespace DesktopWindowManager.Internal
         public string AppName { get; set; }
         public RECT Borders;
         public string ClassName { get; set; }
-        public Boolean IsUWP { get; set; }
+        public bool IsUWP { get; set; }
 
         private static readonly string[] WindowsClassNamesToSkip =
         {
@@ -38,7 +38,7 @@ namespace DesktopWindowManager.Internal
             GetWindowInfo();
         }
 
-        public bool isPresent()
+        public bool IsPresent()
         {
             return User32.IsWindowVisible(Window) &&
                 !User32.IsIconic(Window) &&
@@ -48,7 +48,25 @@ namespace DesktopWindowManager.Internal
                 !Info.dwStyle.HasFlag(User32.WindowStyles.WS_POPUP);
         }
 
-        public bool isRuntimeValuable()
+        public bool IsRuntimePresent()
+        {
+            if (IsUWP)
+            {
+                return User32.IsWindowVisible(Window) &&
+                    !User32.IsIconic(Window) &&
+                    IsAltTabWindow() &&
+                    Info.dwExStyle.HasFlag(User32.WindowStylesEx.WS_EX_WINDOWEDGE);
+            } else
+            {
+                return User32.IsWindowVisible(Window) &&
+                    !User32.IsIconic(Window) &&
+                    IsAltTabWindow() &&
+                    Info.dwExStyle.HasFlag(User32.WindowStylesEx.WS_EX_WINDOWEDGE) &&
+                    !Info.dwStyle.HasFlag(User32.WindowStyles.WS_POPUP);
+            }  
+        }
+
+        public bool IsRuntimeValuable()
         {
             return IsAltTabWindow();
         }
@@ -64,7 +82,7 @@ namespace DesktopWindowManager.Internal
             return CloakedVal != 0 ? true : false;
         }
 
-        public bool IsAltTabWindow()
+        private bool IsAltTabWindow()
         {
             if (Info.dwExStyle.HasFlag(User32.WindowStylesEx.WS_EX_TOOLWINDOW)) return false;
 
