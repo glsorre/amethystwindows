@@ -31,7 +31,8 @@ namespace AmethystWindowsSystray
             if ((User32.IsWindowVisible(hWND) &&
                 !User32.IsIconic(hWND) &&
                 desktopWindow.IsAltTabWindow() &&
-                desktopWindow.Info.dwExStyle.HasFlag(User32.WindowStylesEx.WS_EX_WINDOWEDGE)) ||
+                desktopWindow.Info.dwExStyle.HasFlag(User32.WindowStylesEx.WS_EX_WINDOWEDGE) &&
+                !desktopWindow.Info.dwStyle.HasFlag(User32.WindowStyles.WS_POPUP)) ||
                 desktopWindow.IsUWP)
             {
                 SystrayContext.Logger.Information($"window created");

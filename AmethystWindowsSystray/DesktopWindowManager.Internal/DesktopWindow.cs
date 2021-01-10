@@ -44,7 +44,8 @@ namespace DesktopWindowManager.Internal
                 !User32.IsIconic(Window) &&
                 !IsBackgroundAppWindow() &&
                 IsAltTabWindow() &&
-                Info.dwExStyle.HasFlag(User32.WindowStylesEx.WS_EX_WINDOWEDGE);
+                Info.dwExStyle.HasFlag(User32.WindowStylesEx.WS_EX_WINDOWEDGE) &&
+                !Info.dwStyle.HasFlag(User32.WindowStyles.WS_POPUP);
         }
 
         public bool isRuntimeValuable()

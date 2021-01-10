@@ -8,9 +8,11 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.ApplicationModel;
 using Windows.ApplicationModel.AppService;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -37,7 +39,35 @@ namespace AmethystWindows
             NavigationCacheMode = Windows.UI.Xaml.Navigation.NavigationCacheMode.Enabled;
             SettingsBarButton.IsChecked = true;
             ApplicationsBarButton.Click += SettingsBarButton_Click;
+            StartupButton.Click += StartupButton_Click;
             PaddingNumberBox.Loaded += PaddingNumberBox_Loaded;
+        }
+
+        private async void StartupButton_Click(object sender, RoutedEventArgs e)
+        {
+            StartupTask startupTask = await StartupTask.GetAsync("AmethystWindowsId");
+            StartupStatus.Text = startupTask.State.ToString();
+            switch (startupTask.State)
+            {
+                case StartupTaskState.Disabled:
+                    // Task is disabled but can be enabled.
+                    StartupTaskState newState = await startupTask.RequestEnableAsync();
+                    StartupStatus.Text = newState.ToString();
+                    break;
+                case StartupTaskState.DisabledByUser:
+                    // Task is disabled and user must enable it manually.
+                    MessageDialog disabledDialog = new MessageDialog(
+                        "You can enable this in the Startup tab in Task Manager.");
+                    await disabledDialog.ShowAsync();
+                    break;
+                case StartupTaskState.DisabledByPolicy:
+                    MessageDialog policyDialog = new MessageDialog(
+                        "You do not have rights to start this app at login.");
+                    await policyDialog.ShowAsync();
+                    break;
+                case StartupTaskState.Enabled:
+                    break;
+            }
         }
 
         private void FilterRemoveButton_Click(object sender, RoutedEventArgs e)
