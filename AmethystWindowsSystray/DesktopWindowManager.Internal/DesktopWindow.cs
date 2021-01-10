@@ -53,13 +53,12 @@ namespace DesktopWindowManager.Internal
             if (IsUWP)
             {
                 return User32.IsWindowVisible(Window) &&
-                    !User32.IsIconic(Window) &&
                     IsAltTabWindow() &&
                     Info.dwExStyle.HasFlag(User32.WindowStylesEx.WS_EX_WINDOWEDGE);
-            } else
+            } 
+            else
             {
                 return User32.IsWindowVisible(Window) &&
-                    !User32.IsIconic(Window) &&
                     IsAltTabWindow() &&
                     Info.dwExStyle.HasFlag(User32.WindowStylesEx.WS_EX_WINDOWEDGE) &&
                     !Info.dwStyle.HasFlag(User32.WindowStyles.WS_POPUP);

@@ -25,7 +25,7 @@ namespace AmethystWindowsSystray
 
         private async Task ManageShown(HWND hWND)
         {
-            await Task.Delay(200);
+            await Task.Delay(500);
             DesktopWindow desktopWindow = new DesktopWindow(hWND);
             desktopWindow.GetInfo();
             if (desktopWindow.IsRuntimePresent())
@@ -45,6 +45,7 @@ namespace AmethystWindowsSystray
                     switch (winEvent)
                     {
                         case User32.EventConstants.EVENT_OBJECT_SHOW:
+                        case User32.EventConstants.EVENT_OBJECT_UNCLOAKED:
                             ManageShown(hwnd);
                             break;
                         case User32.EventConstants.EVENT_SYSTEM_MINIMIZEEND:

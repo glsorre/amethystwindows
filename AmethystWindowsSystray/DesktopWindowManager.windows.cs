@@ -30,7 +30,9 @@ namespace AmethystWindowsSystray
                 Windows[desktopWindow.GetDesktopMonitor()].CollectionChanged += Windows_CollectionChanged;
             }
 
-            if (FixedFilters.All(s => !desktopWindow.AppName.StartsWith(s)))
+            if (FixedFilters.All(s => !desktopWindow.AppName.StartsWith(s)) 
+                && desktopWindow.AppName != String.Empty &&
+                !Windows[desktopWindow.GetDesktopMonitor()].Contains(desktopWindow))
             { 
                 if (configurableFilter.Equals(null))
                 {
