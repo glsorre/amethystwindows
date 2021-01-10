@@ -35,8 +35,8 @@
         padding: 12px;
       }
 
-      a.download {
-        color: #8e1397 !important;
+      a.github {
+        color: black !important;
       }
 
       .bg {
@@ -87,10 +87,10 @@
             </small>
           </h1>
           {% if site.show_downloads %}
-            <a href="{{ site.github.appxbundle_url }}" class="button button_large download">Download</a>
+            <a href="{{ site.github.appxbundle_url }}" class="button button_large">Download</a>
           {% endif %}
           {% if site.github.is_project_page %}
-            <a href="{{ site.github.repository_url }}" class="button button_large">View on GitHub</a>
+            <a href="{{ site.github.repository_url }}" class="button button_large github">View on GitHub</a>
           {% endif %}
         </header>
       </div>
