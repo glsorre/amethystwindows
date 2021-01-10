@@ -3,9 +3,10 @@
 <Package
   xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
   xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+  xmlns:uap5="http://schemas.microsoft.com/appx/manifest/uap/windows10/5"
   xmlns:desktop="http://schemas.microsoft.com/appx/manifest/desktop/windows10"
   xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
-  IgnorableNamespaces="uap rescap">
+  IgnorableNamespaces="uap uap5 rescap">
 
   <Identity
     Name="e7e2fe78-574a-47c3-81a2-66484cda1c60"
@@ -44,7 +45,18 @@
 		<uap:Extension Category="windows.appService">
 			<uap:AppService Name="AmethystWindowsSystray"/>
 		</uap:Extension>
-		<desktop:Extension Category="windows.fullTrustProcess" Executable="AmethystWindowsSystray\AmethystWindowsSystray.exe" />
+		<desktop:Extension 
+			Category="windows.fullTrustProcess" 
+			Executable="AmethystWindowsSystray\AmethystWindowsSystray.exe" />
+		<uap5:Extension
+            Category="windows.startupTask"
+            Executable="AmethystWindows.exe"
+            EntryPoint="AmethystWindows.App">
+			<uap5:StartupTask
+				TaskId="AmethystWindowsId"
+				Enabled="false"
+				DisplayName="Amethyst Windows" />
+		</uap5:Extension>
 	  </Extensions>
     </Application>
   </Applications>

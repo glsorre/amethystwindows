@@ -17,6 +17,13 @@
         </CommandBar>
         <StackPanel controls:DockPanel.Dock="Top" Orientation="Horizontal" Padding="10 10 0 10">
             <Border BorderBrush="{x:Null}" Padding="10">
+                <TextBlock Text="Start at Login" VerticalAlignment="Center"/>
+            </Border>
+            <Button x:Name="StartupButton" Content="Enable" Padding="10"/>
+            <TextBlock x:Name="StartupStatus" Padding="10"/>
+        </StackPanel>
+        <StackPanel controls:DockPanel.Dock="Top" Orientation="Horizontal" Padding="10 10 0 10">
+            <Border BorderBrush="{x:Null}" Padding="10">
                 <TextBlock Text="Padding" VerticalAlignment="Center"/>
             </Border>
             <muxc:NumberBox 
