@@ -30,6 +30,7 @@ namespace AmethystWindowsSystray
             "AmethystWindowsPackaging",
             "Cortana",
             "Microsoft Spy++",
+            "NOW TV",
             "Task Manager"
         };
         public List<Pair<string, string>> ConfigurableFilters = new List<Pair<string, string>>();

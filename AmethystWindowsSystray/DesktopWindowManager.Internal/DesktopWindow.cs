@@ -135,7 +135,15 @@ namespace DesktopWindowManager.Internal
 
         public void GetVirtualDesktop()
         {
-            VirtualDesktop virtualDesktop = VirtualDesktop.FromHwnd(Window);
+            VirtualDesktop virtualDesktop = VirtualDesktop.Current;
+            try
+            {
+                virtualDesktop = VirtualDesktop.FromHwnd(Window);
+            }
+            catch
+            {
+                virtualDesktop = VirtualDesktop.Current;
+            }
             VirtualDesktop = virtualDesktop;
         }
 
