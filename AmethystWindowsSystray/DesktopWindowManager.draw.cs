@@ -116,7 +116,7 @@ namespace AmethystWindowsSystray
                 gridGenerator.ToArray()[w.Item1].Item4
                 );
 
-            User32.ShowWindow(w.Item2.Window, ShowWindowCommand.SW_NORMAL);
+            User32.ShowWindow(w.Item2.Window, ShowWindowCommand.SW_RESTORE | ShowWindowCommand.SW_MINIMIZE);
 
             User32.DeferWindowPos(
                 hDWP,
@@ -126,7 +126,7 @@ namespace AmethystWindowsSystray
                 adjustedSize.Y + mY - w.Item2.Borders.top + Padding,
                 adjustedSize.Width + w.Item2.Borders.left + w.Item2.Borders.right - 2 * Padding,
                 adjustedSize.Height + w.Item2.Borders.top + w.Item2.Borders.bottom - 2 * Padding,
-                User32.SetWindowPosFlags.SWP_FRAMECHANGED | 
+                User32.SetWindowPosFlags.SWP_FRAMECHANGED |
                 User32.SetWindowPosFlags.SWP_NOACTIVATE |
                 User32.SetWindowPosFlags.SWP_NOCOPYBITS |
                 User32.SetWindowPosFlags.SWP_NOZORDER |
