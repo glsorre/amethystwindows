@@ -20,8 +20,8 @@ Amethyst Windows uses two modifiers.
 
 | Shortcut                  | Description                          |
 |---------------------------|--------------------------------------|
-| `alt + shift`             | `mod1`                               |
-| `alt + shift + win`       | `mod2`                               |
+| `alt + shift`             | mod1                                 |
+| `alt + shift + win`       | mod2                                 |
 
 
 The keyboard shortcuts configured are:
@@ -42,7 +42,11 @@ The keyboard shortcuts configured are:
 | `mod1 + Z`                | Force windows to be revalutated      |
 | `mod2 + left`             | Throw focused window to space left   |
 | `mod2 + right`            | Throw focused window to space right  |
-| `mod2 + 1` to `mod2 + 5`  | Throw focused window to space 1 to 5 |
+| `mod2 + 1`                | Throw focused window to space 1      |
+| `mod2 + 2`                | Throw focused window to space 2      |
+| `mod2 + 3`                | Throw focused window to space 3      |
+| `mod2 + 4`                | Throw focused window to space 4      |
+| `mod2 + 5`                | Throw focused window to space 5      |
 
 ## Layouts
 

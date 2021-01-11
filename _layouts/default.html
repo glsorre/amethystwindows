@@ -58,6 +58,10 @@
         color: #8e1397 !important;
       }
 
+      h1 small {
+        font-weight: normal;
+      }
+
       h1.project_name {
         color: black !important;
         padding-left: 55px;
@@ -82,6 +86,7 @@
       <div class="unit whole spaced">
         <header class="page-header" role="banner">
           <h1 class="project_name">{{ page.title | default: site.title | default: site.github.repository_name }}
+            <br/>
             <small>
               {{ page.description | default: site.description | default: site.github.project_tagline }}
             </small>
