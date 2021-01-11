@@ -109,12 +109,12 @@ namespace AmethystWindowsSystray
 
         private void DrawWindow(float ScreenScalingFactorVert, int mX, int mY, IEnumerable<Tuple<int, int, int, int>> gridGenerator, Tuple<int, DesktopWindow> w, HDWP hDWP)
         {
-            RECT adjustedSize = new RECT(new Rectangle(
+            Rectangle adjustedSize = new Rectangle(
                 gridGenerator.ToArray()[w.Item1].Item1,
                 gridGenerator.ToArray()[w.Item1].Item2,
                 gridGenerator.ToArray()[w.Item1].Item3,
                 gridGenerator.ToArray()[w.Item1].Item4
-                ));
+                );
 
             User32.ShowWindow(w.Item2.Window, ShowWindowCommand.SW_NORMAL);
 

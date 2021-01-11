@@ -75,10 +75,7 @@ namespace AmethystWindowsSystray
 
                 if (desktopWindow.IsPresent())
                 {
-                    desktopWindow.GetAppName();
-                    desktopWindow.GetClassName();
-                    desktopWindow.GetMonitorInfo();
-                    desktopWindow.GetVirtualDesktop();
+                    desktopWindow.GetInfo();
 
                     if (Windows.ContainsKey(desktopWindow.GetDesktopMonitor()))
                     {
