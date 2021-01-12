@@ -40,7 +40,6 @@ namespace AmethystWindowsSystray
                 );
 
                 DrawWindow1(ScreenScalingFactorVert, mX, mY, adjustedSize, w, hDWP1);
-                //DrawWindow2(ScreenScalingFactorVert, mX, mY, adjustedSize, w, hDWP1);
             }
             User32.EndDeferWindowPos(hDWP1.DangerousGetHandle());
 
@@ -54,7 +53,6 @@ namespace AmethystWindowsSystray
                     gridGenerator.ToArray()[w.Item1].Item4
                 );
 
-                //DrawWindow1(ScreenScalingFactorVert, mX, mY, adjustedSize, w, hDWP2);
                 DrawWindow2(ScreenScalingFactorVert, mX, mY, adjustedSize, w, hDWP2);
             }
             User32.EndDeferWindowPos(hDWP2.DangerousGetHandle());
