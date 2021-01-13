@@ -39,6 +39,7 @@ namespace AmethystWindowsSystray
         {
             void WinEventHookAll(User32.HWINEVENTHOOK hWinEventHook, uint winEvent, HWND hwnd, int idObject, int idChild, uint idEventThread, uint dwmsEventTime)
             {
+               
                 DesktopWindow desktopWindow = new DesktopWindow(hwnd);
                 if (hwnd != HWND.NULL && idObject == User32.ObjectIdentifiers.OBJID_WINDOW && idChild == 0 && desktopWindow.IsRuntimeValuable())
                 {
@@ -46,6 +47,8 @@ namespace AmethystWindowsSystray
                     {
                         case User32.EventConstants.EVENT_OBJECT_SHOW:
                         case User32.EventConstants.EVENT_OBJECT_UNCLOAKED:
+                        case User32.EventConstants.EVENT_OBJECT_IME_SHOW:
+                        case User32.EventConstants.EVENT_SYSTEM_FOREGROUND:
                             ManageShown(hwnd);
                             break;
                         case User32.EventConstants.EVENT_SYSTEM_MINIMIZEEND:
@@ -55,6 +58,7 @@ namespace AmethystWindowsSystray
                             break;
                         case User32.EventConstants.EVENT_SYSTEM_MINIMIZESTART:
                         case User32.EventConstants.EVENT_OBJECT_HIDE:
+                        case User32.EventConstants.EVENT_OBJECT_IME_HIDE:
                             SystrayContext.Logger.Information($"window minimized/hide");
                             HMONITOR monitorHandle = User32.MonitorFromWindow(hwnd, User32.MonitorFlags.MONITOR_DEFAULTTONEAREST);
                             DesktopWindow remove = DesktopWindowsManager.GetWindowByHandlers(hwnd, monitorHandle, VirtualDesktop.Current);

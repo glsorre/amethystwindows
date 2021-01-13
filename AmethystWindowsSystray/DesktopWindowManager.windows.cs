@@ -73,7 +73,7 @@ namespace AmethystWindowsSystray
             {
                 DesktopWindow desktopWindow = new DesktopWindow(windowHandle);
 
-                if (desktopWindow.IsPresent())
+                if (desktopWindow.IsRuntimePresent())
                 {
                     desktopWindow.GetInfo();
 

@@ -36,6 +36,7 @@ namespace DesktopWindowManager.Internal
             Window = window;
             IsUWP = false;
             GetWindowInfo();
+            GetClassName();
         }
 
         public bool IsPresent()
@@ -52,16 +53,21 @@ namespace DesktopWindowManager.Internal
         {
             if (IsUWP)
             {
+                Console.WriteLine("UWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWP");
                 return User32.IsWindowVisible(Window) &&
+                    !User32.IsIconic(Window) &&
                     IsAltTabWindow() &&
+                    !IsBackgroundAppWindow() &&
                     Info.dwExStyle.HasFlag(User32.WindowStylesEx.WS_EX_WINDOWEDGE);
             } 
             else
             {
                 return User32.IsWindowVisible(Window) &&
+                    !User32.IsIconic(Window) &&
+                    !IsBackgroundAppWindow() &&
                     IsAltTabWindow() &&
                     Info.dwExStyle.HasFlag(User32.WindowStylesEx.WS_EX_WINDOWEDGE) &&
-                    !Info.dwStyle.HasFlag(User32.WindowStyles.WS_POPUP);
+                    !Info.dwExStyle.HasFlag(User32.WindowStylesEx.WS_EX_DLGMODALFRAME);
             }  
         }
 
