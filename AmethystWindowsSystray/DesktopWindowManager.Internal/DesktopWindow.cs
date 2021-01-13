@@ -39,21 +39,10 @@ namespace DesktopWindowManager.Internal
             GetClassName();
         }
 
-        public bool IsPresent()
-        {
-            return User32.IsWindowVisible(Window) &&
-                !User32.IsIconic(Window) &&
-                !IsBackgroundAppWindow() &&
-                IsAltTabWindow() &&
-                Info.dwExStyle.HasFlag(User32.WindowStylesEx.WS_EX_WINDOWEDGE) &&
-                !Info.dwStyle.HasFlag(User32.WindowStyles.WS_POPUP);
-        }
-
         public bool IsRuntimePresent()
         {
             if (IsUWP)
             {
-                Console.WriteLine("UWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWP");
                 return User32.IsWindowVisible(Window) &&
                     !User32.IsIconic(Window) &&
                     IsAltTabWindow() &&
