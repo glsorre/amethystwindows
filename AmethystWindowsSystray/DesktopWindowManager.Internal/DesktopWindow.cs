@@ -53,10 +53,9 @@ namespace DesktopWindowManager.Internal
             {
                 return User32.IsWindowVisible(Window) &&
                     !User32.IsIconic(Window) &&
-                    !IsBackgroundAppWindow() &&
                     IsAltTabWindow() &&
                     Info.dwExStyle.HasFlag(User32.WindowStylesEx.WS_EX_WINDOWEDGE) &&
-                    !Info.dwExStyle.HasFlag(User32.WindowStylesEx.WS_EX_DLGMODALFRAME);
+                    !Info.dwExStyle.HasFlag(User32.WindowStylesEx.WS_EX_TOOLWINDOW);
             }  
         }
 
