@@ -41,20 +41,22 @@ namespace DesktopWindowManager.Internal
 
         public bool IsRuntimePresent()
         {
-            if (IsUWP)
-            {
-                return User32.IsWindowVisible(Window) &&
-                    !User32.IsIconic(Window) &&
-                    IsAltTabWindow() &&
-                    !IsBackgroundAppWindow() &&
-                    Info.dwExStyle.HasFlag(User32.WindowStylesEx.WS_EX_WINDOWEDGE);
-            } 
-            else
-            {
-                return User32.IsWindowVisible(Window) &&
+            bool common = User32.IsWindowVisible(Window) &&
                     !User32.IsIconic(Window) &&
                     IsAltTabWindow() &&
                     Info.dwExStyle.HasFlag(User32.WindowStylesEx.WS_EX_WINDOWEDGE) &&
+                    !Info.dwStyle.HasFlag(User32.WindowStyles.WS_MAXIMIZEBOX) &&
+                    !Info.dwStyle.HasFlag(User32.WindowStyles.WS_MINIMIZEBOX) &&
+                    !Info.dwExStyle.HasFlag(User32.WindowStylesEx.WS_EX_TOPMOST);
+
+            if (IsUWP)
+            {
+                return common &&
+                    !IsBackgroundAppWindow();
+            } 
+            else
+            {
+                return common &&
                     !Info.dwExStyle.HasFlag(User32.WindowStylesEx.WS_EX_TOOLWINDOW);
             }  
         }
