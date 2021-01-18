@@ -45,8 +45,8 @@ namespace DesktopWindowManager.Internal
                     !User32.IsIconic(Window) &&
                     IsAltTabWindow() &&
                     Info.dwExStyle.HasFlag(User32.WindowStylesEx.WS_EX_WINDOWEDGE) &&
-                    !Info.dwStyle.HasFlag(User32.WindowStyles.WS_MAXIMIZEBOX) &&
-                    !Info.dwStyle.HasFlag(User32.WindowStyles.WS_MINIMIZEBOX) &&
+                    Info.dwStyle.HasFlag(User32.WindowStyles.WS_MAXIMIZEBOX) &&
+                    Info.dwStyle.HasFlag(User32.WindowStyles.WS_MINIMIZEBOX) &&
                     !Info.dwExStyle.HasFlag(User32.WindowStylesEx.WS_EX_TOPMOST);
 
             if (IsUWP)
