@@ -26,20 +26,20 @@ namespace AmethystWindowsSystray
             KeyValuePair<Pair<VirtualDesktop, HMONITOR>, ObservableCollection<DesktopWindow>> desktopMonitor = new KeyValuePair<Pair<VirtualDesktop, HMONITOR>, ObservableCollection<DesktopWindow>>(key, windows);
             float ScreenScalingFactorVert;
             int mX, mY;
-            IEnumerable<Tuple<int, int, int, int>> gridGenerator;
+            IEnumerable<Rectangle> gridGenerator;
             DrawMonitor(desktopMonitor, out ScreenScalingFactorVert, out mX, out mY, out gridGenerator);
 
             HDWP hDWP1 = User32.BeginDeferWindowPos(windows.Count);
             foreach (var w in desktopMonitor.Value.Select((value, i) => new Tuple<int, DesktopWindow>(i, value)))
             {
                 Rectangle adjustedSize = new Rectangle(
-                    gridGenerator.ToArray()[w.Item1].Item1,
-                    gridGenerator.ToArray()[w.Item1].Item2,
-                    gridGenerator.ToArray()[w.Item1].Item3,
-                    gridGenerator.ToArray()[w.Item1].Item4
+                    gridGenerator.ToArray()[w.Item1].X,
+                    gridGenerator.ToArray()[w.Item1].Y,
+                    gridGenerator.ToArray()[w.Item1].Width,
+                    gridGenerator.ToArray()[w.Item1].Height
                 );
 
-                User32.ShowWindow(w.Item2.Window, ShowWindowCommand.SW_NORMAL);
+                User32.ShowWindow(w.Item2.Window, ShowWindowCommand.SW_RESTORE);
 
                 DrawWindow1(ScreenScalingFactorVert, mX, mY, adjustedSize, w, hDWP1);
             }
@@ -49,10 +49,10 @@ namespace AmethystWindowsSystray
             foreach (var w in desktopMonitor.Value.Select((value, i) => new Tuple<int, DesktopWindow>(i, value)))
             {
                 Rectangle adjustedSize = new Rectangle(
-                    gridGenerator.ToArray()[w.Item1].Item1,
-                    gridGenerator.ToArray()[w.Item1].Item2,
-                    gridGenerator.ToArray()[w.Item1].Item3,
-                    gridGenerator.ToArray()[w.Item1].Item4
+                    gridGenerator.ToArray()[w.Item1].X,
+                    gridGenerator.ToArray()[w.Item1].Y,
+                    gridGenerator.ToArray()[w.Item1].Width,
+                    gridGenerator.ToArray()[w.Item1].Height
                 );
 
                 DrawWindow2(ScreenScalingFactorVert, mX, mY, adjustedSize, w, hDWP2);
@@ -71,20 +71,20 @@ namespace AmethystWindowsSystray
             {
                 float ScreenScalingFactorVert;
                 int mX, mY;
-                IEnumerable<Tuple<int, int, int, int>> gridGenerator;
+                IEnumerable<Rectangle> gridGenerator;
                 DrawMonitor(desktopMonitor, out ScreenScalingFactorVert, out mX, out mY, out gridGenerator);
 
                 HDWP hDWP1 = User32.BeginDeferWindowPos(Windows.Count);
                 foreach (var w in desktopMonitor.Value.Select((value, i) => new Tuple<int, DesktopWindow>(i, value)))
                 {
                     Rectangle adjustedSize = new Rectangle(
-                        gridGenerator.ToArray()[w.Item1].Item1,
-                        gridGenerator.ToArray()[w.Item1].Item2,
-                        gridGenerator.ToArray()[w.Item1].Item3,
-                        gridGenerator.ToArray()[w.Item1].Item4
+                        gridGenerator.ToArray()[w.Item1].X,
+                        gridGenerator.ToArray()[w.Item1].Y,
+                        gridGenerator.ToArray()[w.Item1].Width,
+                        gridGenerator.ToArray()[w.Item1].Height
                     );
 
-                    User32.ShowWindow(w.Item2.Window, ShowWindowCommand.SW_NORMAL);
+                    User32.ShowWindow(w.Item2.Window, ShowWindowCommand.SW_RESTORE);
 
                     DrawWindow1(ScreenScalingFactorVert, mX, mY, adjustedSize, w, hDWP1);
                 }
@@ -94,10 +94,10 @@ namespace AmethystWindowsSystray
                 foreach (var w in desktopMonitor.Value.Select((value, i) => new Tuple<int, DesktopWindow>(i, value)))
                 {
                     Rectangle adjustedSize = new Rectangle(
-                        gridGenerator.ToArray()[w.Item1].Item1,
-                        gridGenerator.ToArray()[w.Item1].Item2,
-                        gridGenerator.ToArray()[w.Item1].Item3,
-                        gridGenerator.ToArray()[w.Item1].Item4
+                        gridGenerator.ToArray()[w.Item1].X,
+                        gridGenerator.ToArray()[w.Item1].Y,
+                        gridGenerator.ToArray()[w.Item1].Width,
+                        gridGenerator.ToArray()[w.Item1].Height
                     );
 
                     DrawWindow2(ScreenScalingFactorVert, mX, mY, adjustedSize, w, hDWP2);
@@ -111,7 +111,7 @@ namespace AmethystWindowsSystray
             }
         }
 
-        private void DrawMonitor(KeyValuePair<Pair<VirtualDesktop, HMONITOR>, ObservableCollection<DesktopWindow>> desktopMonitor, out float ScreenScalingFactorVert, out int mX, out int mY, out IEnumerable<Tuple<int, int, int, int>> gridGenerator)
+        private void DrawMonitor(KeyValuePair<Pair<VirtualDesktop, HMONITOR>, ObservableCollection<DesktopWindow>> desktopMonitor, out float ScreenScalingFactorVert, out int mX, out int mY, out IEnumerable<Rectangle> gridGenerator)
         {
             HMONITOR m = desktopMonitor.Key.Item2;
             int windowsCount = desktopMonitor.Value.Count();
@@ -155,8 +155,6 @@ namespace AmethystWindowsSystray
 
         private void DrawWindow1(float ScreenScalingFactorVert, int mX, int mY, Rectangle adjustedSize, Tuple<int, DesktopWindow> w, HDWP hDWP)
         {
-            User32.ShowWindow(w.Item2.Window, ShowWindowCommand.SW_RESTORE);
-
             User32.DeferWindowPos(
                 hDWP,
                 w.Item2.Window,
