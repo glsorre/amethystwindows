@@ -30,7 +30,7 @@ namespace AmethystWindowsSystray
             Factors[key] = --Factors[key];
         }
 
-        public IEnumerable<Tuple<int, int, int, int>> GridGenerator(int mWidth, int mHeight, int windowsCount, int factor, Layout layout)
+        public IEnumerable<Rectangle> GridGenerator(int mWidth, int mHeight, int windowsCount, int factor, Layout layout)
         {
             int i = 0;
             int j = 0;
@@ -47,7 +47,7 @@ namespace AmethystWindowsSystray
                     j = 0;
                     for (i = 0; i < windowsCount; i++)
                     {
-                        yield return new Tuple<int, int, int, int>(i * horizSize, j, horizSize, mHeight);
+                        yield return new Rectangle(i * horizSize, j, horizSize, mHeight);
                     }
                     break;
                 case Layout.Vertical:
@@ -55,7 +55,7 @@ namespace AmethystWindowsSystray
                     j = 0;
                     for (i = 0; i < windowsCount; i++)
                     {
-                        yield return new Tuple<int, int, int, int>(j, i * vertSize, mWidth, vertSize);
+                        yield return new Rectangle(j, i * vertSize, mWidth, vertSize);
                     }
                     break;
                 case Layout.HorizGrid:
@@ -76,7 +76,7 @@ namespace AmethystWindowsSystray
 
                         while (windowsCount > 0)
                         {
-                            yield return new Tuple<int, int, int, int>(i * horizSize, j * vertSize, horizSize, vertSize);
+                            yield return new Rectangle(i * horizSize, j * vertSize, horizSize, vertSize);
                             i++;
                             if (i >= horizStep)
                             {
@@ -96,7 +96,7 @@ namespace AmethystWindowsSystray
                     {
                         while (windowsCount > 0)
                         {
-                            yield return new Tuple<int, int, int, int>(i * horizSize, j * vertSize, horizSize, vertSize);
+                            yield return new Rectangle(i * horizSize, j * vertSize, horizSize, vertSize);
                             i++;
                             if (i >= horizStep)
                             {
@@ -125,7 +125,7 @@ namespace AmethystWindowsSystray
 
                         while (windowsCount > 0)
                         {
-                            yield return new Tuple<int, int, int, int>(i * horizSize, j * vertSize, horizSize, vertSize);
+                            yield return new Rectangle(i * horizSize, j * vertSize, horizSize, vertSize);
                             j++;
                             if (j >= vertStep)
                             {
@@ -145,7 +145,7 @@ namespace AmethystWindowsSystray
                     {
                         while (windowsCount > 0)
                         {
-                            yield return new Tuple<int, int, int, int>(i * horizSize, j * vertSize, horizSize, vertSize);
+                            yield return new Rectangle(i * horizSize, j * vertSize, horizSize, vertSize);
                             j++;
                             if (j >= vertStep)
                             {
@@ -159,30 +159,30 @@ namespace AmethystWindowsSystray
                 case Layout.Monocle:
                     for (i = 0; i < windowsCount; i++)
                     {
-                        yield return new Tuple<int, int, int, int>(0, 0, mWidth, mHeight);
+                        yield return new Rectangle(0, 0, mWidth, mHeight);
                     }
                     break;
                 case Layout.Wide:
-                    if (windowsCount == 1) yield return new Tuple<int, int, int, int>(0, 0, mWidth, mHeight);
+                    if (windowsCount == 1) yield return new Rectangle(0, 0, mWidth, mHeight);
                     else
                     {
                         int size = mWidth / (windowsCount - 1);
                         for (i = 0; i < windowsCount - 1; i++)
                         {
-                            if (i == 0) yield return new Tuple<int, int, int, int>(0, 0, mWidth, mHeight / 2 + factor * Properties.Settings.Default.Step);
-                            yield return new Tuple<int, int, int, int>(i * size, mHeight / 2 + factor * Properties.Settings.Default.Step, size, mHeight / 2 - factor * Properties.Settings.Default.Step);
+                            if (i == 0) yield return new Rectangle(0, 0, mWidth, mHeight / 2 + factor * Properties.Settings.Default.Step);
+                            yield return new Rectangle(i * size, mHeight / 2 + factor * Properties.Settings.Default.Step, size, mHeight / 2 - factor * Properties.Settings.Default.Step);
                         }
                     }
                     break;
                 case Layout.Tall:
-                    if (windowsCount == 1) yield return new Tuple<int, int, int, int>(0, 0, mWidth, mHeight);
+                    if (windowsCount == 1) yield return new Rectangle(0, 0, mWidth, mHeight);
                     else
                     {
                         int size = mHeight / (windowsCount - 1);
                         for (i = 0; i < windowsCount - 1; i++)
                         {
-                            if (i == 0) yield return new Tuple<int, int, int, int>(0, 0, mWidth / 2 + factor * Properties.Settings.Default.Step, mHeight);
-                            yield return new Tuple<int, int, int, int>(mWidth / 2 + factor * Properties.Settings.Default.Step, i * size, mWidth / 2 - factor * Properties.Settings.Default.Step, size);
+                            if (i == 0) yield return new Rectangle(0, 0, mWidth / 2 + factor * Properties.Settings.Default.Step, mHeight);
+                            yield return new Rectangle(mWidth / 2 + factor * Properties.Settings.Default.Step, i * size, mWidth / 2 - factor * Properties.Settings.Default.Step, size);
                         }
                     }
                     break;
