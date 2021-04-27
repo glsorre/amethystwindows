@@ -223,7 +223,6 @@ namespace AmethystWindowsSystray
             List<Pair<VirtualDesktop, HMONITOR>> desktopMonitors = Windows.Keys.Where(dM => dM.Item1.ToString() == VirtualDesktop.Current.ToString()).ToList();
             int currentMonitorIndex = desktopMonitors.IndexOf(window.GetDesktopMonitor());
             int maxIndex = desktopMonitors.Count - 1;
-            Console.WriteLine(desktopMonitors.Count);
             if (currentMonitorIndex == 0)
             {
                 RemoveWindow(window);
@@ -240,11 +239,9 @@ namespace AmethystWindowsSystray
 
         public void MoveWindowNextVirtualDesktop(DesktopWindow window)
         {
-            Console.WriteLine("next");
             VirtualDesktop nextVirtualDesktop = window.VirtualDesktop.Right;
             if (nextVirtualDesktop != null)
             {
-                Console.WriteLine("ci sono");
                 RemoveWindow(window);
                 nextVirtualDesktop.MoveWindow(window.Window);
                 window.VirtualDesktop = nextVirtualDesktop;
@@ -255,11 +252,9 @@ namespace AmethystWindowsSystray
 
         public void MoveWindowPreviousVirtualDesktop(DesktopWindow window)
         {
-            Console.WriteLine("prev");
             VirtualDesktop nextVirtualDesktop = window.VirtualDesktop.Left;
             if (nextVirtualDesktop != null) 
             {
-                Console.WriteLine("ci sono");
                 RemoveWindow(window);
                 nextVirtualDesktop.MoveWindow(window.Window);
                 window.VirtualDesktop = nextVirtualDesktop;
@@ -270,11 +265,9 @@ namespace AmethystWindowsSystray
 
         public void MoveWindowSpecificVirtualDesktop(DesktopWindow window, int id)
         {
-            Console.WriteLine("prev");
             VirtualDesktop nextVirtualDesktop = VirtualDesktop.FromIndex(id);
             if (nextVirtualDesktop != null)
             {
-                Console.WriteLine("ci sono");
                 RemoveWindow(window);
                 nextVirtualDesktop.MoveWindow(window.Window);
                 window.VirtualDesktop = nextVirtualDesktop;

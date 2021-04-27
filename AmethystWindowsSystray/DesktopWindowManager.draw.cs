@@ -129,8 +129,8 @@ namespace AmethystWindowsSystray
 
             float ScreenScalingFactorHoriz = (float)PhysicalScreenWidth / (float)LogicalScreenWidth;
             ScreenScalingFactorVert = (float)PhysicalScreenHeight / (float)LogicalScreenHeight;
-            mX = info.rcMonitor.X;
-            mY = info.rcMonitor.Y;
+            mX = info.rcWork.X;
+            mY = info.rcWork.Y;
             int mWidth = info.rcWork.Width;
             int mHeight = info.rcWork.Height;
 
