@@ -65,6 +65,14 @@ namespace AmethystWindowsSystray
                 {
                     AmethystSystrayHotKey.Invoke(this, 0x17);
                 }
+                if (m.WParam.ToInt32() == 0x18)
+                {
+                    AmethystSystrayHotKey.Invoke(this, 0x18);
+                }
+                if (m.WParam.ToInt32() == 0x19)
+                {
+                    AmethystSystrayHotKey.Invoke(this, 0x19);
+                }
                 if (m.WParam.ToInt32() == 0x21)
                 {
                     AmethystSystrayHotKey.Invoke(this, 0x21);

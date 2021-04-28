@@ -12,6 +12,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using Vanara.PInvoke;
 using WindowsDesktop;
 
@@ -54,6 +55,34 @@ namespace AmethystWindowsSystray
             this.Layouts = new Dictionary<Pair<VirtualDesktop, HMONITOR>, Layout>();
             this.Windows = new Dictionary<Pair<VirtualDesktop, HMONITOR>, ObservableCollection<DesktopWindow>>();
             this.Factors = new Dictionary<Pair<VirtualDesktop, HMONITOR>, int>();
+        }
+
+        public void RotateMonitorClockwise(Pair<VirtualDesktop, HMONITOR> currentDesktopMonitor)
+        {
+            List<HMONITOR> virtualDesktopMonitors = Windows
+                .Keys
+                .Where(desktopMonitor => desktopMonitor.Item1.Equals(currentDesktopMonitor.Item1))
+                .Select(desktopMonitor => desktopMonitor.Item2)
+                .ToList();
+
+            HMONITOR nextMonitor = virtualDesktopMonitors.SkipWhile(x => x != currentDesktopMonitor.Item2).Skip(1).DefaultIfEmpty(virtualDesktopMonitors[0]).FirstOrDefault();
+            Pair<VirtualDesktop, HMONITOR> nextDesktopMonitor = new Pair<VirtualDesktop, HMONITOR>(currentDesktopMonitor.Item1, nextMonitor);
+
+            User32.SetForegroundWindow(Windows[nextDesktopMonitor].FirstOrDefault().Window);
+        }
+
+        public void RotateMonitorCounterClockwise(Pair<VirtualDesktop, HMONITOR> currentDesktopMonitor)
+        {
+            List<HMONITOR> virtualDesktopMonitors = Windows
+                .Keys
+                .Where(desktopMonitor => desktopMonitor.Item1.Equals(currentDesktopMonitor.Item1))
+                .Select(desktopMonitor => desktopMonitor.Item2)
+                .ToList();
+
+            HMONITOR nextMonitor = virtualDesktopMonitors.TakeWhile(x => x != currentDesktopMonitor.Item2).Skip(1).DefaultIfEmpty(virtualDesktopMonitors[0]).FirstOrDefault();
+            Pair<VirtualDesktop, HMONITOR> nextDesktopMonitor = new Pair<VirtualDesktop, HMONITOR>(currentDesktopMonitor.Item1, nextMonitor);
+
+            User32.SetForegroundWindow(Windows[nextDesktopMonitor].FirstOrDefault().Window);
         }
 
     }
