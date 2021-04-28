@@ -65,6 +65,7 @@ namespace AmethystWindowsSystray
             DWM.Changed += Handlers_Changed;
             Logger.Information($"getting layouts");
             DWM.LoadLayouts();
+            DWM.LoadFactors();
             Logger.Information($"setting hooks");
             hooksHelper = new HooksHelper(DWM);
             hooksHelper.setWindowsHook();
@@ -270,6 +271,7 @@ namespace AmethystWindowsSystray
                     Pair<VirtualDesktop, HMONITOR> currentPair = new Pair<VirtualDesktop, HMONITOR>(VirtualDesktop.Current, currentMonitor);
                     DWM.ExpandMainPane(currentPair);
                     DWM.Draw(currentPair);
+                    DWM.SaveFactors();
                 });
             }
             if (e == 0x23) //l
@@ -280,6 +282,7 @@ namespace AmethystWindowsSystray
                     Pair<VirtualDesktop, HMONITOR> currentPair = new Pair<VirtualDesktop, HMONITOR>(VirtualDesktop.Current, currentMonitor);
                     DWM.ShrinkMainPane(currentPair);
                     DWM.Draw(currentPair);
+                    DWM.SaveFactors();
                 });
             }
             if (e == 0x24) //j
