@@ -82,5 +82,17 @@ namespace AmethystWindowsSystray.Properties {
                 this["VirtualDesktops"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Factors {
+            get {
+                return ((string)(this["Factors"]));
+            }
+            set {
+                this["Factors"] = value;
+            }
+        }
     }
 }

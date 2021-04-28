@@ -112,4 +112,63 @@ namespace DesktopWindowManager.Internal
             return list;
         }
     }
+
+    public class FactorsConverter : JsonConverter
+    {
+        public override bool CanConvert(Type objectType) => objectType == typeof(List<KeyValuePair<Pair<VirtualDesktop, HMONITOR>, int>>);
+
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        {
+            var list = value as List<KeyValuePair<Pair<VirtualDesktop, HMONITOR>, int>>;
+
+            writer.WriteStartArray();
+            foreach (KeyValuePair<Pair<VirtualDesktop, HMONITOR>, int> pair in list)
+            {
+                User32.MONITORINFOEX info = new User32.MONITORINFOEX();
+                info.cbSize = (uint)Marshal.SizeOf(info);
+                User32.GetMonitorInfo(pair.Key.Item2, ref info);
+
+                writer.WriteStartObject();
+                writer.WritePropertyName("Desktop");
+                writer.WriteValue(VirtualDesktop.DesktopNameFromDesktop(pair.Key.Item1));
+                writer.WritePropertyName("MonitorX");
+                writer.WriteValue(info.rcMonitor.X);
+                writer.WritePropertyName("MonitorY");
+                writer.WriteValue(info.rcMonitor.Y);
+                writer.WritePropertyName("Factor");
+                writer.WritePropertyName("Factor");
+                writer.WriteValue(pair.Value);
+                writer.WriteEndObject();
+            }
+            writer.WriteEndArray();
+
+        }
+
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        {
+            List<KeyValuePair<Pair<VirtualDesktop, HMONITOR>, int>> list = new List<KeyValuePair<Pair<VirtualDesktop, HMONITOR>, int>>();
+
+            JArray array = JArray.Load(reader);
+
+            VirtualDesktop virtualDesktop = null;
+            HMONITOR hMONITOR = HMONITOR.NULL;
+            int factor = 0;
+
+            foreach (JObject desktopMonitor in array.Children())
+            {
+                var properties = desktopMonitor.Properties().ToList();
+                Point point = new Point(properties[1].Value.ToObject<int>() + 100, properties[2].Value.ToObject<int>() + 100);
+                HMONITOR monitor = User32.MonitorFromPoint(point, User32.MonitorFlags.MONITOR_DEFAULTTONEAREST);
+
+                virtualDesktop = VirtualDesktop.FromIndex(VirtualDesktop.SearchDesktop(properties[0].Value.ToString()));
+                hMONITOR = monitor;
+                factor = properties[3].Value.ToObject<int>();
+            }
+
+            var key = new Pair<VirtualDesktop, HMONITOR>(virtualDesktop, hMONITOR);
+            list.Add(new KeyValuePair<Pair<VirtualDesktop, HMONITOR>, int>(key, factor));
+
+            return list;
+        }
+    }
 }

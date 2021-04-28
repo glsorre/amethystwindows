@@ -85,5 +85,37 @@ namespace AmethystWindowsSystray
             User32.SetForegroundWindow(Windows[nextDesktopMonitor].FirstOrDefault().Window);
         }
 
+        public void LoadFactors()
+        {
+            if (Properties.Settings.Default.Factors != "")
+            {
+                ReadFactors();
+            }
+        }
+
+        public void SaveFactors()
+        {
+            Properties.Settings.Default.Factors = JsonConvert.SerializeObject(Factors.ToList(), Formatting.Indented, new FactorsConverter());
+            Properties.Settings.Default.Save();
+        }
+
+        public void ReadFactors()
+        {
+            Factors = JsonConvert.DeserializeObject<List<KeyValuePair<Pair<VirtualDesktop, HMONITOR>, int>>>(
+                Properties.Settings.Default.Factors.ToString(), new FactorsConverter()
+                ).ToDictionary(kv => kv.Key, kv => kv.Value);
+        }
+
+        public void UpdateFactors()
+        {
+            foreach (Pair<VirtualDesktop, HMONITOR> desktopMonitor in Windows.Keys)
+            {
+                if (!Factors.ContainsKey(desktopMonitor))
+                {
+                    Factors.Add(desktopMonitor, 0);
+                }
+            }
+        }
+
     }
 }
