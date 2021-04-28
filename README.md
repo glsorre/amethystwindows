@@ -35,6 +35,8 @@ The keyboard shortcuts configured are:
 | `mod1 + L`                | Swap focused window clockwise        |
 | `mod1 + J`                | Change focus counterclockwise        |
 | `mod1 + K`                | Change focus clockwise               |
+| `mod1 + P`                | Move focus to previous monitor       |
+| `mod1 + N`                | Move focus to next monitor           |
 | `mod2 + L`                | Expand main pane                     |
 | `mod2 + H`                | Shrink main pane                     |
 | `mod2 + K`                | Move window to next screen           |
