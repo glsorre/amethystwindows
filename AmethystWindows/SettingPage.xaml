@@ -29,7 +29,7 @@
             <muxc:NumberBox 
                 x:Name="PaddingNumberBox"
                 Value="{Binding Padding, Mode=TwoWay}"
-                Minimum="1"
+                Minimum="0"
                 Maximum="25"
                 SmallChange="1"
                 LargeChange="10"
