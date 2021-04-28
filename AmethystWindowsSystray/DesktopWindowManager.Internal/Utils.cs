@@ -136,7 +136,6 @@ namespace DesktopWindowManager.Internal
                 writer.WritePropertyName("MonitorY");
                 writer.WriteValue(info.rcMonitor.Y);
                 writer.WritePropertyName("Factor");
-                writer.WritePropertyName("Factor");
                 writer.WriteValue(pair.Value);
                 writer.WriteEndObject();
             }

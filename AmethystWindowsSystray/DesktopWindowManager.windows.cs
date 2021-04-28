@@ -75,6 +75,7 @@ namespace AmethystWindowsSystray
 
                 if (desktopWindow.IsRuntimePresent())
                 {
+                    User32.ShowWindow(windowHandle, ShowWindowCommand.SW_RESTORE);
                     desktopWindow.GetInfo();
 
                     if (Windows.ContainsKey(desktopWindow.GetDesktopMonitor()))
