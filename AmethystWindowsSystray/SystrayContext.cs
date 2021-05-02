@@ -39,6 +39,7 @@ namespace AmethystWindowsSystray
             Logger.Information($"inizializing transparent form");
             TransparentForm form = new TransparentForm();
             form.AmethystSysTrayReconnect += Form_AmethystSysTrayReconnect;
+            form.AmethystSysTrayDisplayChange += Form_AmethystSysTrayDisplayChange;
             form.AmethystSystrayHotKey += Form_AmethystSystrayHotKey;
             MainForm = form;
 
@@ -176,6 +177,14 @@ namespace AmethystWindowsSystray
         {
             await App_Connect();
             await Form_AmethystSysTrayReconnect_Refresh();
+        }
+
+        private void Form_AmethystSysTrayDisplayChange(object sender, EventArgs e)
+        {
+            DWM.ClearWindows();
+            DWM.GetWindows();
+            DWM.Draw();
+            App_Refresh();
         }
 
         private void Form_AmethystSystrayHotKey(object sender, int e)

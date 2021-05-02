@@ -13,6 +13,7 @@ namespace AmethystWindowsSystray
         private System.ComponentModel.IContainer components = null;
 
         public event EventHandler AmethystSysTrayReconnect;
+        public event EventHandler AmethystSysTrayDisplayChange;
         public event EventHandler<int> AmethystSystrayHotKey;
 
         protected override void SetVisibleCore(bool value)
@@ -28,6 +29,12 @@ namespace AmethystWindowsSystray
         protected override void WndProc(ref Message m)
         {
             uint messageReconnect = User32.RegisterWindowMessage("AMETHYSTSYSTRAY_RECONNECT");
+
+            if (m.Msg == (uint)User32.WindowMessage.WM_DISPLAYCHANGE)
+            {
+                //handle monitor changes
+                AmethystSysTrayDisplayChange.Invoke(this, null);
+            }
 
             if (m.Msg == messageReconnect)
             {
