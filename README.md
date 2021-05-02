@@ -14,7 +14,7 @@ Amethyst Windows is available for direct download as appxbundle on the [release 
 - integrated with windows 10 virtual desktops
 - fast and light
 
-## Keyboard Shortcut
+## Keyboard Shortcuts
 
 Amethyst Windows uses two modifiers.
 
@@ -49,6 +49,12 @@ The keyboard shortcuts configured are:
 | `mod2 + 3`                | Throw focused window to space 3      |
 | `mod2 + 4`                | Throw focused window to space 4      |
 | `mod2 + 5`                | Throw focused window to space 5      |
+
+### Customize Shortcuts
+
+Cutomize shortcuts is possible by copiyng and correctly editing `defaultHotkeys.json` into `%USERPROFILE%/AppData/Roaming/AmethystWindows/hotkeys.json`.
+
+The key field reference can be found at [https://docs.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes](https://docs.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes).
 
 ## Layouts
 
