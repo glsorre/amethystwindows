@@ -52,7 +52,7 @@ The keyboard shortcuts configured are:
 
 ### Customize Shortcuts
 
-Cutomize shortcuts is possible by copiyng and correctly editing `defaultHotkeys.json` into `%USERPROFILE%/AppData/Roaming/AmethystWindows/hotkeys.json`.
+Cutomize shortcuts is possible by copying and correctly editing [`defaultHotkeys.json`](https://github.com/glsorre/amethystwindows/blob/master/defaultHotkeys.json) into `%USERPROFILE%/AppData/Roaming/AmethystWindows/hotkeys.json`.
 
 The key field reference can be found at [https://docs.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes](https://docs.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes).
 
