@@ -62,7 +62,7 @@ The key field reference can be found at [https://docs.microsoft.com/en-us/window
 This layout has one column per window, with each window extending the full height of the screen.
 
 ### Vertical
-The rotated version of Column, where each window takes up an entire row, extending the full width of the screen.
+The rotated version of Horizontal, where each window takes up an entire row, extending the full width of the screen.
 
 ### HorizontalGrid
 This layout places the windows in grid occuping space in horizontal when necessary.
