@@ -8,12 +8,6 @@ Automatic tiling window manager for Windows 10 along the lines of [xmonad](https
 
 Amethyst Windows is available for direct download as appxbundle on the [release page](https://github.com/glsorre/amethystwindows/releases).
 
-## Key Features
-
-- doesn't use DLL injection to manipulate windows
-- integrated with windows 10 virtual desktops
-- fast and light
-
 ## [User Guide](https://amethystwindows.com)
 
 ## Contact
