@@ -1,4 +1,4 @@
-Tiling window manager for Windows 10 along the lines of [xmonad](https://xmonad.org/) and [Amethyst](https://ianyh.com/amethyst/).
+Automatic tiling window manager for Windows 10 along the lines of [xmonad](https://xmonad.org/) and [Amethyst](https://ianyh.com/amethyst/).
 
 [![Build Status](https://dev.azure.com/giuseppesorrentino/AmethystWindows/_apis/build/status/glsorre.amethystwindows?branchName=master)](https://dev.azure.com/giuseppesorrentino/AmethystWindows/_build/latest?definitionId=1&branchName=master)
 [![Gitter](https://badges.gitter.im/glsorre/amethystwindows.svg)](https://gitter.im/glsorre/amethystwindows?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
@@ -26,29 +26,29 @@ Amethyst Windows uses two modifiers.
 
 The keyboard shortcuts configured are:
 
-| Shortcut                  | Description                          |
-|---------------------------|--------------------------------------|
-| `mod1 + space`            | Rotate layouts clockwise             |
-| `mod2 + space`            | Rotate layouts counterclockwise      |
-| `mod1 + enter`            | Swap focused window to main window   |
-| `mod1 + H`                | Swap focused window counterclockwise |
-| `mod1 + L`                | Swap focused window clockwise        |
-| `mod1 + J`                | Change focus counterclockwise        |
-| `mod1 + K`                | Change focus clockwise               |
-| `mod1 + P`                | Move focus to previous monitor       |
-| `mod1 + N`                | Move focus to next monitor           |
-| `mod2 + L`                | Expand main pane                     |
-| `mod2 + H`                | Shrink main pane                     |
-| `mod2 + K`                | Move window to next screen           |
-| `mod2 + J`                | Move window to previous screen       |
-| `mod1 + Z`                | Force windows to be revalutated      |
-| `mod2 + left`             | Throw focused window to space left   |
-| `mod2 + right`            | Throw focused window to space right  |
-| `mod2 + 1`                | Throw focused window to space 1      |
-| `mod2 + 2`                | Throw focused window to space 2      |
-| `mod2 + 3`                | Throw focused window to space 3      |
-| `mod2 + 4`                | Throw focused window to space 4      |
-| `mod2 + 5`                | Throw focused window to space 5      |
+| Shortcut                  | Description                                   |
+|---------------------------|-----------------------------------------------|
+| `mod1 + space`            | Rotate layouts clockwise                      |
+| `mod2 + space`            | Rotate layouts counterclockwise               |
+| `mod1 + enter`            | Swap focused window to main window            |
+| `mod1 + H`                | Swap focused window counterclockwise          |
+| `mod1 + L`                | Swap focused window clockwise                 |
+| `mod1 + J`                | Move focus to previous window                 |
+| `mod1 + K`                | Move focus to next window                     |
+| `mod1 + P`                | Move focus to previous monitor                |
+| `mod1 + N`                | Move focus to next monitor                    |
+| `mod2 + L`                | Expand main pane                              |
+| `mod2 + H`                | Shrink main pane                              |
+| `mod2 + K`                | Move window to next monitor                   |
+| `mod2 + J`                | Move window to previous monitor               |
+| `mod1 + Z`                | Force windows to be revalutated               |
+| `mod2 + left`             | Throw focused window to virtualdesktop left   |
+| `mod2 + right`            | Throw focused window to virtualdesktop right  |
+| `mod2 + 1`                | Throw focused window to virtualdesktop 1      |
+| `mod2 + 2`                | Throw focused window to virtualdesktop 2      |
+| `mod2 + 3`                | Throw focused window to virtualdesktop 3      |
+| `mod2 + 4`                | Throw focused window to virtualdesktop 4      |
+| `mod2 + 5`                | Throw focused window to virtualdesktop 5      |
 
 ### Customize Shortcuts
 
