@@ -1,5 +1,6 @@
-## Key Features
+## Technical Features
 
+- supports windows 10 build 16299+
 - doesn't use DLL injection to manipulate windows
 - integrated with windows 10 virtual desktops
 - fast and light
