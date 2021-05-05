@@ -5,7 +5,6 @@ Download the appxbundle from the [releases page](https://github.com/glsorre/amet
 ## Technical Features
 
 - supports windows 10 build 16299+
-- UWP Application
 - doesn't use DLL injection to manipulate windows
 - integrated with windows 10 virtual desktops
 - fast and light
