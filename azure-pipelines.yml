@@ -81,7 +81,6 @@ steps:
     configuration: '$(buildConfiguration)'
     msbuildArguments: '/t:AmethystWindowsPackaging:Rebuild /p:AppxBundlePlatforms="$(buildPlatform)" /p:AppxPackageDir="$(appxPackageDir)" /p:AppxBundle=Always /p:AppxPackageSigningEnabled=true /p:UapAppxPackageBuildMode=StoreAndSideload /p:PackageCertificateKeyFile="$(pfxCertificate.secureFilePath)" /p:PackageCertificatePassword="$(certfile.password)" /p:PackageCertificateThumbprint="$(certfile.thumbprint)"'
 
-
 - task: CopyFiles@2
   displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
   inputs:
