@@ -62,6 +62,7 @@
     <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
     <UapAppxPackageBuildMode>StoreAndSideload</UapAppxPackageBuildMode>
+    <PackageCertificateThumbprint>BF94945B3CB0A7019805EFAA5A8411AF976B0E59</PackageCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <AppxBundle>Always</AppxBundle>
@@ -99,6 +100,7 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <None Include="gsorrentino.pfx" />
     <Content Include="Images\SplashScreen.scale-200.png" />
     <Content Include="Images\LockScreenLogo.scale-200.png" />
     <Content Include="Images\Square150x150Logo.scale-200.png" />

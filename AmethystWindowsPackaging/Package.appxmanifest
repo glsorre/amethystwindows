@@ -10,7 +10,7 @@
 
   <Identity
     Name="e7e2fe78-574a-47c3-81a2-66484cda1c60"
-    Publisher="CN=Giuseppe Sorrentino"
+    Publisher="CN=Giuseppe Sorrentino, O=Giuseppe Sorrentino, STREET=Viale dei Giardini n ° 9, L=Rende, S=Cosenza, C=IT"
     Version="1.0.1.0" />
 
   <Properties>
