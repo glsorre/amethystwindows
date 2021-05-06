@@ -76,7 +76,6 @@ steps:
 
 - task: VSBuild@1
   inputs:
-    platform: 'x86'
     solution: '$(solution)'
     configuration: '$(buildConfiguration)'
     msbuildArguments: '/p:AppxBundlePlatforms="$(buildPlatform)" /p:AppxPackageDir="$(appxPackageDir)" /p:AppxBundle=Always /p:AppxPackageSigningEnabled=true /p:UapAppxPackageBuildMode=StoreAndSideload /p:PackageCertificateKeyFile="$(pfxCertificate.secureFilePath)" /p:PackageCertificatePassword="$(certfile.password)" /p:PackageCertificateThumbprint="$(certfile.thumbprint)"'
