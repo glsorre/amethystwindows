@@ -77,8 +77,9 @@ steps:
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
-    configuration: '$(buildConfiguration)'
     msbuildArgs: '/t:AmethystWindowsPackaging:Rebuild /p:AppxBundlePlatforms="$(buildPlatform)" /p:AppxPackageDir="$(appxPackageDir)" /p:AppxBundle=Always /p:AppxPackageSigningEnabled=true /p:UapAppxPackageBuildMode=SideloadOnly /p:PackageCertificateKeyFile="$(pfxCertificate.secureFilePath)" /p:PackageCertificatePassword="$(certfile.password)" /p:PackageCertificateThumbprint="$(certfile.thumbprint)" /p:BuildAppxUploadPackageForUap=false'
+    platform: 'x86'
+    configuration: '$(buildConfiguration)'
 
 - task: CopyFiles@2
   displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
