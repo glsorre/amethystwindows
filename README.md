@@ -1,9 +1,10 @@
 ## Getting Amethyst Windows
 
 [Download the appxbundle](#download-cta) from and install it trough [MS App Installer](https://www.microsoft.com/en-us/p/programma-di-installazione-app/9nblggh4nns1?activetab=pivot:overviewtab).
-Notice that windows 10 creator update is the minimi requirement.
 
-Do not forget to star the project on github!
+Notice that windows 10 creators update is the minimum requirement.
+
+**Do not forget to star the project on [github](https://github.com/glsorre/amethystwindows)!**
 
 ## Features
 
