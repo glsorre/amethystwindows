@@ -1,10 +1,12 @@
 ## Getting Amethyst Windows
 
-Download the appxbundle from the [releases page](https://github.com/glsorre/amethystwindows/releases/latest) and install it trough [MS App Installer](https://www.microsoft.com/en-us/p/programma-di-installazione-app/9nblggh4nns1?activetab=pivot:overviewtab).
+[Download the appxbundle](#download-cta) from and install it trough [MS App Installer](https://www.microsoft.com/en-us/p/programma-di-installazione-app/9nblggh4nns1?activetab=pivot:overviewtab).
+Notice that windows 10 creator update is the minimi requirement.
 
-## Technical Features
+Do not forget to star the project on github!
 
-- supports windows 10 build 16299+
+## Features
+
 - doesn't use DLL injection to manipulate windows
 - integrated with windows 10 virtual desktops
 - fast and light
