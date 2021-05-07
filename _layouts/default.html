@@ -11,6 +11,7 @@
         gtag('config', '{{ site.google_analytics }}');
       </script>
     {% endif %}
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
     <meta charset="UTF-8">
 
     <style>
@@ -105,11 +106,10 @@
             </small>
           </h1>
           {% if site.show_downloads %}
-            <a href="{{ site.github.appxbundle_url }}" class="button button_large download">Download</a>
+            <a href="{{ site.github.appxbundle_url }}" class="button button_large download">Download v{{ site.github.appxbundle_version }}</a>
           {% endif %}
-          {% if site.github.is_project_page %}
-            <a href="{{ site.github.repository_url }}" class="button button_large github">View on GitHub</a>
-          {% endif %}
+          <a class="github-button" href="https://github.com/glsorre/amethystwindows" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star glsorre/amethystwindows on GitHub">Star</a> 
+          <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-size="large" data-show-count="false">Tweet</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
         </header>
       </div>
 
