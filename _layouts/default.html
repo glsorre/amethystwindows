@@ -1,136 +1,166 @@
 <!DOCTYPE html>
-<html lang="{{ site.lang | default: "en-US" }}">
-  <head>
+<html lang="{{ site.lang | default: " en-US" }}">
 
-    {% if site.google_analytics %}
-      <script async src="https://www.googletagmanager.com/gtag/js?id={{ site.google_analytics }}"></script>
-      <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', '{{ site.google_analytics }}');
-      </script>
-    {% endif %}
-    <script async defer src="https://buttons.github.io/buttons.js"></script>
-    <meta charset="UTF-8">
+<head>
 
-    <style>
-      body, h1, h2, h3 {
-        font-family: Calibri,Candara,Segoe,Segoe UI,Optima,Arial,sans-serif !important; 
-      }
+  <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"></script>
 
-      a {
-        color: #8e1397 !important;
-      }
+  {% if site.google_analytics %}
+  <script async src="https://www.googletagmanager.com/gtag/js?id={{ site.google_analytics }}"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', '{{ site.google_analytics }}');
+  </script>
+  {% endif %}
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-WBMGSNQ');
+  </script>
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+  <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+  <meta charset="UTF-8">
 
-      a:hover {
-        color: #8e1397 !important;
-      }
+  <style>
+    body,
+    h1,
+    h2,
+    h3 {
+      font-family: Calibri, Candara, Segoe, Segoe UI, Optima, Arial, sans-serif !important;
+    }
 
-      a:visited {
-        color: #8e1397 !important;
-      }
+    a {
+      color: #8e1397 !important;
+    }
 
-      a.button_large {
-        font-size: 17px;
-        padding: 12px;
-      }
+    a:hover {
+      color: #8e1397 !important;
+    }
 
-      a.github {
-        color: black !important;
-      }
+    a:visited {
+      color: #8e1397 !important;
+    }
 
-      a.download {
-        border: #8e1397 1px solid;
-        background-color: #8e1397 !important;
-        color: white !important;
-        font-weight: bold;
-      }
+    a.button_large {
+      font-size: 17px;
+      padding: 12px;
+    }
 
-      a.download:hover {
-        background-color: #75107c !important;
-      }
+    a.github {
+      color: black !important;
+    }
 
-      .bg {
-        background: #ddd;
-        padding: 20px;
-        text-align: center;
-        margin-bottom: 15px
-      }
+    a.download {
+      border: #8e1397 1px solid;
+      background-color: #8e1397 !important;
+      color: white !important;
+      font-weight: bold;
+    }
 
-      .spaced {
-        margin-bottom: 80px;
-      }
+    a.download:hover {
+      background-color: #75107c !important;
+    }
 
-      header {
-        margin-top: 80px;
-      }
+    .bg {
+      background: #ddd;
+      padding: 20px;
+      text-align: center;
+      margin-bottom: 15px
+    }
 
-      h1, h2 {
-        color: #8e1397 !important;
-      }
+    .spaced {
+      margin-bottom: 80px;
+    }
 
-      h1 small {
-        font-weight: normal;
-        line-height: 31.1px;
-      }
+    header {
+      margin-top: 80px;
+    }
 
-      h1.project_name {
-        color: black !important;
-        padding-left: 55px;
-        background: url(https://cdn.jsdelivr.net/gh/glsorre/amethystwindows@site/_assets/appLogo_002.png) left top no-repeat;
-        min-height: 50px;
-      }
+    h1,
+    h2 {
+      color: #8e1397 !important;
+    }
 
-      table {
-        width: 100%;
-        border: 1px solid #8e1397;;
-      }
-    </style>
+    h1 small {
+      font-weight: normal;
+      line-height: 31.1px;
+    }
 
-{% seo title=false %}
-    <title>Amethyst Windows | Automatic tiling window manager for windows 10</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#157878">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/glsorre/tatami@master/css/tatami.min.css">
-  </head>
-  <body>
-    <div class="grid">
-      <div class="unit whole spaced">
-        <header class="page-header" role="banner">
-          <h1 class="project_name">{{ site.title }}
-            <br/>
-            <small>
-              {{ page.description | default: site.description | default: site.github.project_tagline }}
-            </small>
-          </h1>
-          {% if site.show_downloads %}
-          <div>
-            <a id="download-cta" href="{{ site.github.appxbundle_url }}" class="button button_large download">Download v{{ site.github.appxbundle_version }}</a>
-          </div>
-          {% endif %}
-          <div>
-            <a class="github-button" href="https://github.com/glsorre/amethystwindows" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star glsorre/amethystwindows on GitHub">Star</a> 
-            <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-size="large" data-show-count="false">Tweet</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-          </div>
-        </header>
-      </div>
+    h1.project_name {
+      color: black !important;
+      padding-left: 55px;
+      background: url(https://cdn.jsdelivr.net/gh/glsorre/amethystwindows@site/_assets/appLogo_002.png) left top no-repeat;
+      min-height: 50px;
+    }
 
-      <div class="unit whole spaced">
-        <main id="content" class="main-content" role="main">
-          {{ content }}
-        </main>
-      </div>
-      
-      <div class="unit whole spaced">
-        <footer class="site-footer">
-          {% if site.github.is_project_page %}
-            <span class="site-footer-owner"><a href="{{ site.github.repository_url }}">{{ site.github.repository_name }}</a> is maintained by <a href="{{ site.github.owner_url }}">{{ site.github.owner_name }}</a>.</span>
-          {% endif %}
-          <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
-        </footer>
-      </div>
+    table {
+      width: 100%;
+      border: 1px solid #8e1397;
+      ;
+    }
+  </style>
+
+  <Script>
+    window.cookieconsent.initialise({
+      palette: { popup: { background: "#fff" }, button: { background: "#8e1397" }, },
+      revokable: true,
+      theme: "edgeless"
+    });
+  </Script>
+
+  {% seo title=false %}
+  <title>Amethyst Windows | Automatic tiling window manager for windows 10</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#157878">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/glsorre/tatami@master/css/tatami.min.css">
+</head>
+
+<body>
+  <div class="grid">
+    <div class="unit whole spaced">
+      <header class="page-header" role="banner">
+        <h1 class="project_name">{{ site.title }}
+          <br />
+          <small>
+            {{ page.description | default: site.description | default: site.github.project_tagline }}
+          </small>
+        </h1>
+        {% if site.show_downloads %}
+        <div>
+          <a id="download-cta" href="{{ site.github.appxbundle_url }}" class="button button_large download">Download v{{
+            site.github.appxbundle_version }}</a>
+        </div>
+        {% endif %}
+        <div>
+          <a class="github-button" href="https://github.com/glsorre/amethystwindows" data-icon="octicon-star"
+            data-size="large" data-show-count="true" aria-label="Star glsorre/amethystwindows on GitHub">Star</a>
+          <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-size="large"
+            data-show-count="false">Tweet</a>
+        </div>
+      </header>
     </div>
-  </body>
+
+    <div class="unit whole spaced">
+      <main id="content" class="main-content" role="main">
+        {{ content }}
+      </main>
+    </div>
+
+    <div class="unit whole spaced">
+      <footer class="site-footer">
+        {% if site.github.is_project_page %}
+        <span class="site-footer-owner"><a href="{{ site.github.repository_url }}">{{ site.github.repository_name }}</a>
+          is maintained by <a href="{{ site.github.owner_url }}">{{ site.github.owner_name }}</a>.</span>
+        {% endif %}
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub
+            Pages</a>.</span>
+      </footer>
+    </div>
+  </div>
+</body>
+
 </html>
