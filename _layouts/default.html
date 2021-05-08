@@ -105,7 +105,8 @@
 
   <Script>
     window.cookieconsent.initialise({
-      palette: { popup: { background: "#fff" }, button: { background: "#8e1397" }, },
+      container: document.getElementById("cookieconsent"),
+      palette: { popup: { background: "#eee" }, button: { background: "#8e1397" },},
       revokable: true,
       theme: "edgeless"
     });
