@@ -80,6 +80,7 @@ namespace AmethystWindows
         private void MainPage_AppServiceConnected(object sender, AppServiceTriggerDetails e)
         {
             App.Connection.RequestReceived += Connection_RequestReceived;
+            this.MainPage_Refresh();
         }
 
         private void Connection_RequestReceived(AppServiceConnection sender, AppServiceRequestReceivedEventArgs args)
