@@ -41,6 +41,82 @@ namespace AmethystWindows
             ApplicationsBarButton.Click += SettingsBarButton_Click;
             StartupButton.Click += StartupButton_Click;
             PaddingNumberBox.Loaded += PaddingNumberBox_Loaded;
+            MarginTopNumberBox.Loaded += MarginTopNumberBox_Loaded;
+            MarginBottonNumberBox.Loaded += MarginBottonNumberBox_Loaded;
+            MarginLeftNumberBox.Loaded += MarginLeftNumberBox_Loaded;
+            MarginRightNumberBox.Loaded += MarginRightNumberBox_Loaded;
+        }
+
+        private void MarginRightNumberBox_Loaded(object sender, RoutedEventArgs e)
+        {
+            MarginRightNumberBox.ValueChanged += MarginRightNumberBox_ValueChanged;
+        }
+
+        private void MarginRightNumberBox_ValueChanged(Microsoft.UI.Xaml.Controls.NumberBox sender, Microsoft.UI.Xaml.Controls.NumberBoxValueChangedEventArgs args)
+        {
+            debounceDispatcher.Debounce(() =>
+            {
+                DispatcherHelper.CheckBeginInvokeOnUI(async () =>
+                {
+                    ValueSet message = new ValueSet();
+                    message.Add("margin_right_set", args.NewValue);
+                    await App.Connection.SendMessageAsync(message);
+                });
+            });
+        }
+
+        private void MarginLeftNumberBox_Loaded(object sender, RoutedEventArgs e)
+        {
+            MarginLeftNumberBox.ValueChanged += MarginLeftNumberBox_ValueChanged;
+        }
+
+        private void MarginLeftNumberBox_ValueChanged(Microsoft.UI.Xaml.Controls.NumberBox sender, Microsoft.UI.Xaml.Controls.NumberBoxValueChangedEventArgs args)
+        {
+            debounceDispatcher.Debounce(() =>
+            {
+                DispatcherHelper.CheckBeginInvokeOnUI(async () =>
+                {
+                    ValueSet message = new ValueSet();
+                    message.Add("margin_left_set", args.NewValue);
+                    await App.Connection.SendMessageAsync(message);
+                });
+            });
+        }
+
+        private void MarginBottonNumberBox_Loaded(object sender, RoutedEventArgs e)
+        {
+            MarginBottonNumberBox.ValueChanged += MarginBottonNumberBox_ValueChanged;
+        }
+
+        private void MarginBottonNumberBox_ValueChanged(Microsoft.UI.Xaml.Controls.NumberBox sender, Microsoft.UI.Xaml.Controls.NumberBoxValueChangedEventArgs args)
+        {
+            debounceDispatcher.Debounce(() =>
+            {
+                DispatcherHelper.CheckBeginInvokeOnUI(async () =>
+                {
+                    ValueSet message = new ValueSet();
+                    message.Add("margin_bottom_set", args.NewValue);
+                    await App.Connection.SendMessageAsync(message);
+                });
+            });
+        }
+
+        private void MarginTopNumberBox_Loaded(object sender, RoutedEventArgs e)
+        {
+            MarginTopNumberBox.ValueChanged += MarginTopNumberBox_ValueChanged;
+        }
+
+        private void MarginTopNumberBox_ValueChanged(Microsoft.UI.Xaml.Controls.NumberBox sender, Microsoft.UI.Xaml.Controls.NumberBoxValueChangedEventArgs args)
+        {
+            debounceDispatcher.Debounce(() =>
+            {
+                DispatcherHelper.CheckBeginInvokeOnUI(async () =>
+                {
+                    ValueSet message = new ValueSet();
+                    message.Add("margin_top_set", args.NewValue);
+                    await App.Connection.SendMessageAsync(message);
+                });
+            });
         }
 
         private async void StartupButton_Click(object sender, RoutedEventArgs e)

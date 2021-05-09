@@ -94,5 +94,53 @@ namespace AmethystWindowsSystray.Properties {
                 this["Factors"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int MarginTop {
+            get {
+                return ((int)(this["MarginTop"]));
+            }
+            set {
+                this["MarginTop"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int MarginBottom {
+            get {
+                return ((int)(this["MarginBottom"]));
+            }
+            set {
+                this["MarginBottom"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int MarginRight {
+            get {
+                return ((int)(this["MarginRight"]));
+            }
+            set {
+                this["MarginRight"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int MarginLeft {
+            get {
+                return ((int)(this["MarginLeft"]));
+            }
+            set {
+                this["MarginLeft"] = value;
+            }
+        }
     }
 }

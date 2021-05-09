@@ -24,13 +24,62 @@
         </StackPanel>
         <StackPanel controls:DockPanel.Dock="Top" Orientation="Horizontal" Padding="10 10 0 10">
             <Border BorderBrush="{x:Null}" Padding="10">
-                <TextBlock Text="Padding" VerticalAlignment="Center"/>
+                <TextBlock Text="Window Padding" VerticalAlignment="Center"/>
             </Border>
             <muxc:NumberBox 
                 x:Name="PaddingNumberBox"
                 Value="{Binding Padding, Mode=TwoWay}"
                 Minimum="0"
-                Maximum="25"
+                Maximum="100"
+                SmallChange="1"
+                LargeChange="10"
+                SpinButtonPlacementMode="Inline"
+                Padding="10">
+            </muxc:NumberBox >
+        </StackPanel>
+        <StackPanel controls:DockPanel.Dock="Top" Orientation="Horizontal" Padding="10 10 0 10">
+            <Border BorderBrush="{x:Null}" Padding="10">
+                <TextBlock Text="Screen Margin" Padding="0,0,50,0" VerticalAlignment="Center"/>
+            </Border>
+            <TextBlock Text="Top" Padding="0,0,10,0" VerticalAlignment="Center"/>
+            <muxc:NumberBox 
+                x:Name="MarginTopNumberBox"
+                Value="{Binding MarginTop, Mode=TwoWay}"
+                Minimum="0"
+                Maximum="100"
+                SmallChange="1"
+                LargeChange="10"
+                SpinButtonPlacementMode="Inline"
+                Padding="10">
+            </muxc:NumberBox >
+            <TextBlock Text="Bottom" Padding="50,0,10,0" VerticalAlignment="Center"/>
+            <muxc:NumberBox 
+                x:Name="MarginBottonNumberBox"
+                Value="{Binding MarginBottom, Mode=TwoWay}"
+                Minimum="0"
+                Maximum="100"
+                SmallChange="1"
+                LargeChange="10"
+                SpinButtonPlacementMode="Inline"
+                Padding="10">
+            </muxc:NumberBox >
+            <TextBlock Text="Right" Padding="50,0,10,0" VerticalAlignment="Center"/>
+            <muxc:NumberBox 
+                x:Name="MarginRightNumberBox"
+                Value="{Binding MarginRight, Mode=TwoWay}"
+                Minimum="0"
+                Maximum="100"
+                SmallChange="1"
+                LargeChange="10"
+                SpinButtonPlacementMode="Inline"
+                Padding="10">
+            </muxc:NumberBox >
+            <TextBlock Text="Left" Padding="50,0,10,0" VerticalAlignment="Center"/>
+            <muxc:NumberBox 
+                x:Name="MarginLeftNumberBox"
+                Value="{Binding MarginLeft, Mode=TwoWay}"
+                Minimum="0"
+                Maximum="100"
                 SmallChange="1"
                 LargeChange="10"
                 SpinButtonPlacementMode="Inline"
@@ -44,15 +93,15 @@
                 </Border>
             </StackPanel>
             <StackPanel Orientation="Vertical">
-                <Grid x:Name="FiltersListHeaders" HorizontalAlignment="Stretch" VerticalAlignment="Top" Padding="20">
+                <Grid x:Name="FiltersListHeaders" HorizontalAlignment="Stretch" VerticalAlignment="Top" Padding="10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="95"/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Style="{ThemeResource BaseTextBlockStyle}" Text="Application Name" />
-                    <TextBlock Grid.Column="1" Style="{ThemeResource BaseTextBlockStyle}" Text="Class Name" />
-                    <TextBlock Grid.Column="2" Style="{ThemeResource BaseTextBlockStyle}" Text="Actions" />
+                    <TextBlock Grid.Column="0" Style="{ThemeResource BaseTextBlockStyle}" Padding="0,0,10,0" Text="Application Name" />
+                    <TextBlock Grid.Column="1" Style="{ThemeResource BaseTextBlockStyle}" Padding="0,0,10,0" Text="Class Name" />
+                    <TextBlock Grid.Column="2" Style="{ThemeResource BaseTextBlockStyle}" Padding="0,0,10,0" Text="Actions" />
                 </Grid>
                 <ScrollViewer>
                     <ListView x:Name="FilterList" ItemsSource="{Binding Filters}">
@@ -65,15 +114,15 @@
                         </ListView.ItemContainerStyle>
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <Grid HorizontalAlignment="Stretch" VerticalAlignment="Top" Padding="20">
+                                <Grid HorizontalAlignment="Stretch" VerticalAlignment="Top" Padding="10">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="95"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Style="{ThemeResource BodyTextBlockStyle}" Text="{Binding AppName}" />
-                                    <TextBlock Grid.Column="1" Style="{ThemeResource BodyTextBlockStyle}" Text="{Binding ClassName}" />
-                                    <Button Grid.Column="2" Content="Remove" Click="FilterRemoveButton_Click"/>
+                                    <TextBlock Grid.Column="0" Style="{ThemeResource BodyTextBlockStyle}" Padding="0,0,10,0" Text="{Binding AppName}" />
+                                    <TextBlock Grid.Column="1" Style="{ThemeResource BodyTextBlockStyle}" Padding="0,0,10,0" Text="{Binding ClassName}" />
+                                    <Button Grid.Column="2" Padding="0,0,10,0" Content="Remove" Click="FilterRemoveButton_Click"/>
                                 </Grid>
                             </DataTemplate>
                         </ListView.ItemTemplate>

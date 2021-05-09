@@ -129,10 +129,10 @@ namespace AmethystWindowsSystray
 
             float ScreenScalingFactorHoriz = (float)PhysicalScreenWidth / (float)LogicalScreenWidth;
             ScreenScalingFactorVert = (float)PhysicalScreenHeight / (float)LogicalScreenHeight;
-            mX = info.rcWork.X;
-            mY = info.rcWork.Y;
-            int mWidth = info.rcWork.Width;
-            int mHeight = info.rcWork.Height;
+            mX = info.rcWork.X + MarginLeft;
+            mY = info.rcWork.Y + MarginTop;
+            int mWidth = info.rcWork.Width - MarginLeft - MarginRight;
+            int mHeight = info.rcWork.Height - MarginTop - MarginBottom;
 
             Layout mCurrentLayout;
             try

@@ -95,7 +95,7 @@ namespace AmethystWindowsSystray
 
             Logger.Information($"refreshing UWP");
             App_Refresh();
-            App_SendPadding();
+            App_SendPaddingAndMargin();
             App_SendFilters();
         }
 
@@ -113,16 +113,12 @@ namespace AmethystWindowsSystray
             if (args.Request.Message.ContainsKey("refresh"))
             {
                 App_Refresh();
+                App_SendPaddingAndMargin();
             }
 
             if (args.Request.Message.ContainsKey("redraw"))
             {
                 DWM.Draw();
-            }
-
-            if (args.Request.Message.ContainsKey("padding_read"))
-            {
-                App_SendPadding();
             }
 
             if (args.Request.Message.ContainsKey("padding_set"))
@@ -131,6 +127,42 @@ namespace AmethystWindowsSystray
                 int newPadding = int.Parse(message.ToString());
                 DWM.Padding = newPadding;
                 Properties.Settings.Default.Padding = newPadding;
+                Properties.Settings.Default.Save();
+            }
+
+            if (args.Request.Message.ContainsKey("margin_top_set"))
+            {
+                args.Request.Message.TryGetValue("margin_top_set", out object message);
+                int newMargin = int.Parse(message.ToString());
+                DWM.MarginTop = newMargin;
+                Properties.Settings.Default.MarginTop = newMargin;
+                Properties.Settings.Default.Save();
+            }
+
+            if (args.Request.Message.ContainsKey("margin_bottom_set"))
+            {
+                args.Request.Message.TryGetValue("margin_bottom_set", out object message);
+                int newMargin = int.Parse(message.ToString());
+                DWM.MarginBottom = newMargin;
+                Properties.Settings.Default.MarginBottom = newMargin;
+                Properties.Settings.Default.Save();
+            }
+
+            if (args.Request.Message.ContainsKey("margin_left_set"))
+            {
+                args.Request.Message.TryGetValue("margin_left_set", out object message);
+                int newMargin = int.Parse(message.ToString());
+                DWM.MarginLeft = newMargin;
+                Properties.Settings.Default.MarginLeft = newMargin;
+                Properties.Settings.Default.Save();
+            }
+
+            if (args.Request.Message.ContainsKey("margin_right_set"))
+            {
+                args.Request.Message.TryGetValue("margin_right_set", out object message);
+                int newMargin = int.Parse(message.ToString());
+                DWM.MarginRight = newMargin;
+                Properties.Settings.Default.MarginRight = newMargin;
                 Properties.Settings.Default.Save();
             }
 
@@ -171,7 +203,7 @@ namespace AmethystWindowsSystray
         {
             await Task.Delay(500);
             App_Refresh();
-            App_SendPadding();
+            App_SendPaddingAndMargin();
         }
 
         private async void Form_AmethystSysTrayReconnect(object sender, EventArgs e)
@@ -355,10 +387,14 @@ namespace AmethystWindowsSystray
             await appListEntries.First().LaunchAsync();
         }
 
-        private async void App_SendPadding()
+        private async void App_SendPaddingAndMargin()
         {
             ValueSet message = new ValueSet();
             message.Add("padding_read", Properties.Settings.Default.Padding);
+            message.Add("margin_top_read", Properties.Settings.Default.MarginTop);
+            message.Add("margin_bottom_read", Properties.Settings.Default.MarginBottom);
+            message.Add("margin_left_read", Properties.Settings.Default.MarginLeft);
+            message.Add("margin_right_read", Properties.Settings.Default.MarginRight);
             await App_Send(message);
         }
 

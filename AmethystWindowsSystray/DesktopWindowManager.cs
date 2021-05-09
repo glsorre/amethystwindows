@@ -48,9 +48,61 @@ namespace AmethystWindowsSystray
             }
         }
 
+        private int marginTop;
+
+        public int MarginTop
+        {
+            get { return marginTop; }
+            set
+            {
+                marginTop = value;
+                Draw();
+            }
+        }
+
+        private int marginBottom;
+
+        public int MarginBottom
+        {
+            get { return marginBottom; }
+            set
+            {
+                marginBottom = value;
+                Draw();
+            }
+        }
+
+        private int marginLeft;
+
+        public int MarginLeft
+        {
+            get { return marginLeft; }
+            set
+            {
+                marginLeft = value;
+                Draw();
+            }
+        }
+
+        private int marginRight;
+
+        public int MarginRight
+        {
+            get { return marginRight; }
+            set
+            {
+                marginRight = value;
+                Draw();
+            }
+        }
+
         public DesktopWindowsManager()
         {
             this.padding = Properties.Settings.Default.Padding;
+            this.marginTop = Properties.Settings.Default.MarginTop;
+            this.marginBottom = Properties.Settings.Default.MarginBottom;
+            this.marginLeft = Properties.Settings.Default.MarginLeft;
+            this.marginRight = Properties.Settings.Default.MarginRight;
             this.ConfigurableFilters = JsonConvert.DeserializeObject<List<Pair<string, string>>>(Properties.Settings.Default.Filters);
             this.Layouts = new Dictionary<Pair<VirtualDesktop, HMONITOR>, Layout>();
             this.Windows = new Dictionary<Pair<VirtualDesktop, HMONITOR>, ObservableCollection<DesktopWindow>>();

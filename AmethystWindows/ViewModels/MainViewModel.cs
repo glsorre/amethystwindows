@@ -43,6 +43,70 @@ namespace AmethystWindows.ViewModels
             }
         }
 
+        private int marginTop;
+
+        public int MarginTop
+        {
+            get
+            {
+                return marginTop;
+            }
+            set
+            {
+                DispatcherHelper.CheckBeginInvokeOnUI(() => {
+                    Set(() => MarginTop, ref marginTop, value);
+                });
+            }
+        }
+
+        private int marginBottom;
+
+        public int MarginBottom
+        {
+            get
+            {
+                return marginBottom;
+            }
+            set
+            {
+                DispatcherHelper.CheckBeginInvokeOnUI(() => {
+                    Set(() => MarginBottom, ref marginBottom, value);
+                });
+            }
+        }
+
+        private int marginLeft;
+
+        public int MarginLeft
+        {
+            get
+            {
+                return marginLeft;
+            }
+            set
+            {
+                DispatcherHelper.CheckBeginInvokeOnUI(() => {
+                    Set(() => MarginLeft, ref marginLeft, value);
+                });
+            }
+        }
+
+        private int marginRight;
+
+        public int MarginRight
+        {
+            get
+            {
+                return marginRight;
+            }
+            set
+            {
+                DispatcherHelper.CheckBeginInvokeOnUI(() => {
+                    Set(() => MarginRight, ref marginRight, value);
+                });
+            }
+        }
+
         private List<Filter> filters;
 
         public List<Filter> Filters
