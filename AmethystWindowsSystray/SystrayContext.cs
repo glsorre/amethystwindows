@@ -7,6 +7,7 @@ using Serilog.Core;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -384,12 +385,15 @@ namespace AmethystWindowsSystray
             {
                 foreach (var w in m.Value.Select((value, i) => new { i, value }))
                 {
+                    Screen screen = System.Windows.Forms.Screen.AllScreens.First(s => s.Bounds == new Rectangle(w.value.Monitor.rcMonitor.X, w.value.Monitor.rcMonitor.Y, w.value.Monitor.rcMonitor.Width, w.value.Monitor.rcMonitor.Height));
+
+
                     List<String> item = new List<string>();
                     item.Add(w.value.Window.ToString());
                     item.Add(w.value.AppName);
                     item.Add(w.value.ClassName);
                     item.Add(w.value.VirtualDesktop.ToString());
-                    item.Add(w.value.Monitor.rcMonitor.ToString());
+                    item.Add(screen.DeviceName.ToString().Remove(0,4));
                     item.Add(w.value.Info.rcWindow.ToString());
                     item.Add(w.value.Info.dwStyle.ToString());
                     item.Add(w.value.Info.dwExStyle.ToString());
