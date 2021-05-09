@@ -18,19 +18,19 @@
             <local:AppBarLockableToggleButton LockToggle="True" x:Name="ApplicationsBarButton" Icon="List" Label="Home"/>
             <local:AppBarLockableToggleButton LockToggle="True" x:Name="SettingsBarButton" Icon="Setting" Label="Settings"/>
         </CommandBar>
-        <Grid controls:DockPanel.Dock="Top" x:Name="DesktopWindowsListHeaders" HorizontalAlignment="Stretch" VerticalAlignment="Top" Padding="20">
+        <Grid controls:DockPanel.Dock="Top" x:Name="DesktopWindowsListHeaders" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="100"/>
             </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="0" Style="{ThemeResource TitleTextBlockStyle}" Text="Application Name" />
-            <TextBlock Grid.Column="1" Style="{ThemeResource TitleTextBlockStyle}" Text="Class Name" />
-            <TextBlock Grid.Column="2" Style="{ThemeResource TitleTextBlockStyle}" Text="Virtual Desktop" />
-            <TextBlock Grid.Column="3" Style="{ThemeResource TitleTextBlockStyle}" Text="Monitor" />
-            <TextBlock Grid.Column="4" Style="{ThemeResource TitleTextBlockStyle}" Text="Actions" />
+            <TextBlock Grid.Column="0" Style="{ThemeResource TitleTextBlockStyle}" Margin="0,0,20,0" Text="Application Name" />
+            <TextBlock Grid.Column="1" Style="{ThemeResource TitleTextBlockStyle}" Margin="0,0,20,0" Text="Class Name" />
+            <TextBlock Grid.Column="2" Style="{ThemeResource TitleTextBlockStyle}" Margin="0,0,20,0" Text="Virtual Desktop" />
+            <TextBlock Grid.Column="3" Style="{ThemeResource TitleTextBlockStyle}" Margin="0,0,20,0" Text="Monitor" />
+            <TextBlock Grid.Column="4" Style="{ThemeResource TitleTextBlockStyle}" Margin="0,0,20,0" Text="Actions" />
         </Grid>
         <ScrollViewer controls:DockPanel.Dock="Top">
             <ListView x:Name="DesktopWindowsList" ItemsSource="{Binding DesktopWindows}">
@@ -43,19 +43,19 @@
                 </ListView.ItemContainerStyle>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Top" Padding="20">
+                        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="10">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="100"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Style="{ThemeResource BodyTextBlockStyle}" Text="{Binding AppName}" />
-                            <TextBlock Grid.Column="1" Style="{ThemeResource BodyTextBlockStyle}" Text="{Binding ClassName}" />
-                            <TextBlock Grid.Column="2" Style="{ThemeResource BodyTextBlockStyle}" Text="{Binding VirtualDesktop}" />
-                            <TextBlock Grid.Column="3" Style="{ThemeResource BodyTextBlockStyle}" Text="{Binding Monitor}" />
-                            <muxc:DropDownButton Grid.Column="4"  Content="Filter">
+                            <TextBlock Grid.Column="0" Style="{ThemeResource BodyTextBlockStyle}" Margin="0,0,0,0" Text="{Binding AppName}" />
+                            <TextBlock Grid.Column="1" Style="{ThemeResource BodyTextBlockStyle}" Margin="0,0,20,0" Text="{Binding ClassName}" />
+                            <TextBlock Grid.Column="2" Style="{ThemeResource BodyTextBlockStyle}" Margin="0,0,20,0" Text="{Binding VirtualDesktop}" />
+                            <TextBlock Grid.Column="3" Style="{ThemeResource BodyTextBlockStyle}" Margin="0,0,20,0" Text="{Binding Monitor}" />
+                            <muxc:DropDownButton Grid.Column="4" Content="Filter">
                                 <muxc:DropDownButton.Flyout>
                                     <MenuFlyout Placement="Bottom">
                                         <MenuFlyoutItem Text="All windows" Click="FilterWindowsButton_Click"/>
