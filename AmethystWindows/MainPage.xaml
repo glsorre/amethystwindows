@@ -24,7 +24,7 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="96"/>
             </Grid.ColumnDefinitions>
             <TextBlock Grid.Column="0" Style="{ThemeResource TitleTextBlockStyle}" Margin="0,0,20,0" Text="Application Name" />
             <TextBlock Grid.Column="1" Style="{ThemeResource TitleTextBlockStyle}" Margin="0,0,20,0" Text="Class Name" />
@@ -49,7 +49,7 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="96"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Column="0" Style="{ThemeResource BodyTextBlockStyle}" Margin="0,0,0,0" Text="{Binding AppName}" />
                             <TextBlock Grid.Column="1" Style="{ThemeResource BodyTextBlockStyle}" Margin="0,0,20,0" Text="{Binding ClassName}" />
