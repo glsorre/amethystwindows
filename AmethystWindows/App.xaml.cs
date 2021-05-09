@@ -36,7 +36,7 @@ namespace AmethystWindows
         public static AppServiceConnection Connection = null;
         public static event EventHandler AppServiceDisconnected;
         public static event EventHandler<AppServiceTriggerDetails> AppServiceConnected;
-        public static bool IsForeground = false;
+        public static bool IsForeground = true;
 
         public static MainViewModel mainViewModel = new MainViewModel();
         /// <summary>

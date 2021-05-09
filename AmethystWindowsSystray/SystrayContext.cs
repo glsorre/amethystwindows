@@ -184,7 +184,6 @@ namespace AmethystWindowsSystray
             DWM.ClearWindows();
             DWM.GetWindows();
             DWM.Draw();
-            App_Refresh();
         }
 
         private void Form_AmethystSystrayHotKey(object sender, int e)
