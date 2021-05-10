@@ -63,13 +63,11 @@ namespace AmethystWindowsSystray
                         case User32.EventConstants.EVENT_OBJECT_HIDE:
                         case User32.EventConstants.EVENT_OBJECT_IME_HIDE:
                             SystrayContext.Logger.Information($"window minimized/hide");
-                            HMONITOR monitorHandle = User32.MonitorFromWindow(hwnd, User32.MonitorFlags.MONITOR_DEFAULTTONEAREST);
-                            DesktopWindow remove = DesktopWindowsManager.GetWindowByHandlers(hwnd, monitorHandle, VirtualDesktop.Current);
-                            if (remove != null)DesktopWindowsManager.RemoveWindow(remove);
+                            DesktopWindow removed = DesktopWindowsManager.FindWindow(hwnd);
+                            if(removed != null) DesktopWindowsManager.RemoveWindow(removed);
                             break;
                         case User32.EventConstants.EVENT_SYSTEM_MOVESIZEEND:
                             SystrayContext.Logger.Information($"window move/size");
-                            VirtualDesktop movedDesktop = VirtualDesktop.FromHwnd(hwnd);
                             DesktopWindow moved = DesktopWindowsManager.FindWindow(hwnd);
                             if (moved != null)
                             {
@@ -80,6 +78,9 @@ namespace AmethystWindowsSystray
                                     DesktopWindowsManager.RepositionWindow(moved, newMoved);
                                 }
                             }
+                            break;
+                        case User32.EventConstants.EVENT_OBJECT_DRAGCOMPLETE:
+                            SystrayContext.Logger.Information($"window dragged");
                             break;
                         default:
                             break;
