@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -226,7 +227,12 @@ namespace AmethystWindowsSystray
                 HMONITOR currentMonitor = User32.MonitorFromWindow(User32.GetForegroundWindow(), User32.MonitorFlags.MONITOR_DEFAULTTONEAREST);
                 VirtualDesktop currentDesktop = VirtualDesktop.Current;
                 Pair<VirtualDesktop, HMONITOR> currentPair = new Pair<VirtualDesktop, HMONITOR>(currentDesktop, currentMonitor);
-                DWM.RotateLayoutClockwise(currentPair);
+                AlertForm form = new AlertForm();
+                Layout currentLayout = DWM.RotateLayoutClockwise(currentPair);
+                User32.MONITORINFO currentMonitorInfo = new User32.MONITORINFO();
+                currentMonitorInfo.cbSize = (uint)Marshal.SizeOf(currentMonitorInfo);
+                User32.GetMonitorInfo(currentMonitor, ref currentMonitorInfo);
+                form.showAlert(currentLayout.ToString(), currentMonitorInfo.rcMonitor.X, currentMonitorInfo.rcMonitor.Width, currentMonitorInfo.rcMonitor.Y, currentMonitorInfo.rcMonitor.Height);
                 DWM.Draw(currentPair);
                 DWM.SaveLayouts();
             }
@@ -300,7 +306,12 @@ namespace AmethystWindowsSystray
                 HMONITOR currentMonitor = User32.MonitorFromWindow(User32.GetForegroundWindow(), User32.MonitorFlags.MONITOR_DEFAULTTONEAREST);
                 VirtualDesktop currentDesktop = VirtualDesktop.Current;
                 Pair<VirtualDesktop, HMONITOR> currentPair = new Pair<VirtualDesktop, HMONITOR>(currentDesktop, currentMonitor);
-                DWM.RotateLayoutCounterClockwise(currentPair);
+                AlertForm form = new AlertForm();
+                Layout currentLayout = DWM.RotateLayoutCounterClockwise(currentPair);
+                User32.MONITORINFO currentMonitorInfo = new User32.MONITORINFO();
+                currentMonitorInfo.cbSize = (uint)Marshal.SizeOf(currentMonitorInfo);
+                User32.GetMonitorInfo(currentMonitor, ref currentMonitorInfo);
+                form.showAlert(currentLayout.ToString(), currentMonitorInfo.rcMonitor.X, currentMonitorInfo.rcMonitor.Width, currentMonitorInfo.rcMonitor.Y, currentMonitorInfo.rcMonitor.Height);
                 DWM.Draw(currentPair);
                 DWM.SaveLayouts();
             }

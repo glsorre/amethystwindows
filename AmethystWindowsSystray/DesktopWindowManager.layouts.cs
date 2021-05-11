@@ -78,14 +78,16 @@ namespace AmethystWindowsSystray
             }
         }
 
-        public void RotateLayoutClockwise(Pair<VirtualDesktop, HMONITOR> desktopMonitor)
+        public Layout RotateLayoutClockwise(Pair<VirtualDesktop, HMONITOR> desktopMonitor)
         {
             Layouts[desktopMonitor] = RotateLayoutsClockwise(Layouts[desktopMonitor]);
+            return Layouts[desktopMonitor];
         }
 
-        public void RotateLayoutCounterClockwise(Pair<VirtualDesktop, HMONITOR> desktopMonitor)
+        public Layout RotateLayoutCounterClockwise(Pair<VirtualDesktop, HMONITOR> desktopMonitor)
         {
             Layouts[desktopMonitor] = RotateLayoutsCounterClockwise(Layouts[desktopMonitor]);
+            return Layouts[desktopMonitor];
         }
     }
 }
