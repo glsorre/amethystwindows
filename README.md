@@ -1,4 +1,4 @@
-A very basic preview is available [here]("https://www.youtube.com/embed/AWN_KehMzHc).
+A very basic preview is available [here](https://www.youtube.com/embed/AWN_KehMzHc).
 
 ## Getting Amethyst Windows
 
