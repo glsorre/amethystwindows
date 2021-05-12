@@ -1,6 +1,7 @@
 ﻿
 using System.Drawing;
 using System.Windows.Forms;
+using Vanara.PInvoke;
 
 namespace AmethystWindowsSystray
 {
@@ -41,7 +42,7 @@ namespace AmethystWindowsSystray
             // 
             // AlertFormImage
             // 
-            this.AlertFormImage.Image = global::AmethystWindowsSystray.Properties.Resources.Square44x44Logo_scale_200;
+            this.AlertFormImage.Image = global::AmethystWindowsSystray.Properties.Resources.Square44x44Logo1;
             this.AlertFormImage.InitialImage = global::AmethystWindowsSystray.Properties.Resources.Square44x44Logo_scale_200;
             this.AlertFormImage.Location = new System.Drawing.Point(12, 12);
             this.AlertFormImage.Name = "AlertFormImage";
@@ -69,7 +70,7 @@ namespace AmethystWindowsSystray
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.WindowFrame;
+            this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(324, 114);
             this.Controls.Add(this.AlertFormLabel);
             this.Controls.Add(this.AlertFormImage);

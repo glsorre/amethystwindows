@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Vanara.PInvoke;
 
 namespace AmethystWindowsSystray
 {
@@ -15,6 +16,8 @@ namespace AmethystWindowsSystray
         public AlertForm()
         {
             InitializeComponent();
+            this.FormBorderStyle = FormBorderStyle.None;
+            Region = System.Drawing.Region.FromHrgn(Gdi32.CreateRoundRectRgn(0, 0, Width, Height, 20, 20).DangerousGetHandle());
         }
 
         public enum enmAction
