@@ -2,7 +2,6 @@ Automatic tiling window manager for Windows 10 along the lines of [xmonad](https
 
 [![Build Status](https://dev.azure.com/giuseppesorrentino/AmethystWindows/_apis/build/status/glsorre.amethystwindows?branchName=master)](https://dev.azure.com/giuseppesorrentino/AmethystWindows/_build/latest?definitionId=1&branchName=master)
 [![Gitter](https://badges.gitter.im/glsorre/amethystwindows.svg)](https://gitter.im/glsorre/amethystwindows?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
-[![GitHub all releases](https://img.shields.io/github/downloads/glsorre/amethystwindows/total)](https://github.com/glsorre/amethystwindows/releases)
 [![code helpers](https://www.codetriage.com/glsorre/amethystwindows/badges/users.svg)](https://github.com/glsorre/amethystwindows/issues)
 
 ## Getting Amethyst Windows
