@@ -172,6 +172,9 @@
   <ItemGroup>
     <None Include="Resources\Square44x44Logo.scale-200.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Square44x44Logo.scale-2001.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>
