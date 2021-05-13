@@ -13,7 +13,7 @@
     <controls:DockPanel LastChildFill="True">
         <CommandBar controls:DockPanel.Dock="Top">
             <local:AppBarLockableToggleButton LockToggle="True" x:Name="ApplicationsBarButton" Icon="List" Label="Home"/>
-            <local:AppBarLockableToggleButton LockToggle="True" x:Name="SettingsBarButton" Icon="Setting" Label="About"/>
+            <local:AppBarLockableToggleButton LockToggle="True" x:Name="SettingsBarButton" Icon="Setting" Label="Settings"/>
         </CommandBar>
         <StackPanel controls:DockPanel.Dock="Top" Orientation="Horizontal" Padding="10 10 0 10">
             <Border BorderBrush="{x:Null}" Padding="10">

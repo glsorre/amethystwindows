@@ -115,6 +115,7 @@ namespace AmethystWindowsSystray
             {
                 App_Refresh();
                 App_SendPaddingAndMargin();
+                App_SendFilters();
             }
 
             if (args.Request.Message.ContainsKey("redraw"))
@@ -486,7 +487,7 @@ namespace AmethystWindowsSystray
 
         private async Task App_Send(ValueSet message)
         {
-            if (!Standalone)
+            if (!Standalone && Connection != null)
             {
                 await Connection.SendMessageAsync(message);
             }
