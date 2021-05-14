@@ -1,18 +1,32 @@
-A very basic preview is available [here](https://www.youtube.com/embed/AWN_KehMzHc).
-
-## Getting Amethyst Windows
-
-[Download the appxbundle](#download-cta) from and install it trough [MS App Installer](https://www.microsoft.com/en-us/p/programma-di-installazione-app/9nblggh4nns1?activetab=pivot:overviewtab).
-
-Notice that windows 10 creators update is the minimum requirement.
-
-**Do not forget to star the project on [github](https://github.com/glsorre/amethystwindows)!**
+# Amethyst Windows
 
 ## Features
 
-- doesn't use DLL injection to manipulate windows
-- integrated with windows 10 virtual desktops
+- **doesn't use DLL injection** to manipulate windows
+- integrated with **windows 10 virtual desktops**
 - fast and light
+- available for **x86, x86-64 and ARM** architectures
+- **open source**
+- fully **customizable shortcuts**
+
+## Demo
+
+A very quick and dirty demo is available [here](https://www.youtube.com/embed/AWN_KehMzHc).
+
+## Install Amethyst Windows
+
+0. Check that you have at least Windows 10 creators update
+1. [Download the appxbundle](#download-cta)
+2. Install it trough [MS App Installer](https://www.microsoft.com/en-us/p/app-installer/9nblggh4nns1?activetab=pivot:overviewtab)
+
+## Screenshots
+
+![Main Page](https://cdn.jsdelivr.net/gh/glsorre/amethystwindows@site/_assets/main.png)
+
+![Settings Page](https://cdn.jsdelivr.net/gh/glsorre/amethystwindows@site/_assets/settings.png)
+
+
+# Documentation
 
 ## Keyboard Shortcuts
 
@@ -79,10 +93,12 @@ The rotated version of tall.
 ### Tall
 The default layout. This gives you one "main pane" on the left, and one other pane on the right. The main window is placed in the main pane (extending the full height of the screen), and all remaining windows are placed in the other pane. The main pane can be shrinked/expanded.
 
+# About
+
 ## Contact
 
 Please contact me trough [twitter](https://twitter.com/glsorre) or [gitter](https://gitter.im/glsorre/amethystwindows)
 
 ## License
 
-This software is released with the MIT license.
+This software is released with the [MIT license](https://github.com/glsorre/amethystwindows/blob/master/LICENSE).
