@@ -66,9 +66,13 @@ The keyboard shortcuts configured are:
 
 ### Customize Shortcuts
 
-Cutomize shortcuts is possible by copying and correctly editing [`defaultHotkeys.json`](https://github.com/glsorre/amethystwindows/blob/master/defaultHotkeys.json) into `%USERPROFILE%/AppData/Roaming/AmethystWindows/hotkeys.json`.
-
-The key field reference can be found at [https://docs.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes](https://docs.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes).
+1. Copy [`defaultHotkeys.json`](https://github.com/glsorre/amethystwindows/blob/master/defaultHotkeys.json) into `%USERPROFILE%/AppData/Roaming/AmethystWindows/hotkeys.json`.
+2. Edit the copied file:
+    - [key field reference](https://docs.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes)
+    - [modifiers reference](https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-registerhotkey#parameters)
+3. Relaunch the application:
+    - click on exit from the systray
+    - relaunch.
 
 ## Layouts
 
