@@ -15,7 +15,8 @@ This software is released with the MIT license.
 ## Contributing
 
 Feel free to fork master and open a PR.
-I will add issues where I think you could start from a label them as help wanted.
+
+I will add issues where I think you could start from and label them as help wanted.
 
 ## Credits
 
