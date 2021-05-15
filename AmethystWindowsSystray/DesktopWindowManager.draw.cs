@@ -150,7 +150,7 @@ namespace AmethystWindowsSystray
                 Factors[desktopMonitor.Key] = 0;
             }
 
-            gridGenerator = GridGenerator(mWidth, mHeight, windowsCount, Factors[desktopMonitor.Key], mCurrentLayout, Properties.Settings.Default.LayoutPadding);
+            gridGenerator = GridGenerator(mWidth, mHeight, windowsCount, Factors[desktopMonitor.Key], mCurrentLayout, LayoutPadding);
         }
 
         private void DrawWindow1(float ScreenScalingFactorVert, int mX, int mY, Rectangle adjustedSize, Tuple<int, DesktopWindow> w, HDWP hDWP)
