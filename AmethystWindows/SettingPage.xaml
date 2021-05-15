@@ -24,6 +24,19 @@
         </StackPanel>
         <StackPanel controls:DockPanel.Dock="Top" Orientation="Horizontal" Padding="10 10 0 10">
             <Border BorderBrush="{x:Null}" Padding="10">
+                <TextBlock Text="Layout Padding" VerticalAlignment="Center"/>
+            </Border>
+            <muxc:NumberBox 
+                x:Name="LayoutPaddingNumberBox"
+                Value="{Binding LayoutPadding, Mode=TwoWay}"
+                Minimum="0"
+                Maximum="100"
+                SmallChange="1"
+                LargeChange="10"
+                SpinButtonPlacementMode="Inline"
+                Padding="10">
+            </muxc:NumberBox >
+            <Border BorderBrush="{x:Null}" Padding="50 0 10 0">
                 <TextBlock Text="Window Padding" VerticalAlignment="Center"/>
             </Border>
             <muxc:NumberBox 

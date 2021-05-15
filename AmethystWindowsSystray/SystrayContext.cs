@@ -168,6 +168,15 @@ namespace AmethystWindowsSystray
                 Properties.Settings.Default.Save();
             }
 
+            if (args.Request.Message.ContainsKey("layout_padding_set"))
+            {
+                args.Request.Message.TryGetValue("layout_padding_set", out object message);
+                int newPadding = int.Parse(message.ToString());
+                DWM.LayoutPadding = newPadding;
+                Properties.Settings.Default.LayoutPadding = newPadding;
+                Properties.Settings.Default.Save();
+            }
+
             if (args.Request.Message.ContainsKey("filters_set"))
             {
                 args.Request.Message.TryGetValue("filters_set", out object message);
@@ -407,6 +416,7 @@ namespace AmethystWindowsSystray
             message.Add("margin_bottom_read", Properties.Settings.Default.MarginBottom);
             message.Add("margin_left_read", Properties.Settings.Default.MarginLeft);
             message.Add("margin_right_read", Properties.Settings.Default.MarginRight);
+            message.Add("layout_padding_read", Properties.Settings.Default.LayoutPadding);
             await App_Send(message);
         }
 

@@ -25,7 +25,7 @@ namespace AmethystWindowsSystray.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("4")]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
         public int Padding {
             get {
                 return ((int)(this["Padding"]));
@@ -140,6 +140,18 @@ namespace AmethystWindowsSystray.Properties {
             }
             set {
                 this["MarginLeft"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("4")]
+        public int LayoutPadding {
+            get {
+                return ((int)(this["LayoutPadding"]));
+            }
+            set {
+                this["LayoutPadding"] = value;
             }
         }
     }

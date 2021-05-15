@@ -30,7 +30,7 @@ namespace AmethystWindowsSystray
             Factors[key] = --Factors[key];
         }
 
-        public IEnumerable<Rectangle> GridGenerator(int mWidth, int mHeight, int windowsCount, int factor, Layout layout)
+        public IEnumerable<Rectangle> GridGenerator(int mWidth, int mHeight, int windowsCount, int factor, Layout layout, int layoutPadding)
         {
             int i = 0;
             int j = 0;
@@ -47,7 +47,8 @@ namespace AmethystWindowsSystray
                     j = 0;
                     for (i = 0; i < windowsCount; i++)
                     {
-                        yield return new Rectangle(i * horizSize, j, horizSize, mHeight);
+                        int lastPadding = i == (windowsCount - 1) ? 0 : layoutPadding;
+                        yield return new Rectangle(i * horizSize, j, horizSize - lastPadding, mHeight);
                     }
                     break;
                 case Layout.Vertical:
@@ -55,7 +56,8 @@ namespace AmethystWindowsSystray
                     j = 0;
                     for (i = 0; i < windowsCount; i++)
                     {
-                        yield return new Rectangle(j, i * vertSize, mWidth, vertSize);
+                        int lastPadding = i == (windowsCount - 1) ? 0 : layoutPadding;
+                        yield return new Rectangle(j, i * vertSize, mWidth, vertSize - lastPadding);
                     }
                     break;
                 case Layout.HorizGrid:
@@ -76,7 +78,9 @@ namespace AmethystWindowsSystray
 
                         while (windowsCount > 0)
                         {
-                            yield return new Rectangle(i * horizSize, j * vertSize, horizSize, vertSize);
+                            int lastPaddingI = i == (horizStep - 1) ? 0 : layoutPadding;
+                            int lastPaddingJ = j == (vertStep - 1) ? 0 : layoutPadding;
+                            yield return new Rectangle(i * horizSize, j * vertSize, horizSize - lastPaddingI, vertSize - lastPaddingJ);
                             i++;
                             if (i >= horizStep)
                             {
@@ -96,7 +100,9 @@ namespace AmethystWindowsSystray
                     {
                         while (windowsCount > 0)
                         {
-                            yield return new Rectangle(i * horizSize, j * vertSize, horizSize, vertSize);
+                            int lastPaddingI = i == (horizStep - 1) ? 0 : layoutPadding;
+                            int lastPaddingJ = j == (vertStep - 1) ? 0 : layoutPadding;
+                            yield return new Rectangle(i * horizSize, j * vertSize, horizSize - lastPaddingI, vertSize - lastPaddingJ);
                             i++;
                             if (i >= horizStep)
                             {
@@ -125,7 +131,9 @@ namespace AmethystWindowsSystray
 
                         while (windowsCount > 0)
                         {
-                            yield return new Rectangle(i * horizSize, j * vertSize, horizSize, vertSize);
+                            int lastPaddingI = i == (horizStep - 1) ? 0 : layoutPadding;
+                            int lastPaddingJ = j == (vertStep - 1) ? 0 : layoutPadding;
+                            yield return new Rectangle(i * horizSize, j * vertSize, horizSize - lastPaddingI, vertSize - lastPaddingJ);
                             j++;
                             if (j >= vertStep)
                             {
@@ -145,7 +153,9 @@ namespace AmethystWindowsSystray
                     {
                         while (windowsCount > 0)
                         {
-                            yield return new Rectangle(i * horizSize, j * vertSize, horizSize, vertSize);
+                            int lastPaddingI = i == (horizStep - 1) ? 0 : layoutPadding;
+                            int lastPaddingJ = j == (vertStep - 1) ? 0 : layoutPadding;
+                            yield return new Rectangle(i * horizSize, j * vertSize, horizSize - lastPaddingI, vertSize - lastPaddingJ);
                             j++;
                             if (j >= vertStep)
                             {
@@ -169,8 +179,11 @@ namespace AmethystWindowsSystray
                         int size = mWidth / (windowsCount - 1);
                         for (i = 0; i < windowsCount - 1; i++)
                         {
-                            if (i == 0) yield return new Rectangle(0, 0, mWidth, mHeight / 2 + factor * Properties.Settings.Default.Step);
-                            yield return new Rectangle(i * size, mHeight / 2 + factor * Properties.Settings.Default.Step, size, mHeight / 2 - factor * Properties.Settings.Default.Step);
+                            int lastPaddingI = windowsCount == 1 ? 0 : layoutPadding;
+                            int lastPaddingJ = i == (windowsCount - 2) ? 0 : layoutPadding;
+
+                            if (i == 0) yield return new Rectangle(0, 0, mWidth, mHeight / 2 + factor * Properties.Settings.Default.Step - (lastPaddingI /2));
+                            yield return new Rectangle(i * size, mHeight / 2 + factor * Properties.Settings.Default.Step + (lastPaddingI / 2), size - lastPaddingJ, mHeight / 2 - factor * Properties.Settings.Default.Step + (lastPaddingI / 2));
                         }
                     }
                     break;
@@ -181,8 +194,11 @@ namespace AmethystWindowsSystray
                         int size = mHeight / (windowsCount - 1);
                         for (i = 0; i < windowsCount - 1; i++)
                         {
-                            if (i == 0) yield return new Rectangle(0, 0, mWidth / 2 + factor * Properties.Settings.Default.Step, mHeight);
-                            yield return new Rectangle(mWidth / 2 + factor * Properties.Settings.Default.Step, i * size, mWidth / 2 - factor * Properties.Settings.Default.Step, size);
+                            int lastPaddingI = i == (windowsCount - 2) ? 0 : layoutPadding;
+                            int lastPaddingJ = windowsCount == 1 ? 0 : layoutPadding;
+
+                            if (i == 0) yield return new Rectangle(0, 0, mWidth / 2 + factor * Properties.Settings.Default.Step - (lastPaddingJ / 2), mHeight);
+                            yield return new Rectangle(mWidth / 2 + factor * Properties.Settings.Default.Step + (lastPaddingJ / 2), i * size, mWidth / 2 - factor * Properties.Settings.Default.Step + (lastPaddingI / 2), size - lastPaddingI);
                         }
                     }
                     break;

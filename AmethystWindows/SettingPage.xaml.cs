@@ -45,6 +45,25 @@ namespace AmethystWindows
             MarginBottonNumberBox.Loaded += MarginBottonNumberBox_Loaded;
             MarginLeftNumberBox.Loaded += MarginLeftNumberBox_Loaded;
             MarginRightNumberBox.Loaded += MarginRightNumberBox_Loaded;
+            LayoutPaddingNumberBox.Loaded += LayoutPaddingNumberBox_Loaded;
+        }
+
+        private void LayoutPaddingNumberBox_Loaded(object sender, RoutedEventArgs e)
+        {
+            LayoutPaddingNumberBox.ValueChanged += LayoutPaddingNumberBox_ValueChanged;
+        }
+
+        private void LayoutPaddingNumberBox_ValueChanged(Microsoft.UI.Xaml.Controls.NumberBox sender, Microsoft.UI.Xaml.Controls.NumberBoxValueChangedEventArgs args)
+        {
+            debounceDispatcher.Debounce(() =>
+            {
+                DispatcherHelper.CheckBeginInvokeOnUI(async () =>
+                {
+                    ValueSet message = new ValueSet();
+                    message.Add("layout_padding_set", args.NewValue);
+                    await App.Connection.SendMessageAsync(message);
+                });
+            });
         }
 
         private void MarginRightNumberBox_Loaded(object sender, RoutedEventArgs e)

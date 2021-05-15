@@ -107,6 +107,22 @@ namespace AmethystWindows.ViewModels
             }
         }
 
+        private int layoutPadding;
+
+        public int LayoutPadding
+        {
+            get
+            {
+                return layoutPadding;
+            }
+            set
+            {
+                DispatcherHelper.CheckBeginInvokeOnUI(() => {
+                    Set(() => LayoutPadding, ref layoutPadding, value);
+                });
+            }
+        }
+
         private List<Filter> filters;
 
         public List<Filter> Filters
@@ -127,7 +143,8 @@ namespace AmethystWindows.ViewModels
         {
             desktopWindows = new List<DesktopWindow>();
             filters = new List<Filter>();
-            padding = 5;
+            padding = 0;
+            layoutPadding = 5;
         }
     }
 }
