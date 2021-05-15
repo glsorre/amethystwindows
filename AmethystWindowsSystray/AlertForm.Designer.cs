@@ -118,6 +118,7 @@ namespace AmethystWindowsSystray
             this.AlertFormLabel.Text = msg;
 
             this.Show();
+            User32.SetForegroundWindow(this.Handle);
             this.action = enmAction.start;
             this.AlertFormTimer.Interval = 1;
             this.AlertFormTimer.Start();

@@ -158,6 +158,12 @@ namespace AmethystWindows
                     args.Request.Message.TryGetValue("margin_right_read", out object message);
                     App.mainViewModel.MarginRight = int.Parse(message.ToString());
                 }
+
+                if (args.Request.Message.ContainsKey("layout_padding_read"))
+                {
+                    args.Request.Message.TryGetValue("layout_padding_read", out object message);
+                    App.mainViewModel.LayoutPadding = int.Parse(message.ToString());
+                }
             }
         }
 

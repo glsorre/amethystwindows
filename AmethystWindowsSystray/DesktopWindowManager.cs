@@ -96,6 +96,18 @@ namespace AmethystWindowsSystray
             }
         }
 
+        private int layoutPadding;
+
+        public int LayoutPadding
+        {
+            get { return layoutPadding; }
+            set
+            {
+                layoutPadding = value;
+                Draw();
+            }
+        }
+
         public DesktopWindowsManager()
         {
             this.padding = Properties.Settings.Default.Padding;
