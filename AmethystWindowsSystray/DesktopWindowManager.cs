@@ -115,6 +115,7 @@ namespace AmethystWindowsSystray
             this.marginBottom = Properties.Settings.Default.MarginBottom;
             this.marginLeft = Properties.Settings.Default.MarginLeft;
             this.marginRight = Properties.Settings.Default.MarginRight;
+            this.layoutPadding = Properties.Settings.Default.LayoutPadding;
             this.ConfigurableFilters = JsonConvert.DeserializeObject<List<Pair<string, string>>>(Properties.Settings.Default.Filters);
             this.Layouts = new Dictionary<Pair<VirtualDesktop, HMONITOR>, Layout>();
             this.Windows = new Dictionary<Pair<VirtualDesktop, HMONITOR>, ObservableCollection<DesktopWindow>>();

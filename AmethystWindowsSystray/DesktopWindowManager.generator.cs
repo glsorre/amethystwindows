@@ -183,7 +183,7 @@ namespace AmethystWindowsSystray
                             int lastPaddingJ = i == (windowsCount - 2) ? 0 : layoutPadding;
 
                             if (i == 0) yield return new Rectangle(0, 0, mWidth, mHeight / 2 + factor * Properties.Settings.Default.Step - (lastPaddingI /2));
-                            yield return new Rectangle(i * size, mHeight / 2 + factor * Properties.Settings.Default.Step + (lastPaddingI / 2), size - lastPaddingJ, mHeight / 2 - factor * Properties.Settings.Default.Step + (lastPaddingI / 2));
+                            yield return new Rectangle(i * size, mHeight / 2 + factor * Properties.Settings.Default.Step + (lastPaddingI / 2), size - lastPaddingJ, mHeight / 2 - factor * Properties.Settings.Default.Step - (lastPaddingI /2));
                         }
                     }
                     break;
@@ -198,7 +198,7 @@ namespace AmethystWindowsSystray
                             int lastPaddingJ = windowsCount == 1 ? 0 : layoutPadding;
 
                             if (i == 0) yield return new Rectangle(0, 0, mWidth / 2 + factor * Properties.Settings.Default.Step - (lastPaddingJ / 2), mHeight);
-                            yield return new Rectangle(mWidth / 2 + factor * Properties.Settings.Default.Step + (lastPaddingJ / 2), i * size, mWidth / 2 - factor * Properties.Settings.Default.Step + (lastPaddingI / 2), size - lastPaddingI);
+                            yield return new Rectangle(mWidth / 2 + factor * Properties.Settings.Default.Step + (lastPaddingJ / 2), i * size, mWidth / 2 - factor * Properties.Settings.Default.Step - (lastPaddingJ / 2), size - lastPaddingI);
                         }
                     }
                     break;
