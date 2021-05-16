@@ -107,3 +107,4 @@ Please contact me trough [twitter](https://twitter.com/glsorre) or [gitter](http
 ## License
 
 This software is released with the [MIT license](https://github.com/glsorre/amethystwindows/blob/master/LICENSE).
+
