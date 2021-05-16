@@ -1,5 +1,9 @@
 # Amethyst Windows
 
+The **dynamic / automatic tiling window manager** for **windows 10** along the lines of [ianyh/Amethyst](https://github.com/ianyh/Amethyst).
+
+A very quick screencast of basic functions is [available](https://www.youtube.com/embed/AWN_KehMzHc).
+
 ## Features
 
 - **doesn't use DLL injection** to manipulate windows
@@ -8,10 +12,7 @@
 - available for **x86, x86-64 and ARM** architectures
 - **open source**
 - fully **customizable shortcuts**
-
-## Demo
-
-A very quick and dirty demo is available [here](https://www.youtube.com/embed/AWN_KehMzHc).
+- supports **multi-monitor** set-ups
 
 ## Install Amethyst Windows
 
