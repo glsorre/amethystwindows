@@ -41,8 +41,7 @@ namespace AmethystWindowsSystray
         public void setWindowsHook()
         {
             void WinEventHookAll(User32.HWINEVENTHOOK hWinEventHook, uint winEvent, HWND hwnd, int idObject, int idChild, uint idEventThread, uint dwmsEventTime)
-            {
-               
+            {  
                 DesktopWindow desktopWindow = new DesktopWindow(hwnd);
                 if (hwnd != HWND.NULL && idObject == User32.ObjectIdentifiers.OBJID_WINDOW && idChild == 0 && desktopWindow.IsRuntimeValuable())
                 {

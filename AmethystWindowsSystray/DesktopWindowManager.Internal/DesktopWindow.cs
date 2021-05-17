@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 using Vanara.PInvoke;
@@ -28,7 +29,8 @@ namespace DesktopWindowManager.Internal
             "DV2ControlHost",
             "MsgrIMEWindowClass",
             "SysShadow",
-            "Button"
+            "Button",
+            "ConsoleWindowClass",
         };
 
         public DesktopWindow(HWND window)
