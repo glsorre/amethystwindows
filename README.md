@@ -6,13 +6,12 @@ A very quick screencast of basic functions is [available](https://www.youtube.co
 
 ## Features
 
-- **doesn't use DLL injection** to manipulate windows
 - integrated with **windows 10 virtual desktops**
-- fast and light
-- available for **x86, x86-64 and ARM** architectures
-- **open source**
 - fully **customizable shortcuts**
 - supports **multi-monitor** set-ups
+- **automatic updates**
+- **open source**
+- available for **x86, x86-64 and ARM** architectures
 
 ## Install Amethyst Windows
 
