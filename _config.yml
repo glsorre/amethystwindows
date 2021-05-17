@@ -2,8 +2,8 @@ title: Amethyst Windows
 google_analytics: G-LD9W6DQ801
 show_downloads: true
 github:
-  appxbundle_url: https://github.com/glsorre/amethystwindows/releases/download/1.0.21135.2/AmethystWindowsPackaging_1.0.21135.2_x86_x64_ARM.appxbundle
-  appxbundle_version: 1.0.21135.2
+  appxbundle_url: https://github.com/glsorre/amethystwindows/releases/download/1.0.21137.1/AmethystWindowsPackaging_1.0.21137.1_x86_x64_ARM.appxbundle
+  appxbundle_version: 1.0.21137.1
 relative_links:
   enabled: true
   collections: true
