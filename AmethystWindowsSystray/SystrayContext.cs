@@ -93,11 +93,6 @@ namespace AmethystWindowsSystray
                     VirtualDesktop.Create();
                 }
             }
-
-            Logger.Information($"refreshing UWP");
-            App_Refresh();
-            App_SendPaddingAndMargin();
-            App_SendFilters();
         }
 
         private void Handlers_Changed(object sender, string e)
