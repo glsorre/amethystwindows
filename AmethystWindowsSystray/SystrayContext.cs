@@ -399,8 +399,11 @@ namespace AmethystWindowsSystray
 
         private async void App_Open(object sender, EventArgs e)
         {
-            IEnumerable<AppListEntry> appListEntries = await Package.Current.GetAppListEntriesAsync();
-            await appListEntries.First().LaunchAsync();
+            if (!Standalone)
+            {
+                IEnumerable<AppListEntry> appListEntries = await Package.Current.GetAppListEntriesAsync();
+                await appListEntries.First().LaunchAsync();
+            }
         }
 
         private async void App_SendPaddingAndMargin()
