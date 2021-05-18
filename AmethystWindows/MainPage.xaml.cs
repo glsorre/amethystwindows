@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Windows.ApplicationModel.AppService;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -26,7 +27,6 @@ namespace AmethystWindows
             SettingsBarButton.Click += SettingsBarButton_Click;
             RefreshButton.Click += RefreshButton_Click;
             RedrawButton.Click += RedrawButton_Click;
-            App.AppServiceConnected += MainPage_AppServiceConnected;
         }
 
         private async void RedrawButton_Click(object sender, RoutedEventArgs e)
@@ -38,133 +38,17 @@ namespace AmethystWindows
 
         private void RefreshButton_Click(object sender, RoutedEventArgs e)
         {
-            MainPage_Refresh();
-        }
-
-        private async void MainPage_Refresh()
-        {
-            ValueSet message = new ValueSet();
-            message.Add("refresh", "");
-            await App.Connection.SendMessageAsync(message);
-        }
-
-        private async void MainPage_SendFilters()
-        {
-            ValueSet message = new ValueSet();
-            List<List<String>> list = new List<List<String>>();
-            foreach (var f in App.mainViewModel.Filters)
-            {
-                List<String> item = new List<string>();
-                item.Add(f.AppName);
-                item.Add(f.ClassName);
-                list.Add(item);
-            }
-            message.Add("filters_set", JsonConvert.SerializeObject(list));
-            await App.Connection.SendMessageAsync(message);
+            App.App_Refresh();
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            if (e.Parameter.ToString() == "SettingPage")
-            {
-                MainPage_Refresh();
-            }
         }
 
         private void SettingsBarButton_Click(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(typeof(SettingPage), "MainPage");
-        }
-
-        private void MainPage_AppServiceConnected(object sender, AppServiceTriggerDetails e)
-        {
-            App.Connection.RequestReceived += Connection_RequestReceived;
-            this.MainPage_Refresh();
-        }
-
-        private void Connection_RequestReceived(AppServiceConnection sender, AppServiceRequestReceivedEventArgs args)
-        {
-            if (App.IsForeground)
-            {
-                if (args.Request.Message.ContainsKey("refresh"))
-                {
-                    args.Request.Message.TryGetValue("refresh", out object message);
-                    List<List<string>> windowsParsed = JsonConvert.DeserializeObject<List<List<string>>>(message.ToString());
-                    List<DesktopWindow> windowsReceived = new List<DesktopWindow>();
-
-                    foreach (List<string> w in windowsParsed)
-                    {
-                        windowsReceived.Add(
-                            new DesktopWindow(
-                                w[0],
-                                w[1],
-                                w[2],
-                                w[3],
-                                w[4],
-                                w[5],
-                                w[6],
-                                w[7]
-                        ));
-                    }
-
-                    App.mainViewModel.DesktopWindows = windowsReceived;
-                }
-
-                if (args.Request.Message.ContainsKey("filters_read"))
-                {
-                    args.Request.Message.TryGetValue("filters_read", out object message);
-                    List<List<string>> filtersParsed = JsonConvert.DeserializeObject<List<List<string>>>(message.ToString());
-                    List<Filter> filtersReceived = new List<Filter>();
-
-                    foreach (List<string> f in filtersParsed)
-                    {
-                        filtersReceived.Add(
-                            new Filter(
-                                f[0],
-                                f[1]
-                        ));
-                    }
-
-                    App.mainViewModel.Filters = filtersReceived;
-                }
-
-                if (args.Request.Message.ContainsKey("padding_read"))
-                {
-                    args.Request.Message.TryGetValue("padding_read", out object message);
-                    App.mainViewModel.Padding = int.Parse(message.ToString());
-                }
-
-                if (args.Request.Message.ContainsKey("margin_top_read"))
-                {
-                    args.Request.Message.TryGetValue("margin_top_read", out object message);
-                    App.mainViewModel.MarginTop = int.Parse(message.ToString());
-                }
-
-                if (args.Request.Message.ContainsKey("margin_bottom_read"))
-                {
-                    args.Request.Message.TryGetValue("margin_bottom_read", out object message);
-                    App.mainViewModel.MarginBottom = int.Parse(message.ToString());
-                }
-
-                if (args.Request.Message.ContainsKey("margin_left_read"))
-                {
-                    args.Request.Message.TryGetValue("margin_left_read", out object message);
-                    App.mainViewModel.MarginLeft = int.Parse(message.ToString());
-                }
-
-                if (args.Request.Message.ContainsKey("margin_right_read"))
-                {
-                    args.Request.Message.TryGetValue("margin_right_read", out object message);
-                    App.mainViewModel.MarginRight = int.Parse(message.ToString());
-                }
-
-                if (args.Request.Message.ContainsKey("layout_padding_read"))
-                {
-                    args.Request.Message.TryGetValue("layout_padding_read", out object message);
-                    App.mainViewModel.LayoutPadding = int.Parse(message.ToString());
-                }
-            }
         }
 
         private void FilterWindowsButton_Click(object sender, RoutedEventArgs e)
@@ -180,7 +64,7 @@ namespace AmethystWindows
             }
  
             App.mainViewModel.Filters = filters;
-            MainPage_SendFilters();
+            App.App_SendFilters();
         }
 
         private void FilterClassButton_Click(object sender, RoutedEventArgs e)
@@ -196,7 +80,7 @@ namespace AmethystWindows
             }
 
             App.mainViewModel.Filters = filters;
-            MainPage_SendFilters();
+            App.App_SendFilters();
         }
     }
 
