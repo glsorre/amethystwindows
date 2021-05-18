@@ -46,7 +46,7 @@ namespace AmethystWindowsSystray
             MainForm = form;
 
             Logger.Information($"inizializing context menu");
-            MenuItem versionMenuItem = new MenuItem("Amethyst Windows");
+            MenuItem versionMenuItem = new MenuItem("Amethyst Windows " + Application.ProductVersion);
             versionMenuItem.Enabled = false;
             MenuItem separatorMenuItem = new MenuItem("-");
             MenuItem openMenuItem = new MenuItem("Open", new EventHandler(App_Open));
@@ -115,6 +115,8 @@ namespace AmethystWindowsSystray
 
             if (args.Request.Message.ContainsKey("redraw"))
             {
+                DWM.ClearWindows();
+                DWM.GetWindows();
                 DWM.Draw();
             }
 

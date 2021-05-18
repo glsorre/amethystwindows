@@ -10,6 +10,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.AppService;
@@ -52,6 +53,7 @@ namespace AmethystWindows
             EnteredBackground += App_EnteredBackground;
             Windows.UI.ViewManagement.ApplicationView.PreferredLaunchViewSize = new Windows.Foundation.Size(1000, 500);
             Windows.UI.ViewManagement.ApplicationView.PreferredLaunchWindowingMode = Windows.UI.ViewManagement.ApplicationViewWindowingMode.PreferredLaunchViewSize;
+            AppServiceConnected += App_AppServiceConnected;
         }
 
         public async void App_LaunchSystray()
@@ -111,6 +113,119 @@ namespace AmethystWindows
                 AppServiceDeferral.Complete();
             }
             AppServiceDisconnected?.Invoke(this, null);
+        }
+
+        private async void App_AppServiceConnected(object sender, AppServiceTriggerDetails e)
+        {
+            Connection.RequestReceived += Connection_RequestReceived;
+            await Task.Delay(1000);
+            App_Refresh();
+        }
+
+        public static async void App_Refresh()
+        {
+            ValueSet message = new ValueSet();
+            message.Add("refresh", "");
+            await Connection.SendMessageAsync(message);
+        }
+
+        public static async void App_SendFilters()
+        {
+            ValueSet message = new ValueSet();
+            List<List<String>> list = new List<List<String>>();
+            foreach (var f in App.mainViewModel.Filters)
+            {
+                List<String> item = new List<string>();
+                item.Add(f.AppName);
+                item.Add(f.ClassName);
+                list.Add(item);
+            }
+            message.Add("filters_set", JsonConvert.SerializeObject(list));
+            await Connection.SendMessageAsync(message);
+        }
+
+        private void Connection_RequestReceived(AppServiceConnection sender, AppServiceRequestReceivedEventArgs args)
+        {
+            if (IsForeground)
+            {
+                if (args.Request.Message.ContainsKey("refresh"))
+                {
+                    args.Request.Message.TryGetValue("refresh", out object message);
+                    List<List<string>> windowsParsed = JsonConvert.DeserializeObject<List<List<string>>>(message.ToString());
+                    List<DesktopWindow> windowsReceived = new List<DesktopWindow>();
+
+                    foreach (List<string> w in windowsParsed)
+                    {
+                        windowsReceived.Add(
+                            new DesktopWindow(
+                                w[0],
+                                w[1],
+                                w[2],
+                                w[3],
+                                w[4],
+                                w[5],
+                                w[6],
+                                w[7]
+                        ));
+                    }
+
+                    mainViewModel.DesktopWindows = windowsReceived;
+                }
+
+                if (args.Request.Message.ContainsKey("filters_read"))
+                {
+                    args.Request.Message.TryGetValue("filters_read", out object message);
+                    List<List<string>> filtersParsed = JsonConvert.DeserializeObject<List<List<string>>>(message.ToString());
+                    List<Filter> filtersReceived = new List<Filter>();
+
+                    foreach (List<string> f in filtersParsed)
+                    {
+                        filtersReceived.Add(
+                            new Filter(
+                                f[0],
+                                f[1]
+                        ));
+                    }
+
+                    mainViewModel.Filters = filtersReceived;
+                }
+
+                if (args.Request.Message.ContainsKey("padding_read"))
+                {
+                    args.Request.Message.TryGetValue("padding_read", out object message);
+                    mainViewModel.Padding = int.Parse(message.ToString());
+                }
+
+                if (args.Request.Message.ContainsKey("margin_top_read"))
+                {
+                    args.Request.Message.TryGetValue("margin_top_read", out object message);
+                    mainViewModel.MarginTop = int.Parse(message.ToString());
+                }
+
+                if (args.Request.Message.ContainsKey("margin_bottom_read"))
+                {
+                    args.Request.Message.TryGetValue("margin_bottom_read", out object message);
+                    mainViewModel.MarginBottom = int.Parse(message.ToString());
+                }
+
+                if (args.Request.Message.ContainsKey("margin_left_read"))
+                {
+                    args.Request.Message.TryGetValue("margin_left_read", out object message);
+                    mainViewModel.MarginLeft = int.Parse(message.ToString());
+                }
+
+                if (args.Request.Message.ContainsKey("margin_right_read"))
+                {
+                    args.Request.Message.TryGetValue("margin_right_read", out object message);
+                    mainViewModel.MarginRight = int.Parse(message.ToString());
+                }
+
+                if (args.Request.Message.ContainsKey("layout_padding_read"))
+                {
+                    args.Request.Message.TryGetValue("layout_padding_read", out object message);
+                    mainViewModel.LayoutPadding = int.Parse(message.ToString());
+                }
+            }
         }
 
         /// <summary>
