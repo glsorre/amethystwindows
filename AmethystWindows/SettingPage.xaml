@@ -110,7 +110,7 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="95"/>
+                        <ColumnDefinition Width="115"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Column="0" Style="{ThemeResource BaseTextBlockStyle}" Padding="0,0,10,0" Text="Application Name" />
                     <TextBlock Grid.Column="1" Style="{ThemeResource BaseTextBlockStyle}" Padding="0,0,10,0" Text="Class Name" />
@@ -131,11 +131,11 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="95"/>
+                                        <ColumnDefinition Width="115"/>
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Grid.Column="0" Style="{ThemeResource BodyTextBlockStyle}" Padding="0,0,10,0" Text="{Binding AppName}" />
                                     <TextBlock Grid.Column="1" Style="{ThemeResource BodyTextBlockStyle}" Padding="0,0,10,0" Text="{Binding ClassName}" />
-                                    <Button Grid.Column="2" Padding="0,0,10,0" Content="Remove" Click="FilterRemoveButton_Click"/>
+                                    <Button Grid.Column="2" Padding="10,10,10,10" Content="Remove" Click="FilterRemoveButton_Click"/>
                                 </Grid>
                             </DataTemplate>
                         </ListView.ItemTemplate>

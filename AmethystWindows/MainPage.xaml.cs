@@ -41,7 +41,7 @@ namespace AmethystWindows
             App.App_Refresh();
         }
 
-        protected override async void OnNavigatedTo(NavigationEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
         }
