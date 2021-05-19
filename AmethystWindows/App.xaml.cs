@@ -91,18 +91,10 @@ namespace AmethystWindows
                     AppServiceDeferral = args.TaskInstance.GetDeferral();
                     args.TaskInstance.Canceled += Connection_OnTaskCanceled;
                     Connection = details.AppServiceConnection;
-                    Connection.RequestReceived += Connection_OnRequestReceived;
+                    Connection.RequestReceived += Connection_RequestReceived;
                     Connection.ServiceClosed += Connection_ServiceClosed;
                     AppServiceConnected?.Invoke(this, args.TaskInstance.TriggerDetails as AppServiceTriggerDetails);
                 }
-            }
-        }
-
-        private void Connection_OnRequestReceived(AppServiceConnection sender, AppServiceRequestReceivedEventArgs args)
-        {
-            if (args.Request.Message.ContainsKey("exit"))
-            {
-                App.Current.Exit();
             }
         }
 
@@ -117,7 +109,7 @@ namespace AmethystWindows
 
         private async void App_AppServiceConnected(object sender, AppServiceTriggerDetails e)
         {
-            Connection.RequestReceived += Connection_RequestReceived;
+            //Connection.RequestReceived += Connection_RequestReceived;
             await Task.Delay(500);
             App_Refresh();
         }
@@ -224,6 +216,11 @@ namespace AmethystWindows
                 {
                     args.Request.Message.TryGetValue("layout_padding_read", out object message);
                     mainViewModel.LayoutPadding = int.Parse(message.ToString());
+                }
+
+                if (args.Request.Message.ContainsKey("exit"))
+                {
+                    App.Current.Exit();
                 }
             }
         }

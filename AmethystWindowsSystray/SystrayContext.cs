@@ -60,8 +60,10 @@ namespace AmethystWindowsSystray
             Logger.Information($"inizializing context menu");
             MenuItem versionMenuItem = new MenuItem("Amethyst Windows " + Application.ProductVersion);
             versionMenuItem.Enabled = false;
-            MenuItem separatorMenuItem = new MenuItem("-");
+            MenuItem separatorMenuItem1 = new MenuItem("-");
             MenuItem openMenuItem = new MenuItem("Open", new EventHandler(App_Open));
+            MenuItem disableMenuItem = new MenuItem("Disable", new EventHandler(App_Disable));
+            MenuItem separatorMenuItem2 = new MenuItem("-");
             MenuItem exitMenuItem = new MenuItem("Exit", new EventHandler(App_Exit));
             openMenuItem.DefaultItem = true;
 
@@ -69,7 +71,7 @@ namespace AmethystWindowsSystray
             NotifyIcon = new NotifyIcon();
             NotifyIcon.DoubleClick += new EventHandler(App_Open);
             NotifyIcon.Icon = AmethystWindowsSystray.Properties.Resources.SystrayIcon;
-            NotifyIcon.ContextMenu = new ContextMenu(new MenuItem[] { versionMenuItem, separatorMenuItem, openMenuItem, exitMenuItem });
+            NotifyIcon.ContextMenu = new ContextMenu(new MenuItem[] { versionMenuItem, separatorMenuItem1, openMenuItem, disableMenuItem, separatorMenuItem2, exitMenuItem });
             NotifyIcon.Visible = true;
 
             Logger.Information($"connecting to UWP");
@@ -104,6 +106,19 @@ namespace AmethystWindowsSystray
                 {
                     VirtualDesktop.Create();
                 }
+            }
+        }
+
+        private void App_Disable(object sender, EventArgs e)
+        {
+            MenuItem menuItem = (MenuItem)sender;
+            if (DWM.Disabled) {
+                DWM.Disabled = false;
+                menuItem.Checked = false;
+            } else
+            {
+                DWM.Disabled = true;
+                menuItem.Checked = true;
             }
         }
 
@@ -487,6 +502,7 @@ namespace AmethystWindowsSystray
                 ValueSet message = new ValueSet();
                 message.Add("exit", "");
                 await App_Send(message);
+                Task.Delay(500);
             }
             MainForm.Close();
             Application.Exit();

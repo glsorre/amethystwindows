@@ -108,6 +108,17 @@ namespace AmethystWindowsSystray
             }
         }
 
+        private bool disabled;
+
+        public bool Disabled
+        {
+            get { return disabled; }
+            set
+            {
+                disabled = value;
+            }
+        }
+
         public DesktopWindowsManager()
         {
             this.padding = Properties.Settings.Default.Padding;
