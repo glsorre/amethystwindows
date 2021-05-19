@@ -22,59 +22,15 @@ namespace AmethystWindowsSystray
     {
         public void Draw(Pair<VirtualDesktop, HMONITOR> key)
         {
-            ObservableCollection<DesktopWindow> windows = Windows[key];
-            KeyValuePair<Pair<VirtualDesktop, HMONITOR>, ObservableCollection<DesktopWindow>> desktopMonitor = new KeyValuePair<Pair<VirtualDesktop, HMONITOR>, ObservableCollection<DesktopWindow>>(key, windows);
-            float ScreenScalingFactorVert;
-            int mX, mY;
-            IEnumerable<Rectangle> gridGenerator;
-            DrawMonitor(desktopMonitor, out ScreenScalingFactorVert, out mX, out mY, out gridGenerator);
-
-            HDWP hDWP1 = User32.BeginDeferWindowPos(windows.Count);
-            foreach (var w in desktopMonitor.Value.Select((value, i) => new Tuple<int, DesktopWindow>(i, value)))
-            {
-                Rectangle adjustedSize = new Rectangle(
-                    gridGenerator.ToArray()[w.Item1].X,
-                    gridGenerator.ToArray()[w.Item1].Y,
-                    gridGenerator.ToArray()[w.Item1].Width,
-                    gridGenerator.ToArray()[w.Item1].Height
-                );
-
-                User32.ShowWindow(w.Item2.Window, ShowWindowCommand.SW_RESTORE);
-
-                DrawWindow1(ScreenScalingFactorVert, mX, mY, adjustedSize, w, hDWP1);
-            }
-            User32.EndDeferWindowPos(hDWP1.DangerousGetHandle());
-
-            HDWP hDWP2 = User32.BeginDeferWindowPos(windows.Count);
-            foreach (var w in desktopMonitor.Value.Select((value, i) => new Tuple<int, DesktopWindow>(i, value)))
-            {
-                Rectangle adjustedSize = new Rectangle(
-                    gridGenerator.ToArray()[w.Item1].X,
-                    gridGenerator.ToArray()[w.Item1].Y,
-                    gridGenerator.ToArray()[w.Item1].Width,
-                    gridGenerator.ToArray()[w.Item1].Height
-                );
-
-                DrawWindow2(ScreenScalingFactorVert, mX, mY, adjustedSize, w, hDWP2);
-            }
-            User32.EndDeferWindowPos(hDWP2.DangerousGetHandle());
-
-            foreach (var w in desktopMonitor.Value.Select((value, i) => new Tuple<int, DesktopWindow>(i, value)))
-            {
-                w.Item2.GetWindowInfo();
-            }
-        }
-
-        public void Draw()
-        {
-            foreach (var desktopMonitor in Windows)
-            {
+            if (!disabled) { 
+                ObservableCollection<DesktopWindow> windows = Windows[key];
+                KeyValuePair<Pair<VirtualDesktop, HMONITOR>, ObservableCollection<DesktopWindow>> desktopMonitor = new KeyValuePair<Pair<VirtualDesktop, HMONITOR>, ObservableCollection<DesktopWindow>>(key, windows);
                 float ScreenScalingFactorVert;
                 int mX, mY;
                 IEnumerable<Rectangle> gridGenerator;
                 DrawMonitor(desktopMonitor, out ScreenScalingFactorVert, out mX, out mY, out gridGenerator);
 
-                HDWP hDWP1 = User32.BeginDeferWindowPos(Windows.Count);
+                HDWP hDWP1 = User32.BeginDeferWindowPos(windows.Count);
                 foreach (var w in desktopMonitor.Value.Select((value, i) => new Tuple<int, DesktopWindow>(i, value)))
                 {
                     Rectangle adjustedSize = new Rectangle(
@@ -90,7 +46,7 @@ namespace AmethystWindowsSystray
                 }
                 User32.EndDeferWindowPos(hDWP1.DangerousGetHandle());
 
-                HDWP hDWP2 = User32.BeginDeferWindowPos(Windows.Count);
+                HDWP hDWP2 = User32.BeginDeferWindowPos(windows.Count);
                 foreach (var w in desktopMonitor.Value.Select((value, i) => new Tuple<int, DesktopWindow>(i, value)))
                 {
                     Rectangle adjustedSize = new Rectangle(
@@ -107,6 +63,54 @@ namespace AmethystWindowsSystray
                 foreach (var w in desktopMonitor.Value.Select((value, i) => new Tuple<int, DesktopWindow>(i, value)))
                 {
                     w.Item2.GetWindowInfo();
+                }
+            }
+        }
+
+        public void Draw()
+        {
+            if (!disabled) {
+                foreach (var desktopMonitor in Windows)
+                {
+                    float ScreenScalingFactorVert;
+                    int mX, mY;
+                    IEnumerable<Rectangle> gridGenerator;
+                    DrawMonitor(desktopMonitor, out ScreenScalingFactorVert, out mX, out mY, out gridGenerator);
+
+                    HDWP hDWP1 = User32.BeginDeferWindowPos(Windows.Count);
+                    foreach (var w in desktopMonitor.Value.Select((value, i) => new Tuple<int, DesktopWindow>(i, value)))
+                    {
+                        Rectangle adjustedSize = new Rectangle(
+                            gridGenerator.ToArray()[w.Item1].X,
+                            gridGenerator.ToArray()[w.Item1].Y,
+                            gridGenerator.ToArray()[w.Item1].Width,
+                            gridGenerator.ToArray()[w.Item1].Height
+                        );
+
+                        User32.ShowWindow(w.Item2.Window, ShowWindowCommand.SW_RESTORE);
+
+                        DrawWindow1(ScreenScalingFactorVert, mX, mY, adjustedSize, w, hDWP1);
+                    }
+                    User32.EndDeferWindowPos(hDWP1.DangerousGetHandle());
+
+                    HDWP hDWP2 = User32.BeginDeferWindowPos(Windows.Count);
+                    foreach (var w in desktopMonitor.Value.Select((value, i) => new Tuple<int, DesktopWindow>(i, value)))
+                    {
+                        Rectangle adjustedSize = new Rectangle(
+                            gridGenerator.ToArray()[w.Item1].X,
+                            gridGenerator.ToArray()[w.Item1].Y,
+                            gridGenerator.ToArray()[w.Item1].Width,
+                            gridGenerator.ToArray()[w.Item1].Height
+                        );
+
+                        DrawWindow2(ScreenScalingFactorVert, mX, mY, adjustedSize, w, hDWP2);
+                    }
+                    User32.EndDeferWindowPos(hDWP2.DangerousGetHandle());
+
+                    foreach (var w in desktopMonitor.Value.Select((value, i) => new Tuple<int, DesktopWindow>(i, value)))
+                    {
+                        w.Item2.GetWindowInfo();
+                    }
                 }
             }
         }
