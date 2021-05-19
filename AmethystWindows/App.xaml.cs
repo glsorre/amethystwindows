@@ -218,6 +218,12 @@ namespace AmethystWindows
                     mainViewModel.LayoutPadding = int.Parse(message.ToString());
                 }
 
+                if (args.Request.Message.ContainsKey("disabled_read"))
+                {
+                    args.Request.Message.TryGetValue("disabled_read", out object message);
+                    mainViewModel.Disabled = bool.Parse(message.ToString());
+                }
+
                 if (args.Request.Message.ContainsKey("exit"))
                 {
                     App.Current.Exit();

@@ -32,6 +32,7 @@ namespace AmethystWindowsSystray
         private bool Standalone = false;
         public static Logger Logger = new LoggerConfiguration().WriteTo.Console().CreateLogger();
         private DebounceDispatcher debounceDispatcher = new DebounceDispatcher(250);
+        MenuItem disableMenuItem;
 
         public SystrayContext()
         {
@@ -62,7 +63,7 @@ namespace AmethystWindowsSystray
             versionMenuItem.Enabled = false;
             MenuItem separatorMenuItem1 = new MenuItem("-");
             MenuItem openMenuItem = new MenuItem("Open", new EventHandler(App_Open));
-            MenuItem disableMenuItem = new MenuItem("Disable", new EventHandler(App_Disable));
+            disableMenuItem = new MenuItem("Disable", new EventHandler(App_Disable));
             MenuItem separatorMenuItem2 = new MenuItem("-");
             MenuItem exitMenuItem = new MenuItem("Exit", new EventHandler(App_Exit));
             openMenuItem.DefaultItem = true;
@@ -115,11 +116,13 @@ namespace AmethystWindowsSystray
             if (DWM.Disabled) {
                 DWM.Disabled = false;
                 menuItem.Checked = false;
+                DWM.Draw();
             } else
             {
                 DWM.Disabled = true;
                 menuItem.Checked = true;
             }
+            App_SendPaddingMarginDisabled();
         }
 
         private void Handlers_Changed(object sender, string e)
@@ -136,7 +139,7 @@ namespace AmethystWindowsSystray
             if (args.Request.Message.ContainsKey("refresh"))
             {
                 App_Refresh();
-                App_SendPaddingAndMargin();
+                App_SendPaddingMarginDisabled();
                 App_SendFilters();
             }
 
@@ -201,6 +204,27 @@ namespace AmethystWindowsSystray
                 Properties.Settings.Default.Save();
             }
 
+            if (args.Request.Message.ContainsKey("layout_padding_set"))
+            {
+                args.Request.Message.TryGetValue("layout_padding_set", out object message);
+                int newPadding = int.Parse(message.ToString());
+                DWM.LayoutPadding = newPadding;
+                Properties.Settings.Default.LayoutPadding = newPadding;
+                Properties.Settings.Default.Save();
+            }
+
+            if (args.Request.Message.ContainsKey("disable_set"))
+            {
+                args.Request.Message.TryGetValue("disable_set", out object message);
+                bool disabled = bool.Parse(message.ToString());
+                DWM.Disabled = disabled;
+                disableMenuItem.Checked = disabled;
+                if (!disabled)
+                {
+                    DWM.Draw();
+                }
+            }
+
             if (args.Request.Message.ContainsKey("filters_set"))
             {
                 args.Request.Message.TryGetValue("filters_set", out object message);
@@ -238,7 +262,7 @@ namespace AmethystWindowsSystray
         {
             await Task.Delay(500);
             App_Refresh();
-            App_SendPaddingAndMargin();
+            App_SendPaddingMarginDisabled();
             App_SendFilters();
         }
 
@@ -436,7 +460,7 @@ namespace AmethystWindowsSystray
             }
         }
 
-        private async void App_SendPaddingAndMargin()
+        private async void App_SendPaddingMarginDisabled()
         {
             ValueSet message = new ValueSet();
             message.Add("padding_read", Properties.Settings.Default.Padding);
@@ -445,6 +469,7 @@ namespace AmethystWindowsSystray
             message.Add("margin_left_read", Properties.Settings.Default.MarginLeft);
             message.Add("margin_right_read", Properties.Settings.Default.MarginRight);
             message.Add("layout_padding_read", Properties.Settings.Default.LayoutPadding);
+            message.Add("disabled_read", DWM.Disabled);
             await App_Send(message);
         }
 
@@ -502,8 +527,8 @@ namespace AmethystWindowsSystray
                 ValueSet message = new ValueSet();
                 message.Add("exit", "");
                 await App_Send(message);
-                Task.Delay(500);
             }
+            await Task.Delay(500);
             MainForm.Close();
             Application.Exit();
         }

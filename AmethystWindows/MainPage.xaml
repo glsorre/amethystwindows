@@ -14,6 +14,7 @@
         <CommandBar controls:DockPanel.Dock="Top">
             <AppBarButton x:Name="RefreshButton" Icon="Refresh" Label="Refresh"/>
             <AppBarButton x:Name="RedrawButton" Icon="Sync" Label="Redraw"/>
+            <local:AppBarLockableToggleButton x:Name="DisabledBarButton" Icon="DisableUpdates" Label="Disabled"/>
             <AppBarSeparator/>
             <local:AppBarLockableToggleButton LockToggle="True" x:Name="ApplicationsBarButton" Icon="List" Label="Home"/>
             <local:AppBarLockableToggleButton LockToggle="True" x:Name="SettingsBarButton" Icon="Setting" Label="Settings"/>
