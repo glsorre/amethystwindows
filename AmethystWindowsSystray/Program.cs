@@ -38,11 +38,13 @@ namespace AmethystWindowsSystray
                           AppCenter.Start("b613d3d4-4ef3-4f7f-b363-161a8aabcf66", typeof(Analytics), typeof(Crashes));
                           if (o.Standalone)
                           {
-                              Application.Run(new SystrayContext(o.Standalone));
+                              SystrayContext systrayContext = SystrayContext.Create(o.Standalone);
+                              Application.Run(systrayContext);
                           }
                           else
                           {
-                              Application.Run(new SystrayContext());
+                              SystrayContext systrayContext = SystrayContext.Create();
+                              Application.Run(systrayContext);
                           }
                           mutex.ReleaseMutex();
                       }

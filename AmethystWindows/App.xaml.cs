@@ -118,7 +118,7 @@ namespace AmethystWindows
         private async void App_AppServiceConnected(object sender, AppServiceTriggerDetails e)
         {
             Connection.RequestReceived += Connection_RequestReceived;
-            await Task.Delay(1000);
+            await Task.Delay(500);
             App_Refresh();
         }
 
