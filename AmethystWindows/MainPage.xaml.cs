@@ -24,9 +24,28 @@ namespace AmethystWindows
             NavigationCacheMode = Windows.UI.Xaml.Navigation.NavigationCacheMode.Enabled;
             DataContext = App.mainViewModel;
             ApplicationsBarButton.IsChecked = true;
+            DisabledBarButton.IsChecked = App.mainViewModel.Disabled;
             SettingsBarButton.Click += SettingsBarButton_Click;
             RefreshButton.Click += RefreshButton_Click;
             RedrawButton.Click += RedrawButton_Click;
+            DisabledBarButton.Click += DisabledBarButton_Click;
+        }
+
+        private async void DisabledBarButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (App.mainViewModel.Disabled)
+            {
+                DisabledBarButton.IsChecked = false;
+                App.mainViewModel.Disabled = false;
+                
+            } else
+            {
+                DisabledBarButton.IsChecked = true;
+                App.mainViewModel.Disabled = true;
+            }
+            ValueSet message = new ValueSet();
+            message.Add("disable_set", App.mainViewModel.Disabled);
+            await App.Connection.SendMessageAsync(message);
         }
 
         private async void RedrawButton_Click(object sender, RoutedEventArgs e)

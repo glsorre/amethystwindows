@@ -123,6 +123,22 @@ namespace AmethystWindows.ViewModels
             }
         }
 
+        private bool disabled;
+
+        public bool Disabled
+        {
+            get
+            {
+                return disabled;
+            }
+            set
+            {
+                DispatcherHelper.CheckBeginInvokeOnUI(() => {
+                    Set(() => Disabled, ref disabled, value);
+                });
+            }
+        }
+
         private List<Filter> filters;
 
         public List<Filter> Filters
