@@ -33,7 +33,19 @@ namespace AmethystWindowsSystray
         public static Logger Logger = new LoggerConfiguration().WriteTo.Console().CreateLogger();
         private DebounceDispatcher debounceDispatcher = new DebounceDispatcher(250);
 
-        public SystrayContext(bool standalone = false)
+        public SystrayContext()
+        {
+
+        }
+
+        public static SystrayContext Create(bool standalone = false)
+        {
+            SystrayContext systrayContext = new SystrayContext();
+            systrayContext.Initialize(standalone);
+            return systrayContext;
+        }
+
+        private async void Initialize(bool standalone)
         {
             Logger.Information($"starting (standalone = {standalone})");
             Standalone = standalone;
@@ -61,7 +73,7 @@ namespace AmethystWindowsSystray
             NotifyIcon.Visible = true;
 
             Logger.Information($"connecting to UWP");
-            App_Connect();
+            await App_Connect();
 
             Logger.Information($"generating DWM");
             DWM = new DesktopWindowsManager();
@@ -212,6 +224,7 @@ namespace AmethystWindowsSystray
             await Task.Delay(500);
             App_Refresh();
             App_SendPaddingAndMargin();
+            App_SendFilters();
         }
 
         private async void Form_AmethystSysTrayReconnect(object sender, EventArgs e)
