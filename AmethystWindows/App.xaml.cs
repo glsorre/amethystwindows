@@ -277,6 +277,8 @@ namespace AmethystWindows
         protected override void OnActivated(IActivatedEventArgs args)
         {
             App_LaunchSystray();
+            IsForeground = false;
+            DispatcherHelper.Initialize();
             Frame rootFrame = Window.Current.Content as Frame;
             if (rootFrame == null)
             {
