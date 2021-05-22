@@ -77,7 +77,7 @@ steps:
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
-    msbuildArgs: '/t:AmethystWindowsPackaging:Rebuild /p:AppxBundlePlatforms="$(buildPlatform)" /p:AppxPackageDir="$(appxPackageDir)" /p:AppxBundle=Always /p:AppxPackageSigningEnabled=true /p:UapAppxPackageBuildMode=SideloadOnly /p:PackageCertificateKeyFile="$(pfxCertificate.secureFilePath)" /p:PackageCertificatePassword="$(certfile.password)" /p:PackageCertificateThumbprint="$(certfile.thumbprint)" /p:BuildAppxUploadPackageForUap=false /p:GenerateAppInstallerFile=true /p:AppInstallerUri="https://update.amethystwindows.com/AmethystWindowsPackaging.appinstaller" /p:AppInstallerUpdateFrequency=1 /p:AppInstallerCheckForUpdateFrequency=OnApplicationRun'
+    msbuildArgs: '/t:AmethystWindowsPackaging:Rebuild /p:AppxBundlePlatforms="$(buildPlatform)" /p:AppxPackageDir="$(appxPackageDir)" /p:AppxBundle=Always /p:AppxPackageSigningEnabled=true /p:UapAppxPackageBuildMode=SideloadOnly /p:PackageCertificateKeyFile="$(pfxCertificate.secureFilePath)" /p:PackageCertificatePassword="$(certfile.password)" /p:PackageCertificateThumbprint="$(certfile.thumbprint)" /p:BuildAppxUploadPackageForUap=false /p:GenerateAppInstallerFile=true /p:AppInstallerUri="https://update.amethystwindows.com" /p:AppInstallerUpdateFrequency=1 /p:AppInstallerCheckForUpdateFrequency=OnApplicationRun'
     platform: 'x86'
     configuration: '$(buildConfiguration)'
 
