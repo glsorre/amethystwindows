@@ -15,9 +15,7 @@ A very quick screencast of basic functions is [available](https://www.youtube.co
 
 ## Install Amethyst Windows
 
-0. Check that you have at least Windows 10 creators update
-1. [Download the appxbundle](#download-cta)
-2. Install it trough [MS App Installer](https://www.microsoft.com/en-us/p/app-installer/9nblggh4nns1?activetab=pivot:overviewtab)
+Simply click on the [install button](#download-cta)
 
 ## Screenshots
 
