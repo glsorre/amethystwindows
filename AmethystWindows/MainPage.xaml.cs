@@ -33,16 +33,6 @@ namespace AmethystWindows
 
         private async void DisabledBarButton_Click(object sender, RoutedEventArgs e)
         {
-            if (App.mainViewModel.Disabled)
-            {
-                DisabledBarButton.IsChecked = false;
-                App.mainViewModel.Disabled = false;
-                
-            } else
-            {
-                DisabledBarButton.IsChecked = true;
-                App.mainViewModel.Disabled = true;
-            }
             ValueSet message = new ValueSet();
             message.Add("disable_set", App.mainViewModel.Disabled);
             await App.Connection.SendMessageAsync(message);

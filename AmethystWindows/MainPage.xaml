@@ -6,7 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
-    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls" xmlns:viewmodels="using:AmethystWindows.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -14,7 +14,7 @@
         <CommandBar controls:DockPanel.Dock="Top">
             <AppBarButton x:Name="RefreshButton" Icon="Refresh" Label="Refresh"/>
             <AppBarButton x:Name="RedrawButton" Icon="Sync" Label="Redraw"/>
-            <local:AppBarLockableToggleButton x:Name="DisabledBarButton" Icon="DisableUpdates" Label="Disabled"/>
+            <local:AppBarLockableToggleButton x:Name="DisabledBarButton" Icon="DisableUpdates" Label="Disabled" IsChecked="{Binding Disabled, Mode=TwoWay}"/>
             <AppBarSeparator/>
             <local:AppBarLockableToggleButton LockToggle="True" x:Name="ApplicationsBarButton" Icon="List" Label="Home"/>
             <local:AppBarLockableToggleButton LockToggle="True" x:Name="SettingsBarButton" Icon="Setting" Label="Settings"/>

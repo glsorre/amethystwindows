@@ -136,8 +136,10 @@ namespace AmethystWindows
             await Connection.SendMessageAsync(message);
         }
 
-        private void Connection_RequestReceived(AppServiceConnection sender, AppServiceRequestReceivedEventArgs args)
+        private async void Connection_RequestReceived(AppServiceConnection sender, AppServiceRequestReceivedEventArgs args)
         {
+            AppServiceDeferral deferral = args.GetDeferral();
+
             if (IsForeground)
             {
                 if (args.Request.Message.ContainsKey("refresh"))
@@ -226,9 +228,14 @@ namespace AmethystWindows
 
                 if (args.Request.Message.ContainsKey("exit"))
                 {
+                    ValueSet message = new ValueSet();
+                    message.Add("exit_confirmed", true);
+                    await args.Request.SendResponseAsync(message);
                     App.Current.Exit();
                 }
             }
+
+            deferral.Complete();
         }
 
         /// <summary>
@@ -277,7 +284,7 @@ namespace AmethystWindows
         protected override void OnActivated(IActivatedEventArgs args)
         {
             App_LaunchSystray();
-            IsForeground = false;
+            IsForeground = true;
             DispatcherHelper.Initialize();
             Frame rootFrame = Window.Current.Content as Frame;
             if (rootFrame == null)

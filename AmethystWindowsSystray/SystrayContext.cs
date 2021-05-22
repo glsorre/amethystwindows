@@ -136,6 +136,12 @@ namespace AmethystWindowsSystray
         {
             AppServiceDeferral deferral = args.GetDeferral();
 
+            if (args.Request.Message.ContainsKey("exit_confirmed"))
+            {
+                MainForm.Close();
+                Application.Exit();
+            }
+
             if (args.Request.Message.ContainsKey("refresh"))
             {
                 App_Refresh();
@@ -515,22 +521,35 @@ namespace AmethystWindowsSystray
             await App_Send(message);
         }
 
-        private void App_Refresh(object sender, EventArgs e)
-        {
-            App_Refresh();
-        }
-
         private async void App_Exit(object sender, EventArgs e)
         {
             if (Connection != null)
             {
                 ValueSet message = new ValueSet();
                 message.Add("exit", "");
-                await App_Send(message);
+                AppServiceResponse response = await App_Send(message);
+
+                if (response != null)
+                {
+                    response.Message.TryGetValue("exit_confirmed", out object responseMessage);
+
+                    if ((bool)responseMessage)
+                    {
+                        if (MainForm.InvokeRequired)
+                        {
+                            MainForm.Invoke(new MethodInvoker(delegate { MainForm.Close(); }));
+                        } else
+                        {
+                            MainForm.Close();
+                        }
+                        Application.Exit();          
+                    }
+                }
+            } else
+            {
+                MainForm.Close();
+                Application.Exit();
             }
-            await Task.Delay(500);
-            MainForm.Close();
-            Application.Exit();
         }
 
         private async Task App_Connect()
@@ -549,12 +568,13 @@ namespace AmethystWindowsSystray
             }
         }
 
-        private async Task App_Send(ValueSet message)
+        private async Task<AppServiceResponse> App_Send(ValueSet message)
         {
             if (!Standalone && Connection != null)
             {
-                await Connection.SendMessageAsync(message);
+                return await Connection.SendMessageAsync(message);
             }
+            return null;
         }
 
         private void Connection_ServiceClosed(AppServiceConnection sender, AppServiceClosedEventArgs args)
