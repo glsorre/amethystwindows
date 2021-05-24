@@ -40,8 +40,6 @@ namespace AmethystWindowsSystray
                         gridGenerator.ToArray()[w.Item1].Height
                     );
 
-                    User32.ShowWindow(w.Item2.Window, ShowWindowCommand.SW_RESTORE);
-
                     DrawWindow1(ScreenScalingFactorVert, mX, mY, adjustedSize, w, hDWP1);
                 }
                 User32.EndDeferWindowPos(hDWP1.DangerousGetHandle());
@@ -77,6 +75,11 @@ namespace AmethystWindowsSystray
                     IEnumerable<Rectangle> gridGenerator;
                     DrawMonitor(desktopMonitor, out ScreenScalingFactorVert, out mX, out mY, out gridGenerator);
 
+                    foreach (var w in desktopMonitor.Value.Select((value, i) => new Tuple<int, DesktopWindow>(i, value)))
+                    {
+                        User32.ShowWindow(w.Item2.Window, ShowWindowCommand.SW_RESTORE);
+                    }
+
                     HDWP hDWP1 = User32.BeginDeferWindowPos(Windows.Count);
                     foreach (var w in desktopMonitor.Value.Select((value, i) => new Tuple<int, DesktopWindow>(i, value)))
                     {
@@ -86,8 +89,6 @@ namespace AmethystWindowsSystray
                             gridGenerator.ToArray()[w.Item1].Width,
                             gridGenerator.ToArray()[w.Item1].Height
                         );
-
-                        User32.ShowWindow(w.Item2.Window, ShowWindowCommand.SW_RESTORE);
 
                         DrawWindow1(ScreenScalingFactorVert, mX, mY, adjustedSize, w, hDWP1);
                     }

@@ -35,7 +35,6 @@ namespace AmethystWindows
     {
         public static BackgroundTaskDeferral AppServiceDeferral = null;
         public static AppServiceConnection Connection = null;
-        public static event EventHandler AppServiceDisconnected;
         public static event EventHandler<AppServiceTriggerDetails> AppServiceConnected;
         public static bool IsForeground = true;
 
@@ -104,7 +103,6 @@ namespace AmethystWindows
             {
                 AppServiceDeferral.Complete();
             }
-            AppServiceDisconnected?.Invoke(this, null);
         }
 
         private async void App_AppServiceConnected(object sender, AppServiceTriggerDetails e)
@@ -245,9 +243,11 @@ namespace AmethystWindows
         /// <param name="e">Details about the launch request and process.</param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
-            App_LaunchSystray();
-            IsForeground = true;
             DispatcherHelper.Initialize();
+            IsForeground = true;
+            App_LaunchSystray();
+    
+
             Frame rootFrame = Window.Current.Content as Frame;
 
             // Do not repeat app initialization when the Window already has content,
@@ -283,9 +283,10 @@ namespace AmethystWindows
 
         protected override void OnActivated(IActivatedEventArgs args)
         {
-            App_LaunchSystray();
-            IsForeground = true;
             DispatcherHelper.Initialize();
+            IsForeground = true;
+            App_LaunchSystray();
+            
             Frame rootFrame = Window.Current.Content as Frame;
             if (rootFrame == null)
             {
