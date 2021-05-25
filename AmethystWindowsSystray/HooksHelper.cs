@@ -26,7 +26,7 @@ namespace AmethystWindowsSystray
             DesktopWindowsManager = desktopWindowsManager;
         }
 
-        private async Task ManageShown(HWND hWND)
+        private async void ManageShown(HWND hWND)
         {
             await Task.Delay(500);
             DesktopWindow desktopWindow = new DesktopWindow(hWND);
@@ -40,7 +40,7 @@ namespace AmethystWindowsSystray
 
         public void setWindowsHook()
         {
-            async void WinEventHookAll(User32.HWINEVENTHOOK hWinEventHook, uint winEvent, HWND hwnd, int idObject, int idChild, uint idEventThread, uint dwmsEventTime)
+            void WinEventHookAll(User32.HWINEVENTHOOK hWinEventHook, uint winEvent, HWND hwnd, int idObject, int idChild, uint idEventThread, uint dwmsEventTime)
             {  
                 DesktopWindow desktopWindow = new DesktopWindow(hwnd);
                 if (hwnd != HWND.NULL && idObject == User32.ObjectIdentifiers.OBJID_WINDOW && idChild == 0 && desktopWindow.IsRuntimeValuable())
@@ -51,7 +51,7 @@ namespace AmethystWindowsSystray
                         case User32.EventConstants.EVENT_OBJECT_UNCLOAKED:
                         case User32.EventConstants.EVENT_OBJECT_IME_SHOW:
                         case User32.EventConstants.EVENT_SYSTEM_FOREGROUND:
-                            await ManageShown(hwnd);
+                            ManageShown(hwnd);
                             break;
                         case User32.EventConstants.EVENT_SYSTEM_MINIMIZEEND:
                             SystrayContext.Logger.Information($"window maximized");
