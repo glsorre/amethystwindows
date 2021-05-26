@@ -24,10 +24,11 @@ namespace AmethystWindowsSystray
         {
             Pair<string, string> configurableFilter = ConfigurableFilters.FirstOrDefault(f => f.Item1 == desktopWindow.AppName);
 
-            if (!Windows.ContainsKey(desktopWindow.GetDesktopMonitor()))
+            if (!Windows.ContainsKey(desktopWindow.GetDesktopMonitor()) && !WindowsSubscribed.ContainsKey(desktopWindow.GetDesktopMonitor()))
             {
+                WindowsSubscribed.Add(desktopWindow.GetDesktopMonitor(), false);
                 Windows.Add(desktopWindow.GetDesktopMonitor(), new ObservableCollection<DesktopWindow>());
-                Windows[desktopWindow.GetDesktopMonitor()].CollectionChanged += Windows_CollectionChanged;
+                SubscribeWindowsCollectionChanged(desktopWindow.GetDesktopMonitor(), true);
             }
 
             if (FixedFilters.All(s => !desktopWindow.AppName.StartsWith(s)) 
@@ -100,8 +101,11 @@ namespace AmethystWindowsSystray
             User32.EnumWindows(filterDesktopWindows, IntPtr.Zero);
 
             foreach (var desktopMonitor in Windows)
-            {
-                Windows[desktopMonitor.Key].CollectionChanged += Windows_CollectionChanged;
+            {   
+                if (!WindowsSubscribed.ContainsKey(desktopMonitor.Key)) { 
+                    WindowsSubscribed.Add(desktopMonitor.Key, false);
+                }
+                SubscribeWindowsCollectionChanged(desktopMonitor.Key, true);
             }
         }
 

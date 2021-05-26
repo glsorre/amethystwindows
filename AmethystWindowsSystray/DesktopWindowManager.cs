@@ -23,6 +23,8 @@ namespace AmethystWindowsSystray
     {
         private Dictionary<Pair<VirtualDesktop, HMONITOR>, Layout> Layouts;
         public Dictionary<Pair<VirtualDesktop, HMONITOR>, ObservableCollection<DesktopWindow>> Windows { get; }
+        public Dictionary<Pair<VirtualDesktop, HMONITOR>, bool> WindowsSubscribed = new Dictionary<Pair<VirtualDesktop, HMONITOR>, bool>();
+
         public event EventHandler<string> Changed;
         private Dictionary<Pair<VirtualDesktop, HMONITOR>, int> Factors;
 
@@ -191,6 +193,14 @@ namespace AmethystWindowsSystray
                     Factors.Add(desktopMonitor, 0);
                 }
             }
+        }
+
+        private void SubscribeWindowsCollectionChanged(Pair<VirtualDesktop, HMONITOR> desktopMonitor, bool enabled)
+        {
+            if (!enabled) Windows[desktopMonitor].CollectionChanged -= Windows_CollectionChanged;
+            else if (!WindowsSubscribed[desktopMonitor]) Windows[desktopMonitor].CollectionChanged += Windows_CollectionChanged;
+
+            WindowsSubscribed[desktopMonitor] = enabled;
         }
 
     }
