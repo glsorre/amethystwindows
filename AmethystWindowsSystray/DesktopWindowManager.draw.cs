@@ -30,6 +30,11 @@ namespace AmethystWindowsSystray
                 IEnumerable<Rectangle> gridGenerator;
                 DrawMonitor(desktopMonitor, out ScreenScalingFactorVert, out mX, out mY, out gridGenerator);
 
+                foreach (var w in desktopMonitor.Value.Select((value, i) => new Tuple<int, DesktopWindow>(i, value)))
+                {
+                    User32.ShowWindow(w.Item2.Window, ShowWindowCommand.SW_RESTORE);
+                }
+
                 HDWP hDWP1 = User32.BeginDeferWindowPos(windows.Count);
                 foreach (var w in desktopMonitor.Value.Select((value, i) => new Tuple<int, DesktopWindow>(i, value)))
                 {
