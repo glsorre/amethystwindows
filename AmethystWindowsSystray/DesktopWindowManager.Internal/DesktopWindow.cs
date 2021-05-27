@@ -160,8 +160,8 @@ namespace DesktopWindowManager.Internal
 
         public void GetAppName()
         {
-            string fileName = "";
-            string name = "";
+            string fileName = string.Empty;
+            string name = string.Empty;
             uint pid = 0;
             User32.GetWindowThreadProcessId(Window, out pid);
             uint capacity = 1024;
@@ -183,6 +183,10 @@ namespace DesktopWindowManager.Internal
                     FileVersionInfo myFileVersionInfo = FileVersionInfo.GetVersionInfo(fileName);
                     name = myFileVersionInfo.FileDescription;
                     break;
+            }
+            if (name == null)
+            {
+                name = fileName.Split(new string[] { "\\" }, StringSplitOptions.None).Last();
             }
             AppName = name;
         }
