@@ -120,6 +120,7 @@ namespace AmethystWindowsSystray
             else if (e.Action.Equals(NotifyCollectionChangedAction.Add))
             {
                 DesktopWindow desktopWindow = (DesktopWindow)e.NewItems[0];
+                if (desktopWindow.GetDesktopMonitor().Item1.Equals(null) || desktopWindow.GetDesktopMonitor().Item2.Equals(null)) desktopWindow.GetInfo();
                 Draw(desktopWindow.GetDesktopMonitor());
                 Changed.Invoke(this, "remove");
             }

@@ -138,7 +138,6 @@ namespace AmethystWindowsSystray
 
         public void setKeyboardHook(HWND hWND)
         {
-            Console.WriteLine(hotkeysConfPath);
             if (File.Exists(hotkeysConfPath))
             {
                 List<Hotkey> hotkeys = LoadJson();

@@ -30,13 +30,13 @@ namespace AmethystWindowsSystray
                 IEnumerable<Rectangle> gridGenerator;
                 DrawMonitor(desktopMonitor, out ScreenScalingFactorVert, out mX, out mY, out gridGenerator);
 
-                foreach (var w in desktopMonitor.Value.Select((value, i) => new Tuple<int, DesktopWindow>(i, value)))
+                foreach (var w in windows.Select((value, i) => new Tuple<int, DesktopWindow>(i, value)))
                 {
                     User32.ShowWindow(w.Item2.Window, ShowWindowCommand.SW_RESTORE);
                 }
 
                 HDWP hDWP1 = User32.BeginDeferWindowPos(windows.Count);
-                foreach (var w in desktopMonitor.Value.Select((value, i) => new Tuple<int, DesktopWindow>(i, value)))
+                foreach (var w in windows.Select((value, i) => new Tuple<int, DesktopWindow>(i, value)))
                 {
                     Rectangle adjustedSize = new Rectangle(
                         gridGenerator.ToArray()[w.Item1].X,
@@ -50,7 +50,7 @@ namespace AmethystWindowsSystray
                 User32.EndDeferWindowPos(hDWP1.DangerousGetHandle());
 
                 HDWP hDWP2 = User32.BeginDeferWindowPos(windows.Count);
-                foreach (var w in desktopMonitor.Value.Select((value, i) => new Tuple<int, DesktopWindow>(i, value)))
+                foreach (var w in windows.Select((value, i) => new Tuple<int, DesktopWindow>(i, value)))
                 {
                     Rectangle adjustedSize = new Rectangle(
                         gridGenerator.ToArray()[w.Item1].X,
@@ -124,7 +124,7 @@ namespace AmethystWindowsSystray
         private void DrawMonitor(KeyValuePair<Pair<VirtualDesktop, HMONITOR>, ObservableCollection<DesktopWindow>> desktopMonitor, out float ScreenScalingFactorVert, out int mX, out int mY, out IEnumerable<Rectangle> gridGenerator)
         {
             HMONITOR m = desktopMonitor.Key.Item2;
-            int windowsCount = desktopMonitor.Value.Count();
+            int windowsCount = desktopMonitor.Value.Count;
 
             User32.MONITORINFOEX info = new User32.MONITORINFOEX();
             info.cbSize = (uint)Marshal.SizeOf(info);
