@@ -54,7 +54,7 @@ namespace AmethystWindowsSystray
                         case User32.EventConstants.EVENT_SYSTEM_MINIMIZEEND:
                             SystrayContext.Logger.Information($"window maximized");
                             desktopWindow.GetInfo();
-                            DesktopWindowsManager.AddWindow(desktopWindow);
+                            if (desktopWindow.IsRuntimePresent()) DesktopWindowsManager.AddWindow(desktopWindow);
                             break;
                         case User32.EventConstants.EVENT_SYSTEM_MINIMIZESTART:
                         case User32.EventConstants.EVENT_OBJECT_HIDE:
