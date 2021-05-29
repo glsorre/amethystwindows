@@ -86,6 +86,7 @@
     <Compile Include="SystrayContext.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="DesktopWindowManager.Internal\DesktopWindowComparer.cs" />
     <Compile Include="WindowsDesktop.Internal\Utils.cs" />
     <Compile Include="WindowsDesktop.Internal\DesktopManager.cs" />
     <Compile Include="WindowsDesktop.Internal\Internal.cs" />

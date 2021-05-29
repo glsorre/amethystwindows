@@ -25,13 +25,15 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="96"/>
             </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="0" Style="{ThemeResource TitleTextBlockStyle}" Margin="0,0,20,0" Text="Application Name" />
-            <TextBlock Grid.Column="1" Style="{ThemeResource TitleTextBlockStyle}" Margin="0,0,20,0" Text="Class Name" />
-            <TextBlock Grid.Column="2" Style="{ThemeResource TitleTextBlockStyle}" Margin="0,0,20,0" Text="Virtual Desktop" />
-            <TextBlock Grid.Column="3" Style="{ThemeResource TitleTextBlockStyle}" Margin="0,0,20,0" Text="Monitor" />
-            <TextBlock Grid.Column="4" Style="{ThemeResource TitleTextBlockStyle}" Margin="0,0,20,0" Text="Actions" />
+            <TextBlock Grid.Column="0" Style="{ThemeResource TitleTextBlockStyle}" Margin="0,0,20,0" Text="Id" />
+            <TextBlock Grid.Column="1" Style="{ThemeResource TitleTextBlockStyle}" Margin="0,0,20,0" Text="Application Name" />
+            <TextBlock Grid.Column="2" Style="{ThemeResource TitleTextBlockStyle}" Margin="0,0,20,0" Text="Class Name" />
+            <TextBlock Grid.Column="3" Style="{ThemeResource TitleTextBlockStyle}" Margin="0,0,20,0" Text="Virtual Desktop" />
+            <TextBlock Grid.Column="4" Style="{ThemeResource TitleTextBlockStyle}" Margin="0,0,20,0" Text="Monitor" />
+            <TextBlock Grid.Column="5" Style="{ThemeResource TitleTextBlockStyle}" Margin="0,0,20,0" Text="Actions" />
         </Grid>
         <ScrollViewer controls:DockPanel.Dock="Top">
             <ListView x:Name="DesktopWindowsList" ItemsSource="{Binding DesktopWindows}">
@@ -50,13 +52,15 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="96"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Style="{ThemeResource BodyTextBlockStyle}" Margin="0,0,0,0" Text="{Binding AppName}" />
-                            <TextBlock Grid.Column="1" Style="{ThemeResource BodyTextBlockStyle}" Margin="0,0,20,0" Text="{Binding ClassName}" />
-                            <TextBlock Grid.Column="2" Style="{ThemeResource BodyTextBlockStyle}" Margin="0,0,20,0" Text="{Binding VirtualDesktop}" />
-                            <TextBlock Grid.Column="3" Style="{ThemeResource BodyTextBlockStyle}" Margin="0,0,20,0" Text="{Binding Monitor}" />
-                            <muxc:DropDownButton Grid.Column="4" Content="Filter">
+                            <TextBlock Grid.Column="0" Style="{ThemeResource BodyTextBlockStyle}" Margin="0,0,0,0" Text="{Binding Window}" />
+                            <TextBlock Grid.Column="1" Style="{ThemeResource BodyTextBlockStyle}" Margin="0,0,20,0" Text="{Binding AppName}" />
+                            <TextBlock Grid.Column="2" Style="{ThemeResource BodyTextBlockStyle}" Margin="0,0,20,0" Text="{Binding ClassName}" />
+                            <TextBlock Grid.Column="3" Style="{ThemeResource BodyTextBlockStyle}" Margin="0,0,20,0" Text="{Binding VirtualDesktop}" />
+                            <TextBlock Grid.Column="4" Style="{ThemeResource BodyTextBlockStyle}" Margin="0,0,20,0" Text="{Binding Monitor}" />
+                            <muxc:DropDownButton Grid.Column="5" Content="Filter">
                                 <muxc:DropDownButton.Flyout>
                                     <MenuFlyout Placement="Bottom">
                                         <MenuFlyoutItem Text="All windows" Click="FilterWindowsButton_Click"/>

@@ -63,7 +63,7 @@ namespace AmethystWindowsSystray
                 }
                 User32.EndDeferWindowPos(hDWP2.DangerousGetHandle());
 
-                foreach (var w in desktopMonitor.Value.Select((value, i) => new Tuple<int, DesktopWindow>(i, value)))
+                foreach (var w in desktopMonitor.Value.Select((value, i) => new Tuple<int, DesktopWindow>(i, value)).Where((value) => value.Item2.IsRuntimePresent()))
                 {
                     w.Item2.GetWindowInfo();
                 }

@@ -26,12 +26,11 @@ namespace AmethystWindowsSystray
             DesktopWindowsManager = desktopWindowsManager;
         }
 
-        private async void ManageShown(HWND hWND)
+        private void ManageShown(HWND hWND)
         {
-            await Task.Delay(500);
             DesktopWindow desktopWindow = new DesktopWindow(hWND);
             desktopWindow.GetInfo();
-            if (desktopWindow.IsRuntimePresent())
+            if (desktopWindow != null && desktopWindow.IsRuntimePresent())
             {
                 SystrayContext.Logger.Information($"window created");
                 DesktopWindowsManager.AddWindow(desktopWindow);
@@ -50,7 +49,6 @@ namespace AmethystWindowsSystray
                         case User32.EventConstants.EVENT_OBJECT_SHOW:
                         case User32.EventConstants.EVENT_OBJECT_UNCLOAKED:
                         case User32.EventConstants.EVENT_OBJECT_IME_SHOW:
-                        case User32.EventConstants.EVENT_SYSTEM_FOREGROUND:
                             ManageShown(hwnd);
                             break;
                         case User32.EventConstants.EVENT_SYSTEM_MINIMIZEEND:
@@ -61,9 +59,29 @@ namespace AmethystWindowsSystray
                         case User32.EventConstants.EVENT_SYSTEM_MINIMIZESTART:
                         case User32.EventConstants.EVENT_OBJECT_HIDE:
                         case User32.EventConstants.EVENT_OBJECT_IME_HIDE:
-                            SystrayContext.Logger.Information($"window minimized/hide");
-                            DesktopWindow removed = DesktopWindowsManager.FindWindow(hwnd);
-                            if(removed != null) DesktopWindowsManager.RemoveWindow(removed);
+                            SystrayContext.Logger.Information($"window minimized");
+                            DesktopWindow minimized = DesktopWindowsManager.FindWindow(hwnd);
+                            if (minimized != null) DesktopWindowsManager.RemoveWindow(minimized);
+                            break;
+                        case User32.EventConstants.EVENT_OBJECT_DESTROY:
+                            SystrayContext.Logger.Information($"window destroyed");
+                            List<DesktopWindow> destroyed = new List<DesktopWindow>();
+                            DesktopWindow main = DesktopWindowsManager.FindWindow(hwnd);
+                            destroyed.Add(main); 
+                            foreach (var desktopMonitor in DesktopWindowsManager.Windows.Keys) {
+                                foreach (var w in DesktopWindowsManager.Windows[desktopMonitor].Select((value, i) => new Tuple<int, DesktopWindow>(i, value)).Where((value) => !(value is null)))
+                                {
+                                    if (!w.Item2.IsRuntimePresent()) destroyed.Add(w.Item2);
+                                }
+                            }
+                            if (destroyed.Count == 1)
+                            {
+                                if (destroyed[0] != null) DesktopWindowsManager.RemoveWindow(destroyed[0]);
+                            } 
+                            else if (destroyed.Count > 1)
+                            {
+                                DesktopWindowsManager.RemoveWindows(destroyed.Where((value) => value != null).ToList());
+                            }
                             break;
                         case User32.EventConstants.EVENT_SYSTEM_MOVESIZEEND:
                             SystrayContext.Logger.Information($"window move/size");

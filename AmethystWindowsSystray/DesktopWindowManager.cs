@@ -1,4 +1,6 @@
-﻿using DesktopWindowManager.Internal;
+﻿using AmethystWindowsSystray.DesktopWindowManager.Internal;
+using DebounceThrottle;
+using DesktopWindowManager.Internal;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -27,6 +29,9 @@ namespace AmethystWindowsSystray
 
         public event EventHandler<string> Changed;
         private Dictionary<Pair<VirtualDesktop, HMONITOR>, int> Factors;
+
+        private DesktopWindowComparer DesktopWindowComparer = new DesktopWindowComparer();
+        private DebounceDispatcher DebounceDispatcher = new DebounceDispatcher(400);
 
         private readonly string[] FixedFilters = new string[] {
             "Amethyst Windows",

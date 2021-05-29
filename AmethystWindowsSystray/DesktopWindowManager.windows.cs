@@ -1,4 +1,5 @@
-﻿using DesktopWindowManager.Internal;
+﻿using AmethystWindowsSystray.DesktopWindowManager.Internal;
+using DesktopWindowManager.Internal;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -31,10 +32,13 @@ namespace AmethystWindowsSystray
                 SubscribeWindowsCollectionChanged(desktopWindow.GetDesktopMonitor(), true);
             }
 
-            if (FixedFilters.All(s => !desktopWindow.AppName.StartsWith(s)) 
-                && desktopWindow.AppName != String.Empty &&
-                !Windows[desktopWindow.GetDesktopMonitor()].Contains(desktopWindow))
-            { 
+            bool desktopWindowAlreadyAdded = Windows.Any((pair) => pair.Value.Contains(desktopWindow, DesktopWindowComparer));
+
+            if (FixedFilters.All(s => !desktopWindow.AppName.StartsWith(s)) &&
+                desktopWindow.AppName != String.Empty &&
+                !desktopWindowAlreadyAdded &&
+                !(desktopWindow is null))
+            {
                 if (configurableFilter.Equals(null))
                 {
                     Windows[desktopWindow.GetDesktopMonitor()].Add(desktopWindow);
@@ -52,6 +56,14 @@ namespace AmethystWindowsSystray
         public void RemoveWindow(DesktopWindow desktopWindow)
         {
             Windows[desktopWindow.GetDesktopMonitor()].Remove(desktopWindow);
+        }
+
+        public void RemoveWindows(List<DesktopWindow> windows)
+        {
+            foreach (var desktopWindow in windows)
+            {
+                RemoveWindow(desktopWindow);
+            }
         }
 
         public void RepositionWindow(DesktopWindow oldDesktopWindow, DesktopWindow newDesktopWindow)
@@ -101,8 +113,9 @@ namespace AmethystWindowsSystray
             User32.EnumWindows(filterDesktopWindows, IntPtr.Zero);
 
             foreach (var desktopMonitor in Windows)
-            {   
-                if (!WindowsSubscribed.ContainsKey(desktopMonitor.Key)) { 
+            {
+                if (!WindowsSubscribed.ContainsKey(desktopMonitor.Key))
+                {
                     WindowsSubscribed.Add(desktopMonitor.Key, false);
                 }
                 SubscribeWindowsCollectionChanged(desktopMonitor.Key, true);
@@ -114,15 +127,21 @@ namespace AmethystWindowsSystray
             if (e.Action.Equals(NotifyCollectionChangedAction.Remove))
             {
                 DesktopWindow desktopWindow = (DesktopWindow)e.OldItems[0];
-                Draw(desktopWindow.GetDesktopMonitor());
-                Changed.Invoke(this, "add");
+                DebounceDispatcher.Debounce(() =>
+                {
+                    Draw(desktopWindow.GetDesktopMonitor());
+                    Changed.Invoke(this, "remove");
+                });
             }
             else if (e.Action.Equals(NotifyCollectionChangedAction.Add))
             {
                 DesktopWindow desktopWindow = (DesktopWindow)e.NewItems[0];
-                if (desktopWindow.GetDesktopMonitor().Item1.Equals(null) || desktopWindow.GetDesktopMonitor().Item2.Equals(null)) desktopWindow.GetInfo();
-                Draw(desktopWindow.GetDesktopMonitor());
-                Changed.Invoke(this, "remove");
+                if (desktopWindow.GetDesktopMonitor().Item1 is null || desktopWindow.GetDesktopMonitor().Item2.IsNull) desktopWindow.GetInfo();
+                DebounceDispatcher.Debounce(() =>
+                {
+                    Draw(desktopWindow.GetDesktopMonitor());
+                    Changed.Invoke(this, "add");
+                });
             }
         }
 

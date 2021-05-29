@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
@@ -46,6 +47,8 @@ namespace DesktopWindowManager.Internal
             bool common = User32.IsWindowVisible(Window) &&
                     !User32.IsIconic(Window) &&
                     IsAltTabWindow() &&
+                    HasMinDimension() &&
+                    !IsTransparent() &&
                     Info.dwExStyle.HasFlag(User32.WindowStylesEx.WS_EX_WINDOWEDGE) &&
                     Info.dwStyle.HasFlag(User32.WindowStyles.WS_MAXIMIZEBOX) &&
                     Info.dwStyle.HasFlag(User32.WindowStyles.WS_MINIMIZEBOX) &&
@@ -61,6 +64,18 @@ namespace DesktopWindowManager.Internal
                 return common &&
                     !Info.dwExStyle.HasFlag(User32.WindowStylesEx.WS_EX_TOOLWINDOW);
             }  
+        }
+
+        private bool IsTransparent()
+        {
+            if (Info.dwExStyle.HasFlag(User32.WindowStylesEx.WS_EX_TRANSPARENT)) return true;
+            return false;
+        }
+
+        private bool HasMinDimension()
+        {
+            if (Info.rcClient.Width < 10 && Info.rcClient.Height < 10) return false;
+            return true;
         }
 
         public bool IsRuntimeValuable()
@@ -180,8 +195,14 @@ namespace DesktopWindowManager.Internal
                     name = GetWindowTitle();
                     break;
                 default:
-                    FileVersionInfo myFileVersionInfo = FileVersionInfo.GetVersionInfo(fileName);
-                    name = myFileVersionInfo.FileDescription;
+                    try
+                    {
+                        FileVersionInfo myFileVersionInfo = FileVersionInfo.GetVersionInfo(fileName);
+                        name = myFileVersionInfo.FileDescription;
+                    } catch (FileNotFoundException e)
+                    {
+                        name = fileName.Split(new string[] { "\\" }, StringSplitOptions.None).Last();
+                    }
                     break;
             }
             if (name == null)

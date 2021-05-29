@@ -53,6 +53,7 @@ namespace AmethystWindows
             Windows.UI.ViewManagement.ApplicationView.PreferredLaunchViewSize = new Windows.Foundation.Size(1000, 500);
             Windows.UI.ViewManagement.ApplicationView.PreferredLaunchWindowingMode = Windows.UI.ViewManagement.ApplicationViewWindowingMode.PreferredLaunchViewSize;
             AppServiceConnected += App_AppServiceConnected;
+            App_LaunchSystray();
         }
 
         public async void App_LaunchSystray()
@@ -107,7 +108,6 @@ namespace AmethystWindows
 
         private async void App_AppServiceConnected(object sender, AppServiceTriggerDetails e)
         {
-            //Connection.RequestReceived += Connection_RequestReceived;
             await Task.Delay(500);
             App_Refresh();
         }
@@ -245,7 +245,7 @@ namespace AmethystWindows
         {
             DispatcherHelper.Initialize();
             IsForeground = true;
-            App_LaunchSystray();
+            //App_LaunchSystray();
     
 
             Frame rootFrame = Window.Current.Content as Frame;
@@ -285,7 +285,7 @@ namespace AmethystWindows
         {
             DispatcherHelper.Initialize();
             IsForeground = true;
-            App_LaunchSystray();
+            //App_LaunchSystray();
             
             Frame rootFrame = Window.Current.Content as Frame;
             if (rootFrame == null)
