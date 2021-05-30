@@ -509,7 +509,7 @@ namespace AmethystWindowsSystray
                     item.Add(w.value.Window.DangerousGetHandle().ToString());
                     item.Add(w.value.AppName);
                     item.Add(w.value.ClassName);
-                    item.Add(w.value.VirtualDesktop.ToString());
+                    item.Add(VirtualDesktop.DesktopNameFromDesktop(w.value.VirtualDesktop));
                     item.Add(screen.DeviceName.ToString().Remove(0,4));
                     item.Add(w.value.Info.rcWindow.ToString());
                     item.Add(w.value.Info.dwStyle.ToString());

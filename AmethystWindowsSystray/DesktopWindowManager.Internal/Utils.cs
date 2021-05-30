@@ -101,14 +101,18 @@ namespace DesktopWindowManager.Internal
                 Point point = new Point(properties[1].Value.ToObject<int>() + 100, properties[2].Value.ToObject<int>() + 100);
                 HMONITOR monitor = User32.MonitorFromPoint(point, User32.MonitorFlags.MONITOR_DEFAULTTONEAREST);
 
+                int virtualDesktopIndex = VirtualDesktop.SearchDesktop(properties[0].Value.ToString());
 
-                virtualDesktop = VirtualDesktop.FromIndex(VirtualDesktop.SearchDesktop(properties[0].Value.ToString()));
-                hMONITOR = monitor;
-                layout = (Layout)properties[3].Value.ToObject<int>();
+                if (virtualDesktopIndex != -1)
+                {
+                    virtualDesktop = VirtualDesktop.FromIndex(virtualDesktopIndex);
+                    hMONITOR = monitor;
+                    layout = (Layout)properties[3].Value.ToObject<int>();
+
+                    var key = new Pair<VirtualDesktop, HMONITOR>(virtualDesktop, hMONITOR);
+                    list.Add(new KeyValuePair<Pair<VirtualDesktop, HMONITOR>, Layout>(key, layout));
+                }
             }
-
-            var key = new Pair<VirtualDesktop, HMONITOR>(virtualDesktop, hMONITOR);
-            list.Add(new KeyValuePair<Pair<VirtualDesktop, HMONITOR>, Layout>(key, layout));
 
             return list;
         }
@@ -160,13 +164,18 @@ namespace DesktopWindowManager.Internal
                 Point point = new Point(properties[1].Value.ToObject<int>() + 100, properties[2].Value.ToObject<int>() + 100);
                 HMONITOR monitor = User32.MonitorFromPoint(point, User32.MonitorFlags.MONITOR_DEFAULTTONEAREST);
 
-                virtualDesktop = VirtualDesktop.FromIndex(VirtualDesktop.SearchDesktop(properties[0].Value.ToString()));
-                hMONITOR = monitor;
-                factor = properties[3].Value.ToObject<int>();
-            }
+                int virtualDesktopIndex = VirtualDesktop.SearchDesktop(properties[0].Value.ToString());
 
-            var key = new Pair<VirtualDesktop, HMONITOR>(virtualDesktop, hMONITOR);
-            list.Add(new KeyValuePair<Pair<VirtualDesktop, HMONITOR>, int>(key, factor));
+                if (virtualDesktopIndex != -1)
+                {
+                    virtualDesktop = VirtualDesktop.FromIndex(virtualDesktopIndex);
+                    hMONITOR = monitor;
+                    factor = properties[3].Value.ToObject<int>();
+
+                    var key = new Pair<VirtualDesktop, HMONITOR>(virtualDesktop, hMONITOR);
+                    list.Add(new KeyValuePair<Pair<VirtualDesktop, HMONITOR>, int>(key, factor));
+                }
+            }
 
             return list;
         }
