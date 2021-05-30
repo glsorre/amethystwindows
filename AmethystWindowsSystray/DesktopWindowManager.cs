@@ -31,7 +31,10 @@ namespace AmethystWindowsSystray
         private Dictionary<Pair<VirtualDesktop, HMONITOR>, int> Factors;
 
         private DesktopWindowComparer DesktopWindowComparer = new DesktopWindowComparer();
-        private DebounceDispatcher DebounceDispatcher = new DebounceDispatcher(400);
+
+        private DebounceDispatcher DebounceDispatcherAdd = new DebounceDispatcher(400);
+        private DebounceDispatcher DebounceDispatcherRemove = new DebounceDispatcher(400);
+        Dictionary<Pair<VirtualDesktop, HMONITOR>, DebounceDispatcher> WindowsDebounceDispatcher = new Dictionary<Pair<VirtualDesktop, HMONITOR>, DebounceDispatcher>();
 
         private readonly string[] FixedFilters = new string[] {
             "Amethyst Windows",

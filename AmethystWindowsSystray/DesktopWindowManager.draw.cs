@@ -1,4 +1,5 @@
-﻿using DesktopWindowManager.Internal;
+﻿using DebounceThrottle;
+using DesktopWindowManager.Internal;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -20,9 +21,28 @@ namespace AmethystWindowsSystray
 {
     partial class DesktopWindowsManager
     {
+        public void DebouncedDraw(Pair<VirtualDesktop, HMONITOR> key)
+        {
+            DebounceDispatcher debounceDispatcher;
+            if (WindowsDebounceDispatcher.ContainsKey(key))
+            {
+                WindowsDebounceDispatcher.TryGetValue(key, out debounceDispatcher);
+            } else
+            {
+                WindowsDebounceDispatcher.Add(key, new DebounceDispatcher(400));
+                WindowsDebounceDispatcher.TryGetValue(key, out debounceDispatcher);
+            }
+
+            debounceDispatcher.Debounce(() =>
+            {
+                Draw(key);
+            });
+        }
+
         public void Draw(Pair<VirtualDesktop, HMONITOR> key)
         {
-            if (!disabled) { 
+            if (!disabled)
+            {
                 ObservableCollection<DesktopWindow> windows = Windows[key];
                 KeyValuePair<Pair<VirtualDesktop, HMONITOR>, ObservableCollection<DesktopWindow>> desktopMonitor = new KeyValuePair<Pair<VirtualDesktop, HMONITOR>, ObservableCollection<DesktopWindow>>(key, windows);
                 float ScreenScalingFactorVert;

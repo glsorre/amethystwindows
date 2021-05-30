@@ -101,6 +101,7 @@ namespace DesktopWindowManager.Internal
                 Point point = new Point(properties[1].Value.ToObject<int>() + 100, properties[2].Value.ToObject<int>() + 100);
                 HMONITOR monitor = User32.MonitorFromPoint(point, User32.MonitorFlags.MONITOR_DEFAULTTONEAREST);
 
+
                 virtualDesktop = VirtualDesktop.FromIndex(VirtualDesktop.SearchDesktop(properties[0].Value.ToString()));
                 hMONITOR = monitor;
                 layout = (Layout)properties[3].Value.ToObject<int>();

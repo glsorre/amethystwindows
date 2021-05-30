@@ -127,9 +127,9 @@ namespace AmethystWindowsSystray
             if (e.Action.Equals(NotifyCollectionChangedAction.Remove))
             {
                 DesktopWindow desktopWindow = (DesktopWindow)e.OldItems[0];
-                DebounceDispatcher.Debounce(() =>
+                DebouncedDraw(desktopWindow.GetDesktopMonitor());
+                DebounceDispatcherRemove.Debounce(() =>
                 {
-                    Draw(desktopWindow.GetDesktopMonitor());
                     Changed.Invoke(this, "remove");
                 });
             }
@@ -137,9 +137,9 @@ namespace AmethystWindowsSystray
             {
                 DesktopWindow desktopWindow = (DesktopWindow)e.NewItems[0];
                 if (desktopWindow.GetDesktopMonitor().Item1 is null || desktopWindow.GetDesktopMonitor().Item2.IsNull) desktopWindow.GetInfo();
-                DebounceDispatcher.Debounce(() =>
+                DebouncedDraw(desktopWindow.GetDesktopMonitor());
+                DebounceDispatcherAdd.Debounce(() =>
                 {
-                    Draw(desktopWindow.GetDesktopMonitor());
                     Changed.Invoke(this, "add");
                 });
             }
