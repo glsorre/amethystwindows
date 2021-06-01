@@ -1,4 +1,4 @@
-﻿using DesktopWindowManager.Internal;
+﻿using DesktopMonitorManager.Internal;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -17,13 +17,16 @@ namespace AmethystWindowsSystray
 {
     class HooksHelper
     {
-        public DesktopWindowsManager DesktopWindowsManager { get; set; }
+        public DesktopMonitorManager DesktopMonitorManager { get; set; }
+
+        private DesktopMonitor desktopMonitorStart;
+        private DesktopWindow desktopWindowStart;
 
         private string hotkeysConfPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "AmethystWindows", "hotkeys.json");
 
-        public HooksHelper(DesktopWindowsManager desktopWindowsManager)
+        public HooksHelper(DesktopMonitorManager desktopWindowsManager)
         {
-            DesktopWindowsManager = desktopWindowsManager;
+            DesktopMonitorManager = desktopWindowsManager;
         }
 
         private void ManageShown(HWND hWND)
@@ -33,7 +36,7 @@ namespace AmethystWindowsSystray
             if (desktopWindow != null && desktopWindow.IsRuntimePresent())
             {
                 SystrayContext.Logger.Information($"window created");
-                DesktopWindowsManager.AddWindow(desktopWindow);
+                DesktopMonitorManager.AddWindow(desktopWindow);
             }
         }
 
@@ -42,6 +45,7 @@ namespace AmethystWindowsSystray
             void WinEventHookAll(User32.HWINEVENTHOOK hWinEventHook, uint winEvent, HWND hwnd, int idObject, int idChild, uint idEventThread, uint dwmsEventTime)
             {  
                 DesktopWindow desktopWindow = new DesktopWindow(hwnd);
+
                 if (hwnd != HWND.NULL && idObject == User32.ObjectIdentifiers.OBJID_WINDOW && idChild == 0 && desktopWindow.IsRuntimeValuable())
                 {
                     switch (winEvent)
@@ -54,46 +58,48 @@ namespace AmethystWindowsSystray
                         case User32.EventConstants.EVENT_SYSTEM_MINIMIZEEND:
                             SystrayContext.Logger.Information($"window maximized");
                             desktopWindow.GetInfo();
-                            if (desktopWindow.IsRuntimePresent()) DesktopWindowsManager.AddWindow(desktopWindow);
+                            if (desktopWindow.IsRuntimePresent()) DesktopMonitorManager.AddWindow(desktopWindow);
                             break;
                         case User32.EventConstants.EVENT_SYSTEM_MINIMIZESTART:
                         case User32.EventConstants.EVENT_OBJECT_HIDE:
                         case User32.EventConstants.EVENT_OBJECT_IME_HIDE:
                             SystrayContext.Logger.Information($"window minimized");
-                            DesktopWindow minimized = DesktopWindowsManager.FindWindow(hwnd);
-                            if (minimized != null) DesktopWindowsManager.RemoveWindow(minimized);
+                            DesktopWindow minimized = DesktopMonitorManager.FindWindow(hwnd);
+                            if (minimized != null) DesktopMonitorManager.RemoveWindow(minimized);
                             break;
                         case User32.EventConstants.EVENT_OBJECT_DESTROY:
                             SystrayContext.Logger.Information($"window destroyed");
                             List<DesktopWindow> destroyed = new List<DesktopWindow>();
-                            DesktopWindow main = DesktopWindowsManager.FindWindow(hwnd);
+                            DesktopWindow main = DesktopMonitorManager.FindWindow(hwnd);
                             destroyed.Add(main); 
-                            foreach (var desktopMonitor in DesktopWindowsManager.Windows.Keys) {
-                                foreach (var w in DesktopWindowsManager.Windows[desktopMonitor].Select((value, i) => new Tuple<int, DesktopWindow>(i, value)).Where((value) => !(value is null)))
+                            foreach (var desktopMonitor in DesktopMonitorManager.DesktopMonitors) {
+                                foreach (var w in desktopMonitor.Select((value, i) => new Tuple<int, DesktopWindow>(i, value)).Where((value) => !(value is null)))
                                 {
                                     if (!w.Item2.IsRuntimePresent()) destroyed.Add(w.Item2);
                                 }
                             }
                             if (destroyed.Count == 1)
                             {
-                                if (destroyed[0] != null) DesktopWindowsManager.RemoveWindow(destroyed[0]);
+                                if (destroyed[0] != null) DesktopMonitorManager.RemoveWindow(destroyed[0]);
                             } 
                             else if (destroyed.Count > 1)
                             {
-                                DesktopWindowsManager.RemoveWindows(destroyed.Where((value) => value != null).ToList());
+                                DesktopMonitorManager.RemoveWindows(destroyed.Where((value) => value != null).ToList());
                             }
                             break;
+                        case User32.EventConstants.EVENT_SYSTEM_MOVESIZESTART:
+                            SystrayContext.Logger.Information($"window move/size start");
+                            desktopWindowStart = DesktopMonitorManager.FindWindow(hwnd);
+                            desktopMonitorStart = DesktopMonitorManager.FindDesktopMonitor(desktopWindowStart);
+                            break;
                         case User32.EventConstants.EVENT_SYSTEM_MOVESIZEEND:
-                            SystrayContext.Logger.Information($"window move/size");
-                            DesktopWindow moved = DesktopWindowsManager.FindWindow(hwnd);
-                            if (moved != null)
+                            SystrayContext.Logger.Information($"window move/size end");
+                            DesktopWindow desktopWindowEnd = DesktopMonitorManager.FindWindow(hwnd);
+                            DesktopMonitor desktopMonitorEnd = desktopWindowEnd.GetDesktopMonitor();
+                            if (desktopMonitorStart != desktopMonitorEnd)
                             {
-                                DesktopWindow newMoved = new DesktopWindow(hwnd);
-                                newMoved.GetInfo();
-                                if (!moved.Equals(newMoved))
-                                {
-                                    DesktopWindowsManager.RepositionWindow(moved, newMoved);
-                                }
+                                desktopMonitorStart.Remove(desktopWindowStart);
+                                DesktopMonitorManager.AddWindow(desktopWindowEnd, desktopMonitorEnd);
                             }
                             break;
                         case User32.EventConstants.EVENT_OBJECT_DRAGCOMPLETE:

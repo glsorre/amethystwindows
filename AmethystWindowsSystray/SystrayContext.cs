@@ -1,5 +1,5 @@
-﻿using DebounceThrottle;
-using DesktopWindowManager.Internal;
+﻿using DesktopMonitorManager.Internal;
+using DebounceThrottle;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Serilog;
@@ -27,7 +27,7 @@ namespace AmethystWindowsSystray
     {
         private AppServiceConnection Connection = null;
         private NotifyIcon NotifyIcon = null;
-        private DesktopWindowsManager DWM = null;
+        private DesktopMonitorManager DMM = null;
         private HooksHelper hooksHelper = null;
         private bool Standalone = false;
         public static Logger Logger = new LoggerConfiguration().WriteTo.Console().CreateLogger();
@@ -79,19 +79,18 @@ namespace AmethystWindowsSystray
             await App_Connect();
 
             Logger.Information($"generating DWM");
-            DWM = new DesktopWindowsManager();
-            DWM.Changed += Handlers_Changed;
-            Logger.Information($"getting layouts");
-            DWM.LoadLayouts();
-            DWM.LoadFactors();
+            DMM = new DesktopMonitorManager();
+            DMM.Changed += Handlers_Changed;
+            Logger.Information($"loading desktop monitors");
+            DMM.Load();
             Logger.Information($"setting hooks");
-            hooksHelper = new HooksHelper(DWM);
+            hooksHelper = new HooksHelper(DMM);
             hooksHelper.setWindowsHook();
             hooksHelper.setKeyboardHook(form.Handle);
             Logger.Information($"getting windows");
-            DWM.GetWindows();
+            DMM.GetWindows();
             Logger.Information($"drawing");
-            DWM.Draw();
+            DMM.Draw();
             
             Logger.Information($"setting virtual desktop change listener");
             IDisposable listener = VirtualDesktop.RegisterListener();
@@ -113,13 +112,13 @@ namespace AmethystWindowsSystray
         private void App_Disable(object sender, EventArgs e)
         {
             MenuItem menuItem = (MenuItem)sender;
-            if (DWM.Disabled) {
-                DWM.Disabled = false;
+            if (DMM.Disabled) {
+                DMM.Disabled = false;
                 menuItem.Checked = false;
-                DWM.Draw();
+                DMM.Draw();
             } else
             {
-                DWM.Disabled = true;
+                DMM.Disabled = true;
                 menuItem.Checked = true;
             }
             App_SendPaddingMarginDisabled();
@@ -151,16 +150,16 @@ namespace AmethystWindowsSystray
 
             if (args.Request.Message.ContainsKey("redraw"))
             {
-                DWM.ClearWindows();
-                DWM.GetWindows();
-                DWM.Draw();
+                DMM.ClearWindows();
+                DMM.GetWindows();
+                DMM.Draw();
             }
 
             if (args.Request.Message.ContainsKey("padding_set"))
             {
                 args.Request.Message.TryGetValue("padding_set", out object message);
                 int newPadding = int.Parse(message.ToString());
-                DWM.Padding = newPadding;
+                DMM.Padding = newPadding;
                 Properties.Settings.Default.Padding = newPadding;
                 Properties.Settings.Default.Save();
             }
@@ -169,7 +168,7 @@ namespace AmethystWindowsSystray
             {
                 args.Request.Message.TryGetValue("margin_top_set", out object message);
                 int newMargin = int.Parse(message.ToString());
-                DWM.MarginTop = newMargin;
+                DMM.MarginTop = newMargin;
                 Properties.Settings.Default.MarginTop = newMargin;
                 Properties.Settings.Default.Save();
             }
@@ -178,7 +177,7 @@ namespace AmethystWindowsSystray
             {
                 args.Request.Message.TryGetValue("margin_bottom_set", out object message);
                 int newMargin = int.Parse(message.ToString());
-                DWM.MarginBottom = newMargin;
+                DMM.MarginBottom = newMargin;
                 Properties.Settings.Default.MarginBottom = newMargin;
                 Properties.Settings.Default.Save();
             }
@@ -187,7 +186,7 @@ namespace AmethystWindowsSystray
             {
                 args.Request.Message.TryGetValue("margin_left_set", out object message);
                 int newMargin = int.Parse(message.ToString());
-                DWM.MarginLeft = newMargin;
+                DMM.MarginLeft = newMargin;
                 Properties.Settings.Default.MarginLeft = newMargin;
                 Properties.Settings.Default.Save();
             }
@@ -196,7 +195,7 @@ namespace AmethystWindowsSystray
             {
                 args.Request.Message.TryGetValue("margin_right_set", out object message);
                 int newMargin = int.Parse(message.ToString());
-                DWM.MarginRight = newMargin;
+                DMM.MarginRight = newMargin;
                 Properties.Settings.Default.MarginRight = newMargin;
                 Properties.Settings.Default.Save();
             }
@@ -205,7 +204,7 @@ namespace AmethystWindowsSystray
             {
                 args.Request.Message.TryGetValue("layout_padding_set", out object message);
                 int newPadding = int.Parse(message.ToString());
-                DWM.LayoutPadding = newPadding;
+                DMM.LayoutPadding = newPadding;
                 Properties.Settings.Default.LayoutPadding = newPadding;
                 Properties.Settings.Default.Save();
             }
@@ -214,7 +213,7 @@ namespace AmethystWindowsSystray
             {
                 args.Request.Message.TryGetValue("layout_padding_set", out object message);
                 int newPadding = int.Parse(message.ToString());
-                DWM.LayoutPadding = newPadding;
+                DMM.LayoutPadding = newPadding;
                 Properties.Settings.Default.LayoutPadding = newPadding;
                 Properties.Settings.Default.Save();
             }
@@ -223,11 +222,11 @@ namespace AmethystWindowsSystray
             {
                 args.Request.Message.TryGetValue("disable_set", out object message);
                 bool disabled = bool.Parse(message.ToString());
-                DWM.Disabled = disabled;
+                DMM.Disabled = disabled;
                 disableMenuItem.Checked = disabled;
                 if (!disabled)
                 {
-                    DWM.Draw();
+                    DMM.Draw();
                 }
             }
 
@@ -245,13 +244,13 @@ namespace AmethystWindowsSystray
                         ));
                 }
 
-                DWM.ConfigurableFilters = parsedFilters;
+                DMM.ConfigurableFilters = parsedFilters;
                 Properties.Settings.Default.Filters = JsonConvert.SerializeObject(parsedFilters);
                 Properties.Settings.Default.Save();
 
-                DWM.ClearWindows();
-                DWM.GetWindows();
-                DWM.Draw();
+                DMM.ClearWindows();
+                DMM.GetWindows();
+                DMM.Draw();
             }
 
             deferral.Complete();
@@ -259,8 +258,8 @@ namespace AmethystWindowsSystray
 
         private void VirtualDesktop_CurrentChanged(object sender, VirtualDesktopChangedEventArgs e)
         {
-            DWM.GetWindows();
-            DWM.Draw();
+            DMM.GetWindows();
+            DMM.Draw();
             App_Refresh();
         }
 
@@ -280,9 +279,9 @@ namespace AmethystWindowsSystray
 
         private void Form_AmethystSysTrayDisplayChange(object sender, EventArgs e)
         {
-            DWM.ClearWindows();
-            DWM.GetWindows();
-            DWM.Draw();
+            DMM.ClearWindows();
+            DMM.GetWindows();
+            DMM.Draw();
         }
 
         private void Form_AmethystSystrayHotKey(object sender, int e)
@@ -291,104 +290,106 @@ namespace AmethystWindowsSystray
             {
                 HMONITOR currentMonitor = User32.MonitorFromWindow(User32.GetForegroundWindow(), User32.MonitorFlags.MONITOR_DEFAULTTONEAREST);
                 VirtualDesktop currentDesktop = VirtualDesktop.Current;
-                Pair<VirtualDesktop, HMONITOR> currentPair = new Pair<VirtualDesktop, HMONITOR>(currentDesktop, currentMonitor);
+                DesktopMonitor currentPair = DMM.FindDesktopMonitor(currentMonitor, currentDesktop);
                 AlertForm form = new AlertForm();
-                Layout currentLayout = DWM.RotateLayoutClockwise(currentPair);
+                Layout currentLayout = DMM.RotateLayoutClockwise(currentPair);
                 User32.MONITORINFO currentMonitorInfo = new User32.MONITORINFO();
                 currentMonitorInfo.cbSize = (uint)Marshal.SizeOf(currentMonitorInfo);
                 User32.GetMonitorInfo(currentMonitor, ref currentMonitorInfo);
                 form.showAlert(currentLayout.ToString(), currentMonitorInfo.rcMonitor.X, currentMonitorInfo.rcMonitor.Width, currentMonitorInfo.rcMonitor.Y, currentMonitorInfo.rcMonitor.Height);
-                DWM.Draw(currentPair);
-                DWM.SaveLayouts();
+                DMM.Draw(currentPair);
+                currentPair.Save();
             }
             if (e == 0x12) //enter
             {
                 HWND selectedWindow = User32.GetForegroundWindow();
                 HMONITOR currentMonitor = User32.MonitorFromWindow(selectedWindow, User32.MonitorFlags.MONITOR_DEFAULTTONEAREST);
-                DesktopWindow selected = DWM.GetWindowByHandlers(selectedWindow, currentMonitor, VirtualDesktop.Current);
-                Pair<VirtualDesktop, HMONITOR> currentPair = new Pair<VirtualDesktop, HMONITOR>(VirtualDesktop.Current, currentMonitor);
-                DWM.SetMainWindow(currentPair, selected);
-                DWM.Draw(currentPair);
+                DesktopWindow selected = DMM.GetWindowByHandlers(selectedWindow, currentMonitor, VirtualDesktop.Current);
+                DesktopMonitor currentPair = DMM.FindDesktopMonitor(currentMonitor, VirtualDesktop.Current);
+                DMM.SetMainWindow(currentPair, selected);
+                DMM.Draw(currentPair);
             }
             if (e == 0x15) // j
             {
                 HWND selectedWindow = User32.GetForegroundWindow();
                 HMONITOR currentMonitor = User32.MonitorFromWindow(selectedWindow, User32.MonitorFlags.MONITOR_DEFAULTTONEAREST);
-                DesktopWindow selected = DWM.GetWindowByHandlers(selectedWindow, currentMonitor, VirtualDesktop.Current);
-                Pair<VirtualDesktop, HMONITOR> currentPair = new Pair<VirtualDesktop, HMONITOR>(VirtualDesktop.Current, currentMonitor);
-                DWM.RotateFocusedWindowClockwise(currentPair, selected);
-                DWM.Draw(currentPair);
+                DesktopWindow selected = DMM.GetWindowByHandlers(selectedWindow, currentMonitor, VirtualDesktop.Current);
+                DesktopMonitor currentPair = DMM.FindDesktopMonitor(currentMonitor, VirtualDesktop.Current);
+                DMM.RotateFocusedWindowClockwise(currentPair, selected);
+                DMM.Draw(currentPair);
             }
             if (e == 0x14) // k
             {
                 HWND selectedWindow = User32.GetForegroundWindow();
                 HMONITOR currentMonitor = User32.MonitorFromWindow(selectedWindow, User32.MonitorFlags.MONITOR_DEFAULTTONEAREST);
-                DesktopWindow selected = DWM.GetWindowByHandlers(selectedWindow, currentMonitor, VirtualDesktop.Current);
-                Pair<VirtualDesktop, HMONITOR> currentPair = new Pair<VirtualDesktop, HMONITOR>(VirtualDesktop.Current, currentMonitor);
-                DWM.RotateFocusedWindowCounterClockwise(currentPair, selected);
-                DWM.Draw(currentPair);
+                DesktopWindow selected = DMM.GetWindowByHandlers(selectedWindow, currentMonitor, VirtualDesktop.Current);
+                DesktopMonitor currentPair = DMM.FindDesktopMonitor(currentMonitor, VirtualDesktop.Current);
+                DMM.RotateFocusedWindowCounterClockwise(currentPair, selected);
+                DMM.Draw(currentPair);
             }
             if (e == 0x13) // l
             {
                 HWND selectedWindow = User32.GetForegroundWindow();
                 HMONITOR currentMonitor = User32.MonitorFromWindow(selectedWindow, User32.MonitorFlags.MONITOR_DEFAULTTONEAREST);
-                DesktopWindow selected = DWM.GetWindowByHandlers(selectedWindow, currentMonitor, VirtualDesktop.Current);
-                Pair<VirtualDesktop, HMONITOR> currentPair = new Pair<VirtualDesktop, HMONITOR>(VirtualDesktop.Current, currentMonitor);
-                DWM.MoveWindowClockwise(currentPair, selected);
-                DWM.Draw(currentPair);
+                DesktopWindow selected = DMM.GetWindowByHandlers(selectedWindow, currentMonitor, VirtualDesktop.Current);
+                DesktopMonitor currentPair = DMM.FindDesktopMonitor(currentMonitor, VirtualDesktop.Current);
+                DMM.MoveWindowClockwise(currentPair, selected);
+                DMM.Draw(currentPair);
             }
             if (e == 0x16) //h
             {
                 HWND selectedWindow = User32.GetForegroundWindow();
                 HMONITOR currentMonitor = User32.MonitorFromWindow(selectedWindow, User32.MonitorFlags.MONITOR_DEFAULTTONEAREST);
-                DesktopWindow selected = DWM.GetWindowByHandlers(selectedWindow, currentMonitor, VirtualDesktop.Current);
-                Pair<VirtualDesktop, HMONITOR> currentPair = new Pair<VirtualDesktop, HMONITOR>(VirtualDesktop.Current, currentMonitor);
-                DWM.MoveWindowCounterClockwise(currentPair, selected);
-                DWM.Draw(currentPair);
+                DesktopWindow selected = DMM.GetWindowByHandlers(selectedWindow, currentMonitor, VirtualDesktop.Current);
+                DesktopMonitor currentPair = DMM.FindDesktopMonitor(currentMonitor, VirtualDesktop.Current);
+                DMM.MoveWindowCounterClockwise(currentPair, selected);
+                DMM.Draw(currentPair);
             }
             if (e == 0x17) //z
             {
-                DWM.ClearWindows();
-                DWM.GetWindows();
-                DWM.Draw();
+                DMM.ClearWindows();
+                DMM.GetWindows();
+                DMM.Draw();
             }
             if (e == 0x18) //p
             {
                 HMONITOR currentMonitor = User32.MonitorFromWindow(User32.GetForegroundWindow(), User32.MonitorFlags.MONITOR_DEFAULTTONEAREST);
                 VirtualDesktop currentDesktop = VirtualDesktop.Current;
-                Pair<VirtualDesktop, HMONITOR> currentPair = new Pair<VirtualDesktop, HMONITOR>(currentDesktop, currentMonitor);
-                DWM.RotateMonitorClockwise(currentPair);
+                DesktopMonitor currentPair = DMM.FindDesktopMonitor(currentMonitor, VirtualDesktop.Current);
+                DMM.RotateMonitorClockwise(currentPair);
             }
             if (e == 0x19) //n
             {
                 HMONITOR currentMonitor = User32.MonitorFromWindow(User32.GetForegroundWindow(), User32.MonitorFlags.MONITOR_DEFAULTTONEAREST);
                 VirtualDesktop currentDesktop = VirtualDesktop.Current;
-                Pair<VirtualDesktop, HMONITOR> currentPair = new Pair<VirtualDesktop, HMONITOR>(currentDesktop, currentMonitor);
-                DWM.RotateMonitorCounterClockwise(currentPair);
+                DesktopMonitor currentPair = DMM.FindDesktopMonitor(currentMonitor, VirtualDesktop.Current);
+                DMM.RotateMonitorCounterClockwise(currentPair);
             }
             if (e == 0x21) //space bar
             {
                 HMONITOR currentMonitor = User32.MonitorFromWindow(User32.GetForegroundWindow(), User32.MonitorFlags.MONITOR_DEFAULTTONEAREST);
                 VirtualDesktop currentDesktop = VirtualDesktop.Current;
-                Pair<VirtualDesktop, HMONITOR> currentPair = new Pair<VirtualDesktop, HMONITOR>(currentDesktop, currentMonitor);
+                DesktopMonitor currentPair = DMM.FindDesktopMonitor(currentMonitor, VirtualDesktop.Current);
                 AlertForm form = new AlertForm();
-                Layout currentLayout = DWM.RotateLayoutCounterClockwise(currentPair);
+                Layout currentLayout = DMM.RotateLayoutCounterClockwise(currentPair);
                 User32.MONITORINFO currentMonitorInfo = new User32.MONITORINFO();
                 currentMonitorInfo.cbSize = (uint)Marshal.SizeOf(currentMonitorInfo);
                 User32.GetMonitorInfo(currentMonitor, ref currentMonitorInfo);
                 form.showAlert(currentLayout.ToString(), currentMonitorInfo.rcMonitor.X, currentMonitorInfo.rcMonitor.Width, currentMonitorInfo.rcMonitor.Y, currentMonitorInfo.rcMonitor.Height);
-                DWM.Draw(currentPair);
-                DWM.SaveLayouts();
+                DMM.Draw(currentPair);
+                currentPair.Save();
             }
             if (e == 0x22) //h
             {
                 debounceDispatcher.Debounce(() =>
                 {
                     HMONITOR currentMonitor = User32.MonitorFromWindow(User32.GetForegroundWindow(), User32.MonitorFlags.MONITOR_DEFAULTTONEAREST);
-                    Pair<VirtualDesktop, HMONITOR> currentPair = new Pair<VirtualDesktop, HMONITOR>(VirtualDesktop.Current, currentMonitor);
-                    DWM.ExpandMainPane(currentPair);
-                    DWM.Draw(currentPair);
-                    DWM.SaveFactors();
+                    DesktopMonitor currentPair = DMM.FindDesktopMonitor(currentMonitor, VirtualDesktop.Current);
+                    if (currentPair.Count > 1 && (currentPair.Layout == Layout.Tall || currentPair.Layout == Layout.Wide)) {
+                        DMM.ExpandMainPane(currentPair);
+                        DMM.Draw(currentPair);
+                        currentPair.Save();
+                    }
                 });
             }
             if (e == 0x23) //l
@@ -396,43 +397,46 @@ namespace AmethystWindowsSystray
                 debounceDispatcher.Debounce(() =>
                 {
                     HMONITOR currentMonitor = User32.MonitorFromWindow(User32.GetForegroundWindow(), User32.MonitorFlags.MONITOR_DEFAULTTONEAREST);
-                    Pair<VirtualDesktop, HMONITOR> currentPair = new Pair<VirtualDesktop, HMONITOR>(VirtualDesktop.Current, currentMonitor);
-                    DWM.ShrinkMainPane(currentPair);
-                    DWM.Draw(currentPair);
-                    DWM.SaveFactors();
+                    DesktopMonitor currentPair = DMM.FindDesktopMonitor(currentMonitor, VirtualDesktop.Current);
+                    if (currentPair.Count > 1 && (currentPair.Layout == Layout.Tall || currentPair.Layout == Layout.Wide))
+                    {
+                        DMM.ShrinkMainPane(currentPair);
+                        DMM.Draw(currentPair);
+                        currentPair.Save();
+                    }
                 });
             }
             if (e == 0x24) //j
             {
                 HWND selectedWindow = User32.GetForegroundWindow();
-                DesktopWindow selected = DWM.FindWindow(selectedWindow);
-                DWM.MoveWindowPreviousScreen(selected);
-                DWM.Draw();
+                DesktopWindow selected = DMM.FindWindow(selectedWindow);
+                DMM.MoveWindowPreviousScreen(selected);
+                DMM.Draw();
             }
             if (e == 0x25) //k
             {
                 HWND selectedWindow = User32.GetForegroundWindow();
-                DesktopWindow selected = DWM.FindWindow(selectedWindow);
-                DWM.MoveWindowNextScreen(selected);
-                DWM.Draw();
+                DesktopWindow selected = DMM.FindWindow(selectedWindow);
+                DMM.MoveWindowNextScreen(selected);
+                DMM.Draw();
             }
             if (e == 0x21) //l
             {
                 HMONITOR currentMonitor = User32.MonitorFromWindow(User32.GetForegroundWindow(), User32.MonitorFlags.MONITOR_DEFAULTTONEAREST);
                 VirtualDesktop currentDesktop = VirtualDesktop.Current;
-                Pair<VirtualDesktop, HMONITOR> currentPair = new Pair<VirtualDesktop, HMONITOR>(currentDesktop, currentMonitor);
-                DWM.RotateLayoutCounterClockwise(currentPair);
-                DWM.Draw(currentPair);
-                DWM.SaveLayouts();
+                DesktopMonitor currentPair = DMM.FindDesktopMonitor(currentMonitor, VirtualDesktop.Current);
+                DMM.RotateLayoutCounterClockwise(currentPair);
+                DMM.Draw(currentPair);
+                currentPair.Save();
             }
             if (e == 0x26) //right
             {
                 debounceDispatcher.Debounce(() =>
                 {
                     HWND selectedWindow = User32.GetForegroundWindow();
-                    DesktopWindow selected = DWM.FindWindow(selectedWindow);
-                    DWM.MoveWindowNextVirtualDesktop(selected);
-                    DWM.Draw();
+                    DesktopWindow selected = DMM.FindWindow(selectedWindow);
+                    DMM.MoveWindowNextVirtualDesktop(selected);
+                    DMM.Draw();
                 });
             }
             if (e == 0x27) //right
@@ -440,9 +444,9 @@ namespace AmethystWindowsSystray
                 debounceDispatcher.Debounce(() =>
                 {
                     HWND selectedWindow = User32.GetForegroundWindow();
-                    DesktopWindow selected = DWM.FindWindow(selectedWindow);
-                    DWM.MoveWindowPreviousVirtualDesktop(selected);
-                    DWM.Draw();
+                    DesktopWindow selected = DMM.FindWindow(selectedWindow);
+                    DMM.MoveWindowPreviousVirtualDesktop(selected);
+                    DMM.Draw();
                 });
             }
             if (e == 0x1 || e == 0x2 || e == 0x3 || e == 0x4 || e == 0x5) //1,2,3,4,5
@@ -450,9 +454,9 @@ namespace AmethystWindowsSystray
                 debounceDispatcher.Debounce(() =>
                 {
                     HWND selectedWindow = User32.GetForegroundWindow();
-                    DesktopWindow selected = DWM.FindWindow(selectedWindow);
-                    DWM.MoveWindowSpecificVirtualDesktop(selected, e - 1);
-                    DWM.Draw();
+                    DesktopWindow selected = DMM.FindWindow(selectedWindow);
+                    DMM.MoveWindowSpecificVirtualDesktop(selected, e - 1);
+                    DMM.Draw();
                 });
             }
         }
@@ -475,7 +479,7 @@ namespace AmethystWindowsSystray
             message.Add("margin_left_read", Properties.Settings.Default.MarginLeft);
             message.Add("margin_right_read", Properties.Settings.Default.MarginRight);
             message.Add("layout_padding_read", Properties.Settings.Default.LayoutPadding);
-            message.Add("disabled_read", DWM.Disabled);
+            message.Add("disabled_read", DMM.Disabled);
             await App_Send(message);
         }
 
@@ -483,7 +487,7 @@ namespace AmethystWindowsSystray
         {
             ValueSet message = new ValueSet();
             List<List<String>> list = new List<List<String>>();
-            foreach (var f in DWM.ConfigurableFilters)
+            foreach (var f in DMM.ConfigurableFilters)
             {
                 List<String> item = new List<string>();
                 item.Add(f.Item1);
@@ -498,18 +502,17 @@ namespace AmethystWindowsSystray
         {
             ValueSet message = new ValueSet();
             List<List<String>> list = new List<List<String>>();
-            foreach (var m in DWM.Windows)
+            foreach (var m in DMM.DesktopMonitors)
             {
-                foreach (var w in m.Value.Select((value, i) => new { i, value }))
+                Screen screen = System.Windows.Forms.Screen.AllScreens.First(s => s.Bounds == new Rectangle(m.MonitorInfo.rcMonitor.X, m.MonitorInfo.rcMonitor.Y, m.MonitorInfo.rcMonitor.Width, m.MonitorInfo.rcMonitor.Height));
+
+                foreach (var w in m.Select((value, i) => new { i, value }))
                 {
-                    Screen screen = System.Windows.Forms.Screen.AllScreens.First(s => s.Bounds == new Rectangle(w.value.Monitor.rcMonitor.X, w.value.Monitor.rcMonitor.Y, w.value.Monitor.rcMonitor.Width, w.value.Monitor.rcMonitor.Height));
-
-
                     List<String> item = new List<string>();
                     item.Add(w.value.Window.DangerousGetHandle().ToString());
                     item.Add(w.value.AppName);
                     item.Add(w.value.ClassName);
-                    item.Add(VirtualDesktop.DesktopNameFromDesktop(w.value.VirtualDesktop));
+                    item.Add(VirtualDesktop.DesktopNameFromDesktop(m.VirtualDesktop));
                     item.Add(screen.DeviceName.ToString().Remove(0,4));
                     item.Add(w.value.Info.rcWindow.ToString());
                     item.Add(w.value.Info.dwStyle.ToString());

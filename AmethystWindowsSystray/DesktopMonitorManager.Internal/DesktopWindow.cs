@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DesktopMonitorManager.Internal;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -10,13 +11,10 @@ using System.Threading.Tasks;
 using Vanara.PInvoke;
 using WindowsDesktop;
 
-namespace DesktopWindowManager.Internal
+namespace DesktopMonitorManager.Internal
 {
     class DesktopWindow
     {
-        public VirtualDesktop VirtualDesktop { get; set; }
-        public User32.MONITORINFO Monitor { get; set; }
-        public HMONITOR MonitorHandle { get; set; }
         public HWND Window { get; set; }
         public User32.WINDOWINFO Info { get; set; }
         public string AppName { get; set; }
@@ -121,8 +119,6 @@ namespace DesktopWindowManager.Internal
         public void GetInfo()
         {
             GetWindowInfo();
-            GetMonitorInfo();
-            GetVirtualDesktop();
             GetAppName();
             GetClassName();
             GetBorders();
@@ -136,17 +132,10 @@ namespace DesktopWindowManager.Internal
             Info = info;
         }
 
-        public void GetMonitorInfo()
+        public DesktopMonitor GetDesktopMonitor()
         {
-            User32.MONITORINFO monitor = new User32.MONITORINFO();
-            monitor.cbSize = (uint)Marshal.SizeOf(monitor);
-            MonitorHandle = User32.MonitorFromWindow(Window, User32.MonitorFlags.MONITOR_DEFAULTTONEAREST);
-            User32.GetMonitorInfo(MonitorHandle, ref monitor);
-            Monitor = monitor;
-        }
+            HMONITOR monitor = User32.MonitorFromWindow(Window, User32.MonitorFlags.MONITOR_DEFAULTTONEAREST);
 
-        public void GetVirtualDesktop()
-        {
             VirtualDesktop virtualDesktop = VirtualDesktop.Current;
             try
             {
@@ -156,7 +145,8 @@ namespace DesktopWindowManager.Internal
             {
                 virtualDesktop = VirtualDesktop.Current;
             }
-            VirtualDesktop = virtualDesktop;
+
+            return new DesktopMonitor(monitor, virtualDesktop);
         }
 
         public void GetClassName()
@@ -241,25 +231,18 @@ namespace DesktopWindowManager.Internal
             return $"{AppName}";
         }
 
-        internal Pair<VirtualDesktop, HMONITOR> GetDesktopMonitor()
-        {
-            return new Pair<VirtualDesktop, HMONITOR>(VirtualDesktop, MonitorHandle);
-        }
-
         public override bool Equals(object obj)
         {
             return obj is DesktopWindow window &&
-                   EqualityComparer<VirtualDesktop>.Default.Equals(VirtualDesktop, window.VirtualDesktop) &&
-                   EqualityComparer<HMONITOR>.Default.Equals(MonitorHandle, window.MonitorHandle) &&
-                   EqualityComparer<HWND>.Default.Equals(Window, window.Window);
+                   EqualityComparer<HWND>.Default.Equals(Window, window.Window) &&
+                   IsUWP == window.IsUWP;
         }
 
         public override int GetHashCode()
         {
-            int hashCode = -810864280;
-            hashCode = hashCode * -1521134295 + EqualityComparer<VirtualDesktop>.Default.GetHashCode(VirtualDesktop);
-            hashCode = hashCode * -1521134295 + MonitorHandle.GetHashCode();
+            int hashCode = -1305339548;
             hashCode = hashCode * -1521134295 + Window.GetHashCode();
+            hashCode = hashCode * -1521134295 + IsUWP.GetHashCode();
             return hashCode;
         }
     }

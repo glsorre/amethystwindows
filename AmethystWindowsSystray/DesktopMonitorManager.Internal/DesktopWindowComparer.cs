@@ -1,11 +1,11 @@
-﻿using DesktopWindowManager.Internal;
+﻿using DesktopMonitorManager.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AmethystWindowsSystray.DesktopWindowManager.Internal
+namespace DesktopMonitorManager.Internal
 {
     // Custom comparer for the Product class
     class DesktopWindowComparer : IEqualityComparer<DesktopWindow>

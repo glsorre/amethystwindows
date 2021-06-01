@@ -243,11 +243,9 @@ namespace AmethystWindows
         /// <param name="e">Details about the launch request and process.</param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
-            DispatcherHelper.Initialize();
             IsForeground = true;
             //App_LaunchSystray();
     
-
             Frame rootFrame = Window.Current.Content as Frame;
 
             // Do not repeat app initialization when the Window already has content,
@@ -279,6 +277,7 @@ namespace AmethystWindows
                 // Ensure the current window is active
                 Window.Current.Activate();
             }
+            DispatcherHelper.Initialize();
         }
 
         protected override void OnActivated(IActivatedEventArgs args)
