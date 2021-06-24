@@ -27,12 +27,12 @@ namespace WindowsDesktop
 
         public static int Count
         { // return the number of desktops
-            get { return DesktopManager.VirtualDesktopManagerInternal.GetCount(); }
+            get { int count; DesktopManager.VirtualDesktopManagerInternal.GetDesktops(IntPtr.Zero).GetCount(out count); return count; }
         }
 
         public static VirtualDesktop Current
         { // returns current desktop
-            get { return new VirtualDesktop(DesktopManager.VirtualDesktopManagerInternal.GetCurrentDesktop()); }
+            get { return new VirtualDesktop(DesktopManager.VirtualDesktopManagerInternal.GetCurrentDesktop("")); }
         }
 
         public static VirtualDesktop FromIndex(int index)
@@ -44,7 +44,7 @@ namespace WindowsDesktop
         { // return desktop object to desktop on which window <hWnd> is displayed
             if (hWnd == IntPtr.Zero) throw new ArgumentNullException();
             Guid id = DesktopManager.VirtualDesktopManager.GetWindowDesktopId(hWnd);
-            return new VirtualDesktop(DesktopManager.VirtualDesktopManagerInternal.FindDesktop(ref id));
+            return new VirtualDesktop(DesktopManager.VirtualDesktopManagerInternal.FindDesktop(id));
         }
 
         public static int FromDesktop(VirtualDesktop desktop)
@@ -114,8 +114,9 @@ namespace WindowsDesktop
         public static int SearchDesktop(string partialName)
         { // get index of desktop with partial name, return -1 if no desktop found
             int index = -1;
-
-            for (int i = 0; i < DesktopManager.VirtualDesktopManagerInternal.GetCount(); i++)
+            int count;
+            DesktopManager.VirtualDesktopManagerInternal.GetDesktops(IntPtr.Zero).GetCount(out count);
+            for (int i = 0; i < count; i++)
             { // loop through all virtual desktops and compare partial name to desktop name
                 if (DesktopNameFromIndex(i).ToUpper().IndexOf(partialName.ToUpper()) >= 0)
                 {
@@ -129,7 +130,7 @@ namespace WindowsDesktop
 
         public static VirtualDesktop Create()
         { // create a new desktop
-            return new VirtualDesktop(DesktopManager.VirtualDesktopManagerInternal.CreateDesktop());
+            return new VirtualDesktop(DesktopManager.VirtualDesktopManagerInternal.CreateDesktopW(""));
         }
 
         public void Remove(VirtualDesktop fallback = null)
@@ -140,11 +141,11 @@ namespace WindowsDesktop
                 VirtualDesktop dtToCheck = new VirtualDesktop(DesktopManager.GetDesktop(0));
                 if (this.Equals(dtToCheck))
                 { // desktop 0: set fallback to second desktop (= "right" desktop)
-                    DesktopManager.VirtualDesktopManagerInternal.GetAdjacentDesktop(ivd, 4, out fallbackdesktop); // 4 = RightDirection
+                    fallbackdesktop = DesktopManager.VirtualDesktopManagerInternal.GetAdjacentDesktop(ivd, 4); // 4 = RightDirection
                 }
                 else
                 { // set fallback to "left" desktop
-                    DesktopManager.VirtualDesktopManagerInternal.GetAdjacentDesktop(ivd, 3, out fallbackdesktop); // 3 = LeftDirection
+                    fallbackdesktop = DesktopManager.VirtualDesktopManagerInternal.GetAdjacentDesktop(ivd, 3); // 3 = LeftDirection
                 }
             }
             else
@@ -164,12 +165,12 @@ namespace WindowsDesktop
 
         public bool IsVisible
         { // return true if this desktop is the current displayed one
-            get { return object.ReferenceEquals(ivd, DesktopManager.VirtualDesktopManagerInternal.GetCurrentDesktop()); }
+            get { return object.ReferenceEquals(ivd, DesktopManager.VirtualDesktopManagerInternal.GetCurrentDesktop("")); }
         }
 
         public void MakeVisible()
         { // make this desktop visible
-            DesktopManager.VirtualDesktopManagerInternal.SwitchDesktop(ivd);
+            DesktopManager.VirtualDesktopManagerInternal.SwitchDesktop("", ivd);
         }
 
         public VirtualDesktop Left
@@ -177,8 +178,8 @@ namespace WindowsDesktop
             get
             {
                 IVirtualDesktop desktop;
-                int hr = DesktopManager.VirtualDesktopManagerInternal.GetAdjacentDesktop(ivd, 3, out desktop); // 3 = LeftDirection
-                if (hr == 0)
+                desktop = DesktopManager.VirtualDesktopManagerInternal.GetAdjacentDesktop(ivd, 3); // 3 = LeftDirection
+                if (desktop != null)
                     return new VirtualDesktop(desktop);
                 else
                     return null;
@@ -190,8 +191,8 @@ namespace WindowsDesktop
             get
             {
                 IVirtualDesktop desktop;
-                int hr = DesktopManager.VirtualDesktopManagerInternal.GetAdjacentDesktop(ivd, 4, out desktop); // 4 = RightDirection
-                if (hr == 0)
+                desktop = DesktopManager.VirtualDesktopManagerInternal.GetAdjacentDesktop(ivd, 4); // 4 = RightDirection
+                if (desktop != null)
                     return new VirtualDesktop(desktop);
                 else
                     return null;
@@ -390,6 +391,23 @@ namespace WindowsDesktop
             {
                 var args = new VirtualDesktopChangedEventArgs(FromComObject(pDesktopOld), FromComObject(pDesktopNew));
                 CurrentChanged?.Invoke(this, args);
+            }
+
+            void IVirtualDesktopNotification.UnknownProc8(IObjectArray p0, IVirtualDesktop p1, int p2, int p3)
+            {
+            }
+
+            void IVirtualDesktopNotification.UnknownProc9(IVirtualDesktop p0, string p1)
+            {
+            }
+
+            void IVirtualDesktopNotification.UnknownProc10(IApplicationView p0)
+            {
+             
+            }
+
+            void IVirtualDesktopNotification.UnknownProc12(IVirtualDesktop p0, string p1)
+            {
             }
         }
     }

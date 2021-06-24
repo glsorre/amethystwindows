@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,20 +11,29 @@ using WindowsDesktop.Internal;
 
 namespace WindowsDesktop.Internal
 {
+
     internal static class DesktopManager
     {
         static DesktopManager()
         {
             var shell = (IServiceProvider10)Activator.CreateInstance(Type.GetTypeFromCLSID(Guids.CLSID_ImmersiveShell));
-            VirtualDesktopManagerInternal = (IVirtualDesktopManagerInternal)shell.QueryService(Guids.CLSID_VirtualDesktopManagerInternal, typeof(IVirtualDesktopManagerInternal).GUID);
-            try
-            {
-                VirtualDesktopManagerInternal2 = (IVirtualDesktopManagerInternal2)shell.QueryService(Guids.CLSID_VirtualDesktopManagerInternal, typeof(IVirtualDesktopManagerInternal2).GUID);
-            }
-            catch
-            {
-                VirtualDesktopManagerInternal2 = null;
-            }
+
+                try
+                {
+                    object Test = shell.QueryService(Guids.CLSID_VirtualDesktopManagerInternal, typeof(IVirtualDesktopManagerInternal).GUID);
+
+                    if (Test != null)
+                    {
+                        VirtualDesktopManagerInternal = (IVirtualDesktopManagerInternal)Test;
+                     }
+
+                }
+                catch
+                {
+
+                }
+
+            
             VirtualDesktopManager = (Shell32.IVirtualDesktopManager)Activator.CreateInstance(Type.GetTypeFromCLSID(Guids.CLSID_VirtualDesktopManager));
             ApplicationViewCollection = (IApplicationViewCollection)shell.QueryService(typeof(IApplicationViewCollection).GUID, typeof(IApplicationViewCollection).GUID);
             VirtualDesktopPinnedApps = (IVirtualDesktopPinnedApps)shell.QueryService(Guids.CLSID_VirtualDesktopPinnedApps, typeof(IVirtualDesktopPinnedApps).GUID);
@@ -37,35 +48,44 @@ namespace WindowsDesktop.Internal
         internal static IVirtualDesktopNotificationService VirtualDesktopNotificationService;
 
         internal static IVirtualDesktop GetDesktop(int index)
-        {   // get desktop with index
-            int count = VirtualDesktopManagerInternal.GetCount();
-            if (index < 0 || index >= count) throw new ArgumentOutOfRangeException("index");
+        {
+
+            // get desktop with index
             IObjectArray desktops;
-            VirtualDesktopManagerInternal.GetDesktops(out desktops);
+            desktops = VirtualDesktopManagerInternal.GetDesktops(IntPtr.Zero);
             object objdesktop;
+
+            int count;
+            desktops.GetCount(out count);
+            if (index < 0 || index >= count) throw new ArgumentOutOfRangeException("index");
             desktops.GetAt(index, typeof(IVirtualDesktop).GUID, out objdesktop);
             Marshal.ReleaseComObject(desktops);
             return (IVirtualDesktop)objdesktop;
+
         }
 
         internal static int GetDesktopIndex(IVirtualDesktop desktop)
-        { // get index of desktop
-            int index = -1;
-            Guid IdSearch = desktop.GetId();
-            IObjectArray desktops;
-            VirtualDesktopManagerInternal.GetDesktops(out desktops);
-            object objdesktop;
-            for (int i = 0; i < VirtualDesktopManagerInternal.GetCount(); i++)
-            {
-                desktops.GetAt(i, typeof(IVirtualDesktop).GUID, out objdesktop);
-                if (IdSearch.CompareTo(((IVirtualDesktop)objdesktop).GetId()) == 0)
+        {
+                // get index of desktop
+                int index = -1;
+                Guid IdSearch = desktop.GetId();
+                IObjectArray desktops;
+                desktops = VirtualDesktopManagerInternal.GetDesktops(IntPtr.Zero);
+                object objdesktop;
+            int count;
+            desktops.GetCount(out count);
+                for (int i = 0; i < count; i++)
                 {
-                    index = i;
-                    break;
+                    desktops.GetAt(i, typeof(IVirtualDesktop).GUID, out objdesktop);
+                    if (IdSearch.CompareTo(((IVirtualDesktop)objdesktop).GetId()) == 0)
+                    {
+                        index = i;
+                        break;
+                    }
                 }
-            }
-            Marshal.ReleaseComObject(desktops);
-            return index;
+                Marshal.ReleaseComObject(desktops);
+                return index;
+          
         }
 
         internal static IApplicationView GetApplicationView(this HWND hWnd)

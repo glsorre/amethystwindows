@@ -85,7 +85,8 @@ namespace AmethystWindows
             base.OnBackgroundActivated(args);
             if (args.TaskInstance.TriggerDetails is AppServiceTriggerDetails details)
             {
-                if (details.CallerPackageFamilyName == Package.Current.Id.FamilyName)
+                // Package.Current.Id.FamilyName
+                if (details.CallerPackageFamilyName == "Foobar")
                 {
                     AppServiceDeferral = args.TaskInstance.GetDeferral();
                     args.TaskInstance.Canceled += Connection_OnTaskCanceled;
@@ -96,6 +97,7 @@ namespace AmethystWindows
                 }
             }
         }
+
 
         private void Connection_OnTaskCanceled(IBackgroundTaskInstance sender, BackgroundTaskCancellationReason reason)
         {

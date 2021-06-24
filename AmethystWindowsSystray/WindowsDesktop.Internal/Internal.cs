@@ -5,13 +5,14 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using Vanara.PInvoke;
-
 namespace WindowsDesktop.Internal
 {
     internal static class Guids
     {
         public static readonly Guid CLSID_ImmersiveShell = new Guid("C2F03A33-21F5-47FA-B4BB-156362A2F239");
+        // AA509086-5CA9-4C25-8F95-589D3C07B48A,
         public static readonly Guid CLSID_VirtualDesktopManagerInternal = new Guid("C5E0CDCA-7B6E-41B2-9FC4-D93975CC467B");
+
         public static readonly Guid CLSID_VirtualDesktopManager = new Guid("AA509086-5CA9-4C25-8F95-589D3C07B48A");
         public static readonly Guid CLSID_VirtualDesktopPinnedApps = new Guid("B5A399E7-1C87-46B8-88E9-FC5747B171BD");
         public static readonly Guid CLSID_VirtualDesktopNotificationService = new Guid("a501fdec-4a09-464c-ae4e-1b9c21b84918");
@@ -127,14 +128,20 @@ namespace WindowsDesktop.Internal
     }
 
     [ComImport]
+    [Guid("536d3495-b208-4cc9-ae26-de8111275bf8")]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    [Guid("FF72FFDD-BE7E-43FC-9C03-AD81681E88E4")]
-    internal interface IVirtualDesktop
+    interface IVirtualDesktop
     {
-        bool IsViewVisible(IApplicationView view);
-        Guid GetId();
-    }
+        [return: MarshalAs(UnmanagedType.Bool)]
+        bool IsViewVisible(IApplicationView pView);
 
+        Guid GetId();
+
+        void GetName([MarshalAs(UnmanagedType.HString)] out string name);
+
+        int Unknown1();
+
+    }
     /*
 	IVirtualDesktop2 not used now (available since Win 10 2004), instead reading names out of registry for compatibility reasons
 	Excample code:
@@ -152,23 +159,62 @@ namespace WindowsDesktop.Internal
 			void GetName([MarshalAs(UnmanagedType.HString)] out string name);
 		}
 	*/
-
     [ComImport]
+    [Guid("B2F925B9-5A0F-4D2E-9F4D-2B1507593C10")]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    [Guid("F31574D6-B682-4CDC-BD56-1827860ABEC6")]
     internal interface IVirtualDesktopManagerInternal
     {
-        int GetCount();
-        void MoveViewToDesktop(IApplicationView view, IVirtualDesktop desktop);
-        bool CanViewMoveDesktops(IApplicationView view);
-        IVirtualDesktop GetCurrentDesktop();
-        void GetDesktops(out IObjectArray desktops);
-        [PreserveSig]
-        int GetAdjacentDesktop(IVirtualDesktop from, int direction, out IVirtualDesktop desktop);
-        void SwitchDesktop(IVirtualDesktop desktop);
-        IVirtualDesktop CreateDesktop();
-        void RemoveDesktop(IVirtualDesktop desktop, IVirtualDesktop fallback);
-        IVirtualDesktop FindDesktop(ref Guid desktopid);
+        //  HRESULT Proc3(/* Stack Offset: 8 */ [In] FC_USER_MARSHAL* p0, /* Stack Offset: 16 */ [Out] int* p1);
+        int GetCount(IntPtr hWndOrMon);
+        //  HRESULT Proc4(/* Stack Offset: 8 */ [In] IApplicationView* p0, /* Stack Offset: 16 */ [In] IVirtualDesktop* p1);
+        void MoveViewToDesktop(IApplicationView pView, IVirtualDesktop desktop);
+
+        //  HRESULT Proc5(/* Stack Offset: 8 */ [In] IApplicationView* p0, /* Stack Offset: 16 */ [Out] int* p1);
+        [return: MarshalAs(UnmanagedType.Bool)]
+        bool CanViewMoveDesktops(IApplicationView pView);
+        //  HRESULT Proc6(/* Stack Offset: 8 */ [In] FC_USER_MARSHAL* p0, /* Stack Offset: 16 */ [Out] IVirtualDesktop** p1);
+        IVirtualDesktop GetCurrentDesktop(string s);
+        // HRESULT Proc7(/* Stack Offset: 8 */ [In] FC_USER_MARSHAL* p0, /* Stack Offset: 16 */ [Out] IObjectArray** p1);
+        IObjectArray GetDesktops(IntPtr s);
+        // HRESULT Proc8(/* Stack Offset: 8 */ [In] IVirtualDesktop* p0, /* Stack Offset: 16 */ [In] int p1, /* Stack Offset: 24 */ [Out] IVirtualDesktop** p2);
+        IVirtualDesktop GetAdjacentDesktop(IVirtualDesktop pDesktopReference, int uDirection);
+
+        // HRESULT Proc9(/* Stack Offset: 8 */ [In] FC_USER_MARSHAL* p0, /* Stack Offset: 16 */ [In] IVirtualDesktop* p1);
+        void SwitchDesktop(string s, IVirtualDesktop desktop);
+
+        // HRESULT Proc10(/* Stack Offset: 8 */ [In] FC_USER_MARSHAL* p0, /* Stack Offset: 16 */ [Out] IVirtualDesktop** p1);
+        IVirtualDesktop CreateDesktopW(string name);
+
+        // HRESULT Proc11(/* Stack Offset: 8 */ [In] IVirtualDesktop* p0, /* Stack Offset: 16 */ [In] FC_USER_MARSHAL* p1, /* Stack Offset: 24 */ [In] int p2);
+        void Unknown11(IVirtualDesktop data, string s, int i);
+
+       //  HRESULT Proc12(/* Stack Offset: 8 */ [In] IVirtualDesktop* p0, /* Stack Offset: 16 */ [In] IVirtualDesktop* p1);
+        void RemoveDesktop(IVirtualDesktop pRemove, IVirtualDesktop pFallbackDesktop);
+
+        // HRESULT Proc13(/* Stack Offset: 8 */ [In] GUID* p0, /* Stack Offset: 16 */ [Out] IVirtualDesktop** p1);
+        IVirtualDesktop FindDesktop([In, MarshalAs(UnmanagedType.LPStruct)] Guid desktopId);
+
+        // HRESULT Proc14(/* Stack Offset: 8 */ [In] IVirtualDesktop* p0, /* Stack Offset: 16 */ [Out] IObjectArray** p1, /* Stack Offset: 24 */ [Out] IObjectArray** p2);
+        void UnknownProc14(IVirtualDesktop desktop, out IObjectArray out1, out IObjectArray out2);
+
+        // HRESULT Proc15(/* Stack Offset: 8 */ [In] IVirtualDesktop* p0, /* Stack Offset: 16 */ [In] FC_USER_MARSHAL* p1);
+        void SetName(IVirtualDesktop desktop, string name);
+
+        //         HRESULT Proc16(/* Stack Offset: 8 */ [In] IVirtualDesktop* p0, /* Stack Offset: 16 */ [In] FC_USER_MARSHAL* p1);
+        void UnknownProc16(IVirtualDesktop p0, string s);
+
+        //         HRESULT Proc17(/* Stack Offset: 8 */ [In] FC_USER_MARSHAL* p0);
+        void UnknownProc17(string s);
+
+        // HRESULT Proc18(/* Stack Offset: 8 */ [In] IApplicationView* p0, /* Stack Offset: 16 */ [In] IApplicationView* p1);
+        void UnknownProc18(IApplicationView pView1, IApplicationView pView2);
+        // HRESULT Proc19(/* Stack Offset: 8 */ [Out] int* p0);
+        // int GetCount();
+        //HRESULT Proc20(/* Stack Offset: 8 */ [In] int p0);
+
+
+
+
     }
 
     [ComImport]
@@ -214,19 +260,57 @@ namespace WindowsDesktop.Internal
         void UnpinView(IApplicationView applicationView);
     }
 
+    //[Guid("cd403e52-deed-4c13-b437-b98380f2b1e8")]
+    //interface IVirtualDesktopNotification : IUnknown
+    //{
+    //    HRESULT Proc3(/* Stack Offset: 8 */ [In] IObjectArray* p0, /* Stack Offset: 16 */ [In] IVirtualDesktop* p1);
+    //    HRESULT Proc4(/* Stack Offset: 8 */ [In] IObjectArray* p0, /* Stack Offset: 16 */ [In] IVirtualDesktop* p1, /* Stack Offset: 24 */ [In] IVirtualDesktop* p2);
+    //    HRESULT Proc5(/* Stack Offset: 8 */ [In] IObjectArray* p0, /* Stack Offset: 16 */ [In] IVirtualDesktop* p1, /* Stack Offset: 24 */ [In] IVirtualDesktop* p2);
+    //    HRESULT Proc6(/* Stack Offset: 8 */ [In] IObjectArray* p0, /* Stack Offset: 16 */ [In] IVirtualDesktop* p1, /* Stack Offset: 24 */ [In] IVirtualDesktop* p2);
+    //    HRESULT Proc7(/* Stack Offset: 8 */ [In] int p0);
+    //    HRESULT Proc8(/* Stack Offset: 8 */ [In] IObjectArray* p0, /* Stack Offset: 16 */ [In] IVirtualDesktop* p1, /* Stack Offset: 24 */ [In] int p2, /* Stack Offset: 32 */ [In] int p3);
+    //    HRESULT Proc9(/* Stack Offset: 8 */ [In] IVirtualDesktop* p0, /* Stack Offset: 16 */ [In] FC_USER_MARSHAL* p1);
+    //    HRESULT Proc10(/* Stack Offset: 8 */ [In] IApplicationView* p0);
+    //    HRESULT Proc11(/* Stack Offset: 8 */ [In] IObjectArray* p0, /* Stack Offset: 16 */ [In] IVirtualDesktop* p1, /* Stack Offset: 24 */ [In] IVirtualDesktop* p2);
+    //    HRESULT Proc12(/* Stack Offset: 8 */ [In] IVirtualDesktop* p0, /* Stack Offset: 16 */ [In] FC_USER_MARSHAL* p1);
+    //}
+
     [ComImport]
-    [Guid("c179334c-4295-40d3-bea1-c654d965605a")]
+    [Guid("cd403e52-deed-4c13-b437-b98380f2b1e8")]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     internal interface IVirtualDesktopNotification
     {
-        void VirtualDesktopCreated(IVirtualDesktop pDesktop);
-        void VirtualDesktopDestroyBegin(IVirtualDesktop pDesktopDestroyed, IVirtualDesktop pDesktopFallback);
-        void VirtualDesktopDestroyFailed(IVirtualDesktop pDesktopDestroyed, IVirtualDesktop pDesktopFallback);
-        void VirtualDesktopDestroyed(IVirtualDesktop pDesktopDestroyed, IVirtualDesktop pDesktopFallback);
-        void ViewVirtualDesktopChanged(IntPtr pView);
-        void CurrentVirtualDesktopChanged(IVirtualDesktop pDesktopOld, IVirtualDesktop pDesktopNew);
+        void VirtualDesktopCreated( IVirtualDesktop P1);
+        //void VirtualDesktopCreated(IVirtualDesktop pDesktop);
+
+        void VirtualDesktopDestroyBegin(IVirtualDesktop p1, IVirtualDesktop p2);
+        //void VirtualDesktopDestroyBegin(IVirtualDesktop pDesktopDestroyed, IVirtualDesktop pDesktopFallback);
+
+        void VirtualDesktopDestroyFailed(IVirtualDesktop p1, IVirtualDesktop p2);
+        //void VirtualDesktopDestroyFailed(IVirtualDesktop pDesktopDestroyed, IVirtualDesktop pDesktopFallback);
+
+        void VirtualDesktopDestroyed(IVirtualDesktop p1, IVirtualDesktop p2);
+        //void VirtualDesktopDestroyed(IVirtualDesktop pDesktopDestroyed, IVirtualDesktop pDesktopFallback);
+
+        void ViewVirtualDesktopChanged(IntPtr p0);
+        //void ViewVirtualDesktopChanged(IntPtr pView);
+
+        void UnknownProc8(IObjectArray p0, IVirtualDesktop p1, int p2, int p3);
+        void UnknownProc9(IVirtualDesktop p0, string p1);
+        void UnknownProc10(IApplicationView p0);
+        void CurrentVirtualDesktopChanged(IVirtualDesktop p1, IVirtualDesktop p2);
+        //void CurrentVirtualDesktopChanged(IVirtualDesktop pDesktopOld, IVirtualDesktop pDesktopNew);
+
+        void UnknownProc12(IVirtualDesktop p0, string p1);
+
     }
 
+    //[Guid("0cd45e71-d927-4f15-8b0a-8fef525337bf")]
+    //interface IVirtualDesktopNotificationService : IUnknown
+    //{
+    //    HRESULT Proc3(/* Stack Offset: 8 */ [In] IVirtualDesktopNotification* p0, /* Stack Offset: 16 */ [Out] int* p1);
+    //    HRESULT Proc4(/* Stack Offset: 8 */ [In] int p0);
+    //}
     [ComImport]
     [Guid("0cd45e71-d927-4f15-8b0a-8fef525337bf")]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]

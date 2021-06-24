@@ -78,6 +78,7 @@ namespace AmethystWindowsSystray
             Logger.Information($"connecting to UWP");
             await App_Connect();
 
+
             Logger.Information($"generating DWM");
             DWM = new DesktopWindowsManager();
             DWM.Changed += Handlers_Changed;
@@ -92,7 +93,7 @@ namespace AmethystWindowsSystray
             DWM.GetWindows();
             Logger.Information($"drawing");
             DWM.Draw();
-            
+
             Logger.Information($"setting virtual desktop change listener");
             IDisposable listener = VirtualDesktop.RegisterListener();
             VirtualDesktop.CurrentChanged += VirtualDesktop_CurrentChanged;
@@ -554,18 +555,20 @@ namespace AmethystWindowsSystray
 
         private async Task App_Connect()
         {
-            if (!Standalone)
+            if (Connection == null)
             {
-                if (Connection == null)
+                Connection = new AppServiceConnection();
+                Connection.PackageFamilyName = "Foobar";
+                Connection.AppServiceName = "AmethystWindowsSystray";
+                Connection.ServiceClosed += Connection_ServiceClosed;
+                Connection.RequestReceived += Connection_RequestReceived;
+                AppServiceConnectionStatus connectionStatus = await Connection.OpenAsync();
+                if (connectionStatus != AppServiceConnectionStatus.Success)
                 {
-                    Connection = new AppServiceConnection();
-                    Connection.PackageFamilyName = Package.Current.Id.FamilyName;
-                    Connection.AppServiceName = "AmethystWindowsSystray";
-                    Connection.ServiceClosed += Connection_ServiceClosed;
-                    Connection.RequestReceived += Connection_RequestReceived;
-                    AppServiceConnectionStatus connectionStatus = await Connection.OpenAsync();
+                    // something went wrong ...
+                    MessageBox.Show(connectionStatus.ToString());
                 }
-            }
+            }            
         }
 
         private async Task<AppServiceResponse> App_Send(ValueSet message)
