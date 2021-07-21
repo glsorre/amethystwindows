@@ -420,15 +420,6 @@ namespace AmethystWindowsSystray
                 DMM.MoveWindowNextScreen(selected);
                 DMM.Draw();
             }
-            if (e == 0x21) //l
-            {
-                HMONITOR currentMonitor = User32.MonitorFromWindow(User32.GetForegroundWindow(), User32.MonitorFlags.MONITOR_DEFAULTTONEAREST);
-                VirtualDesktop currentDesktop = VirtualDesktop.Current;
-                DesktopMonitor currentPair = DMM.FindDesktopMonitor(currentMonitor, VirtualDesktop.Current);
-                DMM.RotateLayoutCounterClockwise(currentPair);
-                DMM.Draw(currentPair);
-                currentPair.Save();
-            }
             if (e == 0x26) //right
             {
                 debounceDispatcher.Debounce(() =>
