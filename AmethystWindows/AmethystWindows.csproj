@@ -206,7 +206,6 @@
     </SDKReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="AmethystWindows_TemporaryKey.pfx" />
     <None Include="gsorrentino.pfx" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
