@@ -6,13 +6,7 @@ pull_requests:
 
   do_not_increment_build_number: true
 
-platform:
-
-- x86
-
-- x64
-
-- ARM
+configuration: Release
 
 before_build:
 
