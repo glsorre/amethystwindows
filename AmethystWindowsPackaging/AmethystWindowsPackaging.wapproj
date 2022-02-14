@@ -62,7 +62,8 @@
     <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
     <UapAppxPackageBuildMode>StoreAndSideload</UapAppxPackageBuildMode>
-    <PackageCertificateThumbprint>BF94945B3CB0A7019805EFAA5A8411AF976B0E59</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>24468CB05B6466B2970B3B172985F6608183ECE8</PackageCertificateThumbprint>
+    <PackageCertificateKeyFile>AmethystWindowsPackaging_TemporaryKey.pfx</PackageCertificateKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <AppxBundle>Always</AppxBundle>
@@ -101,6 +102,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="gsorrentino.pfx" />
+    <None Include="AmethystWindowsPackaging_TemporaryKey.pfx" />
     <Content Include="Images\SplashScreen.scale-200.png" />
     <Content Include="Images\LockScreenLogo.scale-200.png" />
     <Content Include="Images\Square150x150Logo.scale-200.png" />
