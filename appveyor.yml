@@ -1,8 +1,30 @@
+
+
 version: 1.1.{build}
+
+pull_requests:
+
+  do_not_increment_build_number: true
+
+image: Visual Studio 2019
+
+install:
+
+- ps: ''
+
 build:
+
+  project: AmethystWindows.sln
+
   verbosity: minimal
+
 deploy:
+
 - provider: Webhook
+
   url: https://app.signpath.io/API/v1/698a531d-4078-4f30-953b-6a9e9892e338/Integrations/AppVeyor?ProjectSlug=amethystwindows&SigningPolicySlug=test-signing
+
   authorization:
+
     secure: /3fPprcnNADfUHV4O7LbIdkjQooIgloD0IJ1Fm1tkAH5OEClUyD6acedtSyuAtXR4RUjgaxYXJsM2VREVC/GPYP+YeBpIcp5rKyeD2rHiU3fhE+iIm4Rsgw2eU9ua4js
+
