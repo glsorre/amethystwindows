@@ -1,5 +1,3 @@
-
-
 version: 1.1.{build}
 
 pull_requests:
@@ -8,13 +6,19 @@ pull_requests:
 
 configuration: Release
 
-platform:
+platform: x86
 
-- x86
+assembly_info:
 
-- x64
+  patch: true
 
-- ARM
+  file: '**\AssemblyInfo.*'
+
+  assembly_version: '{version}'
+
+  assembly_file_version: '{version}'
+
+  assembly_informational_version: '{version}'
 
 before_build:
 
@@ -34,5 +38,5 @@ deploy:
 
   authorization:
 
-    secure: /3fPprcnNADfUHV4O7LbIdkjQooIgloD0IJ1Fm1tkAH5OEClUyD6acedtSyuAtXR4RUjgaxYXJsM2VREVC/GPYP+YeBpIcp5rKyeD2rHiU3fhE+iIm4Rsgw2eU9ua4js
+    secure: 1tt7IY2M2R1uUE9VI8XojkGtKZRbJhcn8vLe3qB7l4mJm/+vB3GfiNVTMr9XlRuaNhNzwVLL7lQ05OAGcg5wJw==
 
