@@ -365,20 +365,6 @@ namespace AmethystWindowsSystray
                 DesktopMonitor currentPair = DMM.FindDesktopMonitor(currentMonitor, VirtualDesktop.Current);
                 DMM.RotateMonitorCounterClockwise(currentPair);
             }
-            if (e == 0x21) //space bar
-            {
-                HMONITOR currentMonitor = User32.MonitorFromWindow(User32.GetForegroundWindow(), User32.MonitorFlags.MONITOR_DEFAULTTONEAREST);
-                VirtualDesktop currentDesktop = VirtualDesktop.Current;
-                DesktopMonitor currentPair = DMM.FindDesktopMonitor(currentMonitor, VirtualDesktop.Current);
-                AlertForm form = new AlertForm();
-                Layout currentLayout = DMM.RotateLayoutCounterClockwise(currentPair);
-                User32.MONITORINFO currentMonitorInfo = new User32.MONITORINFO();
-                currentMonitorInfo.cbSize = (uint)Marshal.SizeOf(currentMonitorInfo);
-                User32.GetMonitorInfo(currentMonitor, ref currentMonitorInfo);
-                form.showAlert(currentLayout.ToString(), currentMonitorInfo.rcMonitor.X, currentMonitorInfo.rcMonitor.Width, currentMonitorInfo.rcMonitor.Y, currentMonitorInfo.rcMonitor.Height);
-                DMM.Draw(currentPair);
-                currentPair.Save();
-            }
             if (e == 0x22) //h
             {
                 debounceDispatcher.Debounce(() =>

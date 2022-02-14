@@ -96,7 +96,7 @@ namespace AmethystWindowsSystray
                             SystrayContext.Logger.Information($"window move/size end");
                             DesktopWindow desktopWindowEnd = DesktopMonitorManager.FindWindow(hwnd);
                             DesktopMonitor desktopMonitorEnd = desktopWindowEnd.GetDesktopMonitor();
-                            if (desktopMonitorStart != desktopMonitorEnd)
+                            if (!desktopMonitorStart.Equals(desktopMonitorEnd))
                             {
                                 desktopMonitorStart.Remove(desktopWindowStart);
                                 DesktopMonitorManager.AddWindow(desktopWindowEnd, desktopMonitorEnd);
