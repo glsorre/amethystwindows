@@ -8,6 +8,14 @@ pull_requests:
 
 configuration: Release
 
+platform:
+
+- x86
+
+- x64
+
+- ARM
+
 before_build:
 
 - cmd: nuget restore
