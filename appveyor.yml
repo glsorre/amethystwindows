@@ -1,3 +1,5 @@
+
+
 version: 1.1.{build}
 
 pull_requests:
@@ -6,7 +8,7 @@ pull_requests:
 
 configuration: Release
 
-platform: x86
+platform: Any CPU
 
 assembly_info:
 
