@@ -38,10 +38,6 @@ artifacts:
 
   name: AppPackages
 
-- path: '**\bin\Release\**'
-
-  name: Binaries
-
 deploy:
 
 - provider: Webhook
@@ -50,5 +46,6 @@ deploy:
 
   authorization:
 
-    secure: 1tt7IY2M2R1uUE9VI8XojkGtKZRbJhcn8vLe3qB7l4mJm/+vB3GfiNVTMr9XlRuaNhNzwVLL7lQ05OAGcg5wJw==
+    secure: xCVRa1gtcPlfTZvZ2FA6890QXlY9SSPCdlUmcuwyEuzO7r1hjp0GpAn1UKe6E+xZW8y02VaNzPMXTv6sEeTIkw==
+
 
