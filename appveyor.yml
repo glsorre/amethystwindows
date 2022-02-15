@@ -8,8 +8,6 @@ pull_requests:
 
 configuration: Release
 
-platform: Any CPU
-
 assembly_info:
 
   patch: true
