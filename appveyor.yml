@@ -24,7 +24,15 @@ assembly_info:
 
 build_script:
 
-- ps: msbuild "C:\projects\amethystwindows\AmethystWindows.sln" /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll" /p:GenerateAppInstallerFile=true /p:AppInstallerUri="https://update.amethystwindows.com" /p:AppInstallerUpdateFrequency=1 /p:AppInstallerCheckForUpdateFrequency=OnApplicationRun
+- ps: >-
+
+    nuget restore
+
+
+
+
+
+    msbuild "C:\projects\amethystwindows\AmethystWindows.sln" /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll" /p:GenerateAppInstallerFile=true /p:AppInstallerUri="https://update.amethystwindows.com" /p:AppInstallerUpdateFrequency=1 /p:AppInstallerCheckForUpdateFrequency=OnApplicationRun
 
 artifacts:
 
