@@ -63,7 +63,7 @@ build_script:
     msbuild "C:\projects\amethystwindows\AmethystWindows.sln" /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll" /p:GenerateAppInstallerFile=true /p:AppInstallerUri="https://update.amethystwindows.com" /p:AppInstallerUpdateFrequency=1 /p:AppInstallerCheckForUpdateFrequency=OnApplicationRun
 
 
-    New-Item -ItemType Directory -Force -Path C:\projects\amethystwindows\AmethystWindowsPackaging\Binaries
+    New-Item -ItemType Directory -Force -Path "C:\projects\amethystwindows\AmethystWindowsPackaging\Binaries"
     Copy-Item -Path "C:\projects\amethystwindows\AmethystWindowsSystray\bin" -Destination "C:\projects\amethystwindows\AmethystWindowsPackaging\Binaries\AmethystWindowsSystray" -Recurse
     Copy-Item -Path "C:\projects\amethystwindows\AmethystWindowsSystrayTests\bin" -Destination "C:\projects\amethystwindows\AmethystWindowsPackaging\Binaries\AmethystWindowsSystrayTests" -Recurse
     Copy-Item -Path "C:\projects\amethystwindows\AmethystWindowsWindows\bin" -Destination "C:\projects\amethystwindows\AmethystWindowsPackaging\Binaries\AmethystWindows" -Recurse
