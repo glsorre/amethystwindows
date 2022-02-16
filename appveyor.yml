@@ -32,6 +32,20 @@ build_script:
 
 
 
+    [xml]$manifest= get-content "C:\projects\amethystwindows\AmethystWindows\Package.appxmanifest"
+
+
+
+    $manifest.Package.Identity.Version = "$env:APPVEYOR_BUILD_VERSION"
+
+
+
+    $manifest.save("C:\projects\amethystwindows\AmethystWindows\Package.appxmanifest")
+
+
+
+
+
     [xml]$manifest= get-content "C:\projects\amethystwindows\AmethystWindowsPackaging\Package.appxmanifest"
 
 
