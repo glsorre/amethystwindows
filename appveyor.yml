@@ -32,7 +32,7 @@ build_script:
 
 
 
-    [xml]$manifest= get-content ".\AmethystWindowsPackaging\Package.appxmanifest"
+    [xml]$manifest= get-content "C:\projects\amethystwindows\AmethystWindowsPackaging\Package.appxmanifest"
 
 
 
@@ -40,7 +40,7 @@ build_script:
 
 
 
-    $manifest.save(".\AmethystWindowsPackaging\Package.appxmanifest")
+    $manifest.save("C:\projects\amethystwindows\AmethystWindowsPackaging\Package.appxmanifest")
 
 
 
