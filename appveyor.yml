@@ -40,7 +40,7 @@ build_script:
 
 
 
-    $manifest.save(".\AmethystiWindowsPackaging\Package.appxmanifest")
+    $manifest.save(".\AmethystWindowsPackaging\Package.appxmanifest")
 
 
 
