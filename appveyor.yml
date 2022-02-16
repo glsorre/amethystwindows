@@ -32,7 +32,21 @@ build_script:
 
 
 
-    msbuild "C:\projects\amethystwindows\AmethystWindows.sln" /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll" /p:GenerateAppInstallerFile=true /p:AppInstallerUri="https://update.amethystwindows.com" /p:AppInstallerUpdateFrequency=1 /p:AppInstallerCheckForUpdateFrequency=OnApplicationRun /p:ApplicationVersion=$env:APPVEYOR_BUILD_VERSION
+    [xml]$manifest= get-content ".\AmethystWindowsPackaging\Package.appxmanifest"
+
+
+
+    $manifest.Package.Identity.Version = "$env:APPVEYOR_BUILD_VERSION"
+
+
+
+    $manifest.save(".\AmethystWIndowsPackaging\Package.appxmanifest")
+
+
+
+
+
+    msbuild "C:\projects\amethystwindows\AmethystWindows.sln" /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll" /p:GenerateAppInstallerFile=true /p:AppInstallerUri="https://update.amethystwindows.com" /p:AppInstallerUpdateFrequency=1 /p:AppInstallerCheckForUpdateFrequency=OnApplicationRun
 
 artifacts:
 
