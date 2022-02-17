@@ -1,0 +1,107 @@
+[
+    {
+        "id": "RotateLayoutsClockwise",
+        "modifier": ["MOD_SHIFT", "MOD_ALT"],
+        "key": "0x20"
+    },
+    {
+        "id": "SetMainPane",
+        "modifier": ["MOD_SHIFT", "MOD_ALT"],
+        "key": "0x0D"
+    },
+    {
+        "id": "SwapFocusedCounterclockwise",
+        "modifier": ["MOD_SHIFT", "MOD_ALT"],
+        "key": "0x48"
+    },
+    {
+        "id": "SwapFocusedClockwise",
+        "modifier": ["MOD_SHIFT", "MOD_ALT"],
+        "key": "0x4C"
+    },
+    {
+        "id": "ChangeFocusCounterclockwise",
+        "modifier": ["MOD_SHIFT", "MOD_ALT"],
+        "key": "0x4A"
+    },
+    {
+        "id": "ChangeFocusClockwise",
+        "modifier": ["MOD_SHIFT", "MOD_ALT"],
+        "key": "0x4B"
+    },
+    {
+        "id": "ForceWindowsEvaluation",
+        "modifier": ["MOD_SHIFT", "MOD_ALT"],
+        "key": "0x5A"
+    },
+    {
+        "id": "SelectNextScreen",
+        "modifier": ["MOD_SHIFT", "MOD_ALT"],
+        "key": "0x50"
+    },
+    {
+        "id": "SelectPreviousScreen",
+        "modifier": ["MOD_SHIFT", "MOD_ALT"],
+        "key": "0x4E"
+    },
+    {
+        "id": "MoveFocusedToSpace1",
+        "modifier": ["MOD_SHIFT", "MOD_ALT"],
+        "key": "0x31"
+    },
+    {
+        "id": "MoveFocusedToSpace2",
+        "modifier": ["MOD_SHIFT", "MOD_ALT"],
+        "key": "0x32"
+    },
+    {
+        "id": "MoveFocusedToSpace3",
+        "modifier": ["MOD_SHIFT", "MOD_ALT"],
+        "key": "0x33"
+    },
+    {
+        "id": "MoveFocusedToSpace4",
+        "modifier": ["MOD_SHIFT", "MOD_ALT"],
+        "key": "0x34"
+    },
+    {
+        "id": "MoveFocusedToSpace5",
+        "modifier": ["MOD_SHIFT", "MOD_ALT"],
+        "key": "0x35"
+    },
+    {
+        "id": "RotateLayoutsCounterClockwise",
+        "modifier": ["MOD_SHIFT", "MOD_ALT", "MOD_WIN"],
+        "key": "0x20"
+    },
+    {
+        "id": "ShrinkMainPane",
+        "modifier": ["MOD_SHIFT", "MOD_ALT", "MOD_WIN"],
+        "key": "0x48"
+    },
+    {
+        "id": "ExpandMainPane",
+        "modifier": ["MOD_SHIFT", "MOD_ALT", "MOD_WIN"],
+        "key": "0x4C"
+    },
+    {
+        "id": "MoveFocusedToNextScreen",
+        "modifier": ["MOD_SHIFT", "MOD_ALT", "MOD_WIN"],
+        "key": "0x4A"
+    },
+    {
+        "id": "MoveFocusedToPreviousScreen",
+        "modifier": ["MOD_SHIFT", "MOD_ALT", "MOD_WIN"],
+        "key": "0x4B"
+    },
+    {
+        "id": "MoveFocusedToNextSpace",
+        "modifier": ["MOD_SHIFT", "MOD_ALT", "MOD_WIN"],
+        "key": "0x27"
+    },
+    {
+        "id": "MoveFocusedToPreviousSpace",
+        "modifier": ["MOD_SHIFT", "MOD_ALT", "MOD_WIN"],
+        "key": "0x25"
+    }
+]
