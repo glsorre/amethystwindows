@@ -15,7 +15,7 @@
 
   <Properties>
     <DisplayName>AmethystWindowsPackaging</DisplayName>
-    <PublisherDisplayName>Giuseppe Sorrentino</PublisherDisplayName>
+    <PublisherDisplayName>SignPath Foundation</PublisherDisplayName>
     <Logo>Images\StoreLogo.png</Logo>
   </Properties>
 
