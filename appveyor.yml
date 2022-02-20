@@ -19,8 +19,8 @@ build_script:
 
     $manifest.save("C:\projects\amethystwindows\AmethystWindowsPackaging\Package.appxmanifest")
 
-    msbuild "C:\projects\amethystwindows\AmethystWindows.sln" /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll" /p:GenerateAppInstallerFile=true /p:AppInstallerUri="https://update.amethystwindows.com" /p:AppInstallerUpdateFrequency=1 /p:AppInstallerCheckForUpdateFrequency=OnApplicationRun
-    
+    msbuild "C:\projects\amethystwindows\AmethystWindows\AmethystWindows.sln" /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll" /p:GenerateAppInstallerFile=true /p:AppInstallerUri="https://update.amethystwindows.com" /p:AppInstallerUpdateFrequency=1 /p:AppInstallerCheckForUpdateFrequency=OnApplicationRun
+
 artifacts:
 
 - path: AmethystWindowsPackaging\AppPackages
