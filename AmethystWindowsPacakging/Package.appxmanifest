@@ -9,7 +9,7 @@
   <Identity
     Name="209d74e0-265a-4b71-9a2d-030fb9283bb6"
     Publisher="CN=SignPath Foundation"
-    Version="1.0.0.0" />
+    Version="1.0.1.0" />
 
   <Properties>
     <DisplayName>AmethystWindowsPacakging</DisplayName>
