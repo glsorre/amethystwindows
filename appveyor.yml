@@ -13,7 +13,6 @@ configuration: Release
 platform:
 
 - x64
-- x86
 
 build_script:
 
