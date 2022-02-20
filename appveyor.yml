@@ -11,7 +11,7 @@ configuration: Release
 build_script:
 
 - ps: >-
-    nuget restore
+    nuget restore AmethystWindows
 
     [xml]$manifest= get-content "C:\projects\amethystwindows\AmethystWindowsPackaging\Package.appxmanifest"
 
