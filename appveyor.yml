@@ -10,7 +10,7 @@ image: Visual Studio 2022
 
 configuration: Release
 
-platform: x86
+platform: AnyCPU
 
 build_script:
 
@@ -35,7 +35,7 @@ deploy:
 
 - provider: Webhook
 
-  url: https://app.signpath.io/API/v1/698a531d-4078-4f30-953b-6a9e9892e338/Integrations/AppVeyor?ProjectSlug=amethystwindows&SigningPolicySlug=test-signing
+  url: https://app.signpath.io/API/v1/698a531d-4078-4f30-953b-6a9e9892e338/Integrations/AppVeyor?ProjectSlug=amethystwindows&SigningPolicySlug=test-signing&ArtifactConfigurationSlug=v2
 
   authorization:
 
