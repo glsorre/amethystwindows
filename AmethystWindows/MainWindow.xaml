@@ -63,6 +63,30 @@
                         </StackPanel>
                     </StackPanel>
                 </TabItem>
+                <TabItem Header="Filters">
+                    <StackPanel Orientation="Vertical">
+                        <ListBox x:Name="ConfigurableFiltersList" ItemsSource="{Binding ConfigurableFilters}" SelectedItem="{Binding SelectedConfigurableFilter}">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" FontSize="14" Text="{Binding Item1}"/>
+                                        <TextBlock Text="{Binding Item2}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Vertical" />
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
+                        </ListBox>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Button Margin="10" VerticalAlignment="Center">
+                                Remove
+                            </Button>
+                        </StackPanel>
+                    </StackPanel>
+                </TabItem>
                 <TabItem Header="Settings">
                     <StackPanel Orientation="Horizontal" Margin="5">
                         <StackPanel Orientation="Vertical" Margin="20">

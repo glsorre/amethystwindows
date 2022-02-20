@@ -93,6 +93,7 @@ namespace AmethystWindows
         private bool _disabled;
 
         private List<Pair<string, string>> _configurableFilters;
+        private Pair<string, string> _selectedConfigurableFilter;
 
         public MainWindowViewModel()
         {
@@ -199,6 +200,12 @@ namespace AmethystWindows
             set => SetProperty(ref _configurableFilters, value);
         }
 
+        public Pair<string, string> SelectedConfigurableFilter
+        {
+            get => _selectedConfigurableFilter;
+            set => SetProperty(ref _selectedConfigurableFilter, value);
+        }
+
         public NotifyIconWrapper.NotifyRequestRecord? NotifyRequest
         {
             get => _notifyRequest;
@@ -234,6 +241,11 @@ namespace AmethystWindows
         public void FilterClassWithinApp()
         {
             ConfigurableFilters = ConfigurableFilters.Concat(new[] { new Pair<string, string>(SelectedWindow.AppName, SelectedWindow.ClassName) }).ToList();
+        }
+
+        public void RemoveFilter()
+        {
+            ConfigurableFilters = ConfigurableFilters.Where(f => f.Item1 != SelectedConfigurableFilter.Item1 && f.Item2 != SelectedConfigurableFilter.Item2).ToList();
         }
 
         private void Loaded()

@@ -59,7 +59,6 @@ namespace AmethystWindows.DesktopWindowsManager
                 ClearWindows();
                 CollectWindows();
             }
-
             if (ModelViewPropertiesDraw.Contains(e.PropertyName))
             {
                 debounceDispatcher.Debounce(() =>
