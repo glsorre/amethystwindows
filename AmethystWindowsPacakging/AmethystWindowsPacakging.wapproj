@@ -118,7 +118,6 @@
       <TrustLevel>Full</TrustLevel>
       <PublishProfile Condition="'$(Configuration)|$(Platform)'=='Release|x86'">Properties\PublishProfiles\SelfContainedWinX86.pubxml</PublishProfile>
       <PublishProfile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Properties\PublishProfiles\SelfContainedWinX64.pubxml</PublishProfile>
-      <PublishProfile Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">Properties\PublishProfiles\SelfContainedWinARM64.pubxml</PublishProfile>
     </ProjectReference>
   </ItemGroup>
 </Project>
