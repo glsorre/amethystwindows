@@ -10,7 +10,7 @@
 
   <Identity
     Name="eeab3c4d-ac83-4ba8-8a3d-acda6a061b07"
-	Publisher="CN=Giuseppe Sorrentino"
+	Publisher="CN=SignPath Foundation"
     Version="1.0.0.0" />
 
   <mp:PhoneIdentity PhoneProductId="eeab3c4d-ac83-4ba8-8a3d-acda6a061b07" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
