@@ -1,0 +1,39 @@
+
+
+version: 2.0.{build}
+
+pull_requests:
+
+  do_not_increment_build_number: true
+
+configuration: Release
+
+build_script:
+
+- ps: >-
+    nuget restore
+
+    [xml]$manifest= get-content "C:\projects\amethystwindows\AmethystWindowsPackaging\Package.appxmanifest"
+
+    $manifest.Package.Identity.Version = "$env:APPVEYOR_BUILD_VERSION"
+
+    $manifest.save("C:\projects\amethystwindows\AmethystWindowsPackaging\Package.appxmanifest")
+
+    msbuild "C:\projects\amethystwindows\AmethystWindows.sln" /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll" /p:GenerateAppInstallerFile=true /p:AppInstallerUri="https://update.amethystwindows.com" /p:AppInstallerUpdateFrequency=1 /p:AppInstallerCheckForUpdateFrequency=OnApplicationRun
+    
+artifacts:
+
+- path: AmethystWindowsPackaging\AppPackages
+
+  name: AppPackages
+
+deploy:
+
+- provider: Webhook
+
+  url: https://app.signpath.io/API/v1/698a531d-4078-4f30-953b-6a9e9892e338/Integrations/AppVeyor?ProjectSlug=amethystwindows&SigningPolicySlug=test-signing
+
+  authorization:
+
+    secure: xCVRa1gtcPlfTZvZ2FA6890QXlY9SSPCdlUmcuwyEuzO7r1hjp0GpAn1UKe6E+xZW8y02VaNzPMXTv6sEeTIkw==
+
