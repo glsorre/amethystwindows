@@ -55,6 +55,24 @@ namespace AmethystWindows
         }
     }
 
+    public class ViewModelConfigurableFilterConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is Pair<string, string> selectedConfigurableFilter)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     class ConfigurableFiltersEqualityComparer : IEqualityComparer<List<Pair<string, string>>>
     {
         public bool Equals(List<Pair<string, string>> cF1, List<Pair<string, string>> cF2)
@@ -113,6 +131,8 @@ namespace AmethystWindows
             UpdateWindowsCommand = new RelayCommand(UpdateWindows);
             FilterAppCommand = new RelayCommand(FilterApp);
             FilterClassWithinAppCommand = new RelayCommand(FilterClassWithinApp);
+            RemoveFilterCommand = new RelayCommand(RemoveFilter);
+            RedrawCommand = new RelayCommand(() => { App.DWM.ClearWindows(); App.DWM.CollectWindows(); App.DWM.Draw(); });
         }
 
         public ICommand LoadedCommand { get; }
@@ -122,7 +142,8 @@ namespace AmethystWindows
         public ICommand UpdateWindowsCommand { get; }
         public ICommand FilterAppCommand { get; }
         public ICommand FilterClassWithinAppCommand { get; }
-
+        public ICommand RemoveFilterCommand { get; }
+        public ICommand RedrawCommand { get; }
         public WindowState WindowState
         {
             get => _windowState;
@@ -236,16 +257,19 @@ namespace AmethystWindows
         public void FilterApp()
         {
             ConfigurableFilters = ConfigurableFilters.Concat(new[] { new Pair<string, string>(SelectedWindow.AppName, "*") }).ToList();
+            MySettings.Instance.Filters = JsonConvert.SerializeObject(ConfigurableFilters.ToList(), Formatting.Indented, new FactorsConverter());
         }
 
         public void FilterClassWithinApp()
         {
             ConfigurableFilters = ConfigurableFilters.Concat(new[] { new Pair<string, string>(SelectedWindow.AppName, SelectedWindow.ClassName) }).ToList();
+            MySettings.Instance.Filters = JsonConvert.SerializeObject(ConfigurableFilters.ToList(), Formatting.Indented, new FactorsConverter());
         }
 
         public void RemoveFilter()
         {
             ConfigurableFilters = ConfigurableFilters.Where(f => f.Item1 != SelectedConfigurableFilter.Item1 && f.Item2 != SelectedConfigurableFilter.Item2).ToList();
+            MySettings.Instance.Filters = JsonConvert.SerializeObject(ConfigurableFilters.ToList(), Formatting.Indented, new FactorsConverter());
         }
 
         private void Loaded()

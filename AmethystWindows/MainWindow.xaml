@@ -16,6 +16,7 @@
     </Window.DataContext>
     <Window.Resources>
         <local:ViewModelDesktopWindowConverter x:Key="ViewModelDesktopWindowConverter"/>
+        <local:ViewModelConfigurableFilterConverter x:Key="ViewModelConfigurableFilterConverter"/>
     </Window.Resources>
     <Grid>
         <local:NotifyIconWrapper NotifyRequest="{Binding NotifyRequest}">
@@ -30,7 +31,7 @@
         </local:NotifyIconWrapper>
         <DockPanel>
             <ui:CommandBar DockPanel.Dock="Top">
-                <ui:AppBarButton x:Name="RedrawButton" Icon="Sync" Label="Redraw"/>
+                <ui:AppBarButton x:Name="RedrawButton" Icon="Sync" Label="Redraw" Command="{Binding RedrawCommand}"/>
                 <ui:AppBarToggleButton x:Name="DisabledBarButton" Icon="DisableUpdates" Label="Disabled" IsChecked="{Binding Disabled, Mode=TwoWay}"/>
             </ui:CommandBar>
             <TabControl>
@@ -81,7 +82,7 @@
                             </ListBox.ItemsPanel>
                         </ListBox>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                            <Button Margin="10" VerticalAlignment="Center">
+                            <Button Margin="10" VerticalAlignment="Center" IsEnabled="{Binding ElementName=ConfigurableFiltersList, Path=SelectedItem, Converter={StaticResource ViewModelConfigurableFilterConverter}}" Command="{Binding RemoveFilterCommand}">
                                 Remove
                             </Button>
                         </StackPanel>
