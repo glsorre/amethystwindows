@@ -10,8 +10,6 @@ image: Visual Studio 2022
 
 configuration: Release
 
-platform: Any CPU
-
 build_script:
 
 - ps: >-
