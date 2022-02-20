@@ -10,7 +10,12 @@ image: Visual Studio 2022
 
 configuration: Release
 
-platform: AnyCPU
+platform:
+
+- x86
+- x64
+- ARM
+- ARM64
 
 build_script:
 
