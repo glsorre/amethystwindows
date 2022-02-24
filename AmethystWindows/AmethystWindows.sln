@@ -10,6 +10,10 @@ Project("{C7167F0D-BC9F-4E6E-AFE1-012C56B48DB5}") = "AmethystWindowsPacakging", 
 		{EAA1FB9B-8A29-4270-B6E7-E89A458A11F9} = {EAA1FB9B-8A29-4270-B6E7-E89A458A11F9}
 	EndProjectSection
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "AmethystWindowsSetup_x86", "..\AmethystWindowsSetup_x86\AmethystWindowsSetup_x86.vdproj", "{3278E874-43B8-4B46-B409-4D8498760F39}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "AmethystWindowsSetup_x64", "..\AmethystWindowsSetup_x64\AmethystWindowsSetup_x64.vdproj", "{17B0D5BC-912E-433E-9B84-73C7A66A931D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -50,6 +54,18 @@ Global
 		{40D13901-39F3-4393-8CEE-A721C93F16BA}.Release|x86.ActiveCfg = Release|x86
 		{40D13901-39F3-4393-8CEE-A721C93F16BA}.Release|x86.Build.0 = Release|x86
 		{40D13901-39F3-4393-8CEE-A721C93F16BA}.Release|x86.Deploy.0 = Release|x86
+		{3278E874-43B8-4B46-B409-4D8498760F39}.Debug|Any CPU.ActiveCfg = Debug
+		{3278E874-43B8-4B46-B409-4D8498760F39}.Debug|x64.ActiveCfg = Debug
+		{3278E874-43B8-4B46-B409-4D8498760F39}.Debug|x86.ActiveCfg = Debug
+		{3278E874-43B8-4B46-B409-4D8498760F39}.Release|Any CPU.ActiveCfg = Release
+		{3278E874-43B8-4B46-B409-4D8498760F39}.Release|x64.ActiveCfg = Release
+		{3278E874-43B8-4B46-B409-4D8498760F39}.Release|x86.ActiveCfg = Release
+		{17B0D5BC-912E-433E-9B84-73C7A66A931D}.Debug|Any CPU.ActiveCfg = Debug
+		{17B0D5BC-912E-433E-9B84-73C7A66A931D}.Debug|x64.ActiveCfg = Debug
+		{17B0D5BC-912E-433E-9B84-73C7A66A931D}.Debug|x86.ActiveCfg = Debug
+		{17B0D5BC-912E-433E-9B84-73C7A66A931D}.Release|Any CPU.ActiveCfg = Release
+		{17B0D5BC-912E-433E-9B84-73C7A66A931D}.Release|x64.ActiveCfg = Release
+		{17B0D5BC-912E-433E-9B84-73C7A66A931D}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
