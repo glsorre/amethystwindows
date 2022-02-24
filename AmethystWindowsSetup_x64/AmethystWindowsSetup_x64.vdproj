@@ -43,6 +43,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
         "Release"
         {
@@ -92,6 +100,16 @@
         {
             "LaunchCondition"
             {
+                "{A06ECF26-33A3-4562-8140-9B0E340D4F24}:_A3E6C19EC11E49D0BFCBCEE8F04311C9"
+                {
+                "Name" = "8:.NET Core"
+                "Message" = "8:[VSDNETCOREMSG]"
+                "AllowLaterVersions" = "11:FALSE"
+                "InstallUrl" = "8:https://dotnet.microsoft.com/download/dotnet-core/[NetCoreVerMajorDotMinor]"
+                "IsNETCore" = "11:TRUE"
+                "Architecture" = "2:0"
+                "Runtime" = "2:0"
+                }
             }
         }
         "File"
@@ -148,7 +166,7 @@
             "{1525181F-901A-416C-8A58-119130FE478E}:_5896008EFB6646219290AD0913DE2991"
             {
             "Name" = "8:#1919"
-            "AlwaysCreate" = "11:FALSE"
+            "AlwaysCreate" = "11:TRUE"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Property" = "8:ProgramMenuFolder"
@@ -173,7 +191,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Amethyst Windows"
         "ProductCode" = "8:{29F4B640-D625-45A5-896A-747B5D660412}"
-        "PackageCode" = "8:{6C9F5A0E-5C0D-4995-AC76-E29A6DC1C58E}"
+        "PackageCode" = "8:{1B1EB35B-797A-40E7-AB83-F70D5C372206}"
         "UpgradeCode" = "8:{3EFA88BC-4675-4A19-9190-D3F5DF2497AE}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
@@ -293,6 +311,20 @@
         }
         "Shortcut"
         {
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_F6BB8CDD7E014B3FAE9B829D27EC3186"
+            {
+            "Name" = "8:Amethyst Windows"
+            "Arguments" = "8:"
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:0"
+            "Transitive" = "11:FALSE"
+            "Target" = "8:_BA42A70EFC9E492E8A933BC8EB1AB934"
+            "Folder" = "8:_5896008EFB6646219290AD0913DE2991"
+            "WorkingFolder" = "8:_36729C7F5CCB48E58BE7D3C2770A8386"
+            "Icon" = "8:_7F2DADA61834471D91447E3BD62B043C"
+            "Feature" = "8:"
+            }
         }
         "UserInterface"
         {
