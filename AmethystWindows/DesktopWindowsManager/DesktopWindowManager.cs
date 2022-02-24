@@ -9,20 +9,20 @@ using WindowsDesktop;
 using AmethystWindows.Settings;
 using DebounceThrottle;
 using System.Diagnostics;
+using System.Windows.Interop;
+using System.Threading.Tasks;
 
 namespace AmethystWindows.DesktopWindowsManager
 {
     partial class DesktopWindowsManager
     {
-        private Dictionary<Pair<VirtualDesktop, HMONITOR>, Layout> Layouts;
         public Dictionary<Pair<VirtualDesktop, HMONITOR>, ObservableCollection<DesktopWindow>> Windows { get; }
         public Dictionary<Pair<VirtualDesktop, HMONITOR>, bool> WindowsSubscribed = new Dictionary<Pair<VirtualDesktop, HMONITOR>, bool>();
 
-        private Dictionary<Pair<VirtualDesktop, HMONITOR>, int> Factors;
-
         public MainWindowViewModel mainWindowViewModel = App.Current.MainWindow.DataContext as MainWindowViewModel;
 
-        private DebounceDispatcher debounceDispatcher = new DebounceDispatcher(250);
+        private DebounceDispatcher debounceDispatcher = new DebounceDispatcher(100);
+        private bool firstActivation = true;
 
         private readonly string[] FixedFilters = new string[] {
             "AmethystWindows",
@@ -40,20 +40,59 @@ namespace AmethystWindows.DesktopWindowsManager
             "MarginBottom",
             "MarginLeft",
             "ConfigurableFilters",
+            "DesktopMonitors",
             "Windows",
+        };
+
+        private readonly string[] ModelViewPropertiesDrawMonitor = new string[] {
+            "DesktopMonitors",
+            "Windows",
+        };
+
+        private readonly string[] ModelViewPropertiesSaveSettings = new string[] {
+            "Padding",
+            "LayoutPadding",
+            "MarginTop",
+            "MarginRight",
+            "MarginBottom",
+            "MarginLeft",
+            "DesktopMonitors",
+            "Filters",
+            "Hotkeys",
         };
 
         public DesktopWindowsManager()
         {
-            Layouts = new Dictionary<Pair<VirtualDesktop, HMONITOR>, Layout>();
             Windows = new Dictionary<Pair<VirtualDesktop, HMONITOR>, ObservableCollection<DesktopWindow>>();
-            Factors = new Dictionary<Pair<VirtualDesktop, HMONITOR>, int>();
 
             mainWindowViewModel.PropertyChanged += MainWindowViewModel_PropertyChanged;
         }
 
         private void MainWindowViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
+            Debug.WriteLine($"ModelViewChanged: {e.PropertyName}");
+            if (e.PropertyName == "Hotkeys")
+            {
+                HWND mainWindowHandle = new WindowInteropHelper(App.Current.MainWindow).Handle;
+                App.hooks.unsetKeyboardHook(mainWindowHandle);
+                App.hooks.setKeyboardHook(mainWindowHandle, mainWindowViewModel.Hotkeys);
+            }
+            if (ModelViewPropertiesSaveSettings.Contains(e.PropertyName))
+            {
+                MySettings.Instance.LayoutPadding = mainWindowViewModel.LayoutPadding;
+                MySettings.Instance.Padding = mainWindowViewModel.Padding;
+
+                MySettings.Instance.MarginTop = mainWindowViewModel.MarginTop;
+                MySettings.Instance.MarginRight = mainWindowViewModel.MarginRight;
+                MySettings.Instance.MarginBottom = mainWindowViewModel.MarginBottom;
+                MySettings.Instance.MarginLeft = mainWindowViewModel.MarginLeft;
+
+                MySettings.Instance.Filters = mainWindowViewModel.ConfigurableFilters;
+                MySettings.Instance.DesktopMonitors = mainWindowViewModel.DesktopMonitors.ToList();
+                MySettings.Instance.Hotkeys = mainWindowViewModel.Hotkeys.ToList();
+                
+                MySettings.Save();
+            }
             if (e.PropertyName == "ConfigurableFilters")
             {
                 ClearWindows();
@@ -61,10 +100,14 @@ namespace AmethystWindows.DesktopWindowsManager
             }
             if (ModelViewPropertiesDraw.Contains(e.PropertyName))
             {
-                debounceDispatcher.Debounce(() =>
+                if (firstActivation)
                 {
-                    Draw();
-                });
+                    debounceDispatcher.Debounce(() => Draw());
+                    firstActivation = false;
+                }
+
+                if (ModelViewPropertiesDrawMonitor.Contains(e.PropertyName)) debounceDispatcher.Debounce(() => Draw());
+                else debounceDispatcher.Debounce(() => Draw(mainWindowViewModel.LastChangedDesktopMonitor));
             }
         }
 
@@ -72,12 +115,12 @@ namespace AmethystWindows.DesktopWindowsManager
         {
             List<HMONITOR> virtualDesktopMonitors = Windows
                 .Keys
-                .Where(desktopMonitor => desktopMonitor.Item1.Equals(currentDesktopMonitor.Item1))
-                .Select(desktopMonitor => desktopMonitor.Item2)
+                .Where(desktopMonitor => desktopMonitor.Key.Equals(currentDesktopMonitor.Key))
+                .Select(desktopMonitor => desktopMonitor.Value)
                 .ToList();
 
-            HMONITOR nextMonitor = virtualDesktopMonitors.SkipWhile(x => x != currentDesktopMonitor.Item2).Skip(1).DefaultIfEmpty(virtualDesktopMonitors[0]).FirstOrDefault();
-            Pair<VirtualDesktop, HMONITOR> nextDesktopMonitor = new Pair<VirtualDesktop, HMONITOR>(currentDesktopMonitor.Item1, nextMonitor);
+            HMONITOR nextMonitor = virtualDesktopMonitors.SkipWhile(x => x != currentDesktopMonitor.Value).Skip(1).DefaultIfEmpty(virtualDesktopMonitors[0]).FirstOrDefault();
+            Pair<VirtualDesktop, HMONITOR> nextDesktopMonitor = new Pair<VirtualDesktop, HMONITOR>(currentDesktopMonitor.Key, nextMonitor);
 
             User32.SetForegroundWindow(Windows[nextDesktopMonitor].FirstOrDefault().Window);
         }
@@ -86,46 +129,14 @@ namespace AmethystWindows.DesktopWindowsManager
         {
             List<HMONITOR> virtualDesktopMonitors = Windows
                 .Keys
-                .Where(desktopMonitor => desktopMonitor.Item1.Equals(currentDesktopMonitor.Item1))
-                .Select(desktopMonitor => desktopMonitor.Item2)
+                .Where(desktopMonitor => desktopMonitor.Key.Equals(currentDesktopMonitor.Key))
+                .Select(desktopMonitor => desktopMonitor.Value)
                 .ToList();
 
-            HMONITOR nextMonitor = virtualDesktopMonitors.TakeWhile(x => x != currentDesktopMonitor.Item2).Skip(1).DefaultIfEmpty(virtualDesktopMonitors[0]).FirstOrDefault();
-            Pair<VirtualDesktop, HMONITOR> nextDesktopMonitor = new Pair<VirtualDesktop, HMONITOR>(currentDesktopMonitor.Item1, nextMonitor);
+            HMONITOR nextMonitor = virtualDesktopMonitors.TakeWhile(x => x != currentDesktopMonitor.Value).Skip(1).DefaultIfEmpty(virtualDesktopMonitors[0]).FirstOrDefault();
+            Pair<VirtualDesktop, HMONITOR> nextDesktopMonitor = new Pair<VirtualDesktop, HMONITOR>(currentDesktopMonitor.Key, nextMonitor);
 
             User32.SetForegroundWindow(Windows[nextDesktopMonitor].FirstOrDefault().Window);
-        }
-
-        public void LoadFactors()
-        {
-            if (MySettings.Instance.Factors != "[]")
-            {
-                ReadFactors();
-            }
-        }
-
-        public void SaveFactors()
-        {
-            MySettings.Instance.Factors = JsonConvert.SerializeObject(Factors.ToList(), Formatting.Indented, new FactorsConverter());
-            MySettings.Save();
-        }
-
-        public void ReadFactors()
-        {
-            Factors = JsonConvert.DeserializeObject<List<KeyValuePair<Pair<VirtualDesktop, HMONITOR>, int>>>(
-                MySettings.Instance.Factors, new FactorsConverter()
-                ).ToDictionary(kv => kv.Key, kv => kv.Value);
-        }
-
-        public void UpdateFactors()
-        {
-            foreach (Pair<VirtualDesktop, HMONITOR> desktopMonitor in Windows.Keys)
-            {
-                if (!Factors.ContainsKey(desktopMonitor))
-                {
-                    Factors.Add(desktopMonitor, 0);
-                }
-            }
         }
 
         private void SubscribeWindowsCollectionChanged(Pair<VirtualDesktop, HMONITOR> desktopMonitor, bool enabled)

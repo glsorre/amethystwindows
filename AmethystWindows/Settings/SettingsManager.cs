@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -21,14 +22,14 @@ namespace AmethystWindows.Settings
         public static void Load()
         {
             if (File.Exists(filePath))
-                Instance = System.Text.Json.JsonSerializer.Deserialize<T>(File.ReadAllText(filePath));
+                Instance = JsonConvert.DeserializeObject<T>(File.ReadAllText(filePath));
             else
                 Instance = new T();
         }
 
         public static void Save()
         {
-            string json = System.Text.Json.JsonSerializer.Serialize(Instance);
+            string json = JsonConvert.SerializeObject(Instance);
             Directory.CreateDirectory(Path.GetDirectoryName(filePath));
             File.WriteAllText(filePath, json);
         }

@@ -10,16 +10,6 @@ namespace AmethystWindows.DesktopWindowsManager
 {
     partial class DesktopWindowsManager
     {
-        public void ShrinkMainPane(Pair<VirtualDesktop, HMONITOR> key)
-        {
-            Factors[key] = ++Factors[key];
-        }
-
-        public void ExpandMainPane(Pair<VirtualDesktop, HMONITOR> key)
-        {
-            Factors[key] = --Factors[key];
-        }
-
         public IEnumerable<Rectangle> GridGenerator(int mWidth, int mHeight, int windowsCount, int factor, Layout layout, int layoutPadding)
         {
             int i = 0;
@@ -172,8 +162,8 @@ namespace AmethystWindows.DesktopWindowsManager
                             int lastPaddingI = windowsCount == 1 ? 0 : layoutPadding;
                             int lastPaddingJ = i == (windowsCount - 2) ? 0 : layoutPadding;
 
-                            if (i == 0) yield return new Rectangle(0, 0, mWidth, mHeight / 2 + factor * MySettings.Instance.Step - (lastPaddingI /2));
-                            yield return new Rectangle(i * size, mHeight / 2 + factor * MySettings.Instance.Step + (lastPaddingI / 2), size - lastPaddingJ, mHeight / 2 - factor * MySettings.Instance.Step - (lastPaddingI /2));
+                            if (i == 0) yield return new Rectangle(0, 0, mWidth, mHeight / 2 + factor * mainWindowViewModel.Step - (lastPaddingI /2));
+                            yield return new Rectangle(i * size, mHeight / 2 + factor * mainWindowViewModel.Step + (lastPaddingI / 2), size - lastPaddingJ, mHeight / 2 - factor * mainWindowViewModel.Step - (lastPaddingI /2));
                         }
                     }
                     break;
@@ -187,8 +177,8 @@ namespace AmethystWindows.DesktopWindowsManager
                             int lastPaddingI = i == (windowsCount - 2) ? 0 : layoutPadding;
                             int lastPaddingJ = windowsCount == 1 ? 0 : layoutPadding;
 
-                            if (i == 0) yield return new Rectangle(0, 0, mWidth / 2 + factor * MySettings.Instance.Step - (lastPaddingJ / 2), mHeight);
-                            yield return new Rectangle(mWidth / 2 + factor * MySettings.Instance.Step + (lastPaddingJ / 2), i * size, mWidth / 2 - factor * MySettings.Instance.Step - (lastPaddingJ / 2), size - lastPaddingI);
+                            if (i == 0) yield return new Rectangle(0, 0, mWidth / 2 + factor * mainWindowViewModel.Step - (lastPaddingJ / 2), mHeight);
+                            yield return new Rectangle(mWidth / 2 + factor * mainWindowViewModel.Step + (lastPaddingJ / 2), i * size, mWidth / 2 - factor * mainWindowViewModel.Step - (lastPaddingJ / 2), size - lastPaddingI);
                         }
                     }
                     break;

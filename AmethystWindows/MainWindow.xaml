@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:bh="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:ui="http://schemas.modernwpf.com/2019" 
-        xmlns:local="clr-namespace:AmethystWindows"
+        xmlns:local="clr-namespace:AmethystWindows" xmlns:hotkeys="clr-namespace:AmethystWindows.Hotkeys"
         mc:Ignorable="d"
         ui:WindowHelper.UseModernWindowStyle="True"
         ShowInTaskbar="{Binding ShowInTaskbar}"
@@ -70,8 +70,8 @@
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel>
-                                        <TextBlock FontWeight="Bold" FontSize="14" Text="{Binding Item1}"/>
-                                        <TextBlock Text="{Binding Item2}"/>
+                                        <TextBlock FontWeight="Bold" FontSize="14" Text="{Binding Key}"/>
+                                        <TextBlock Text="{Binding Value}"/>
                                     </StackPanel>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
@@ -89,38 +89,130 @@
                     </StackPanel>
                 </TabItem>
                 <TabItem Header="Settings">
-                    <StackPanel Orientation="Horizontal" Margin="5">
-                        <StackPanel Orientation="Vertical" Margin="20">
-                            <TextBlock FontWeight="Bold" FontSize="14" Margin="0 20">Padding</TextBlock>
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                                <TextBlock VerticalAlignment="Center">Window Padding</TextBlock>
-                                <ui:NumberBox Value="{Binding Padding, Mode=TwoWay}" SpinButtonPlacementMode="Inline" Minimum="0" Maximum="200" Margin="10" VerticalAlignment="Center" />
+                    <ScrollViewer>
+                        <StackPanel Orientation="Horizontal" Margin="5">
+                            <StackPanel Orientation="Vertical" Margin="20">
+                                <TextBlock FontWeight="Bold" FontSize="14" Margin="0 20">Padding</TextBlock>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <TextBlock VerticalAlignment="Center">Window Padding</TextBlock>
+                                    <ui:NumberBox Value="{Binding Padding, Mode=TwoWay}" SpinButtonPlacementMode="Inline" Minimum="0" Maximum="200" Margin="10" VerticalAlignment="Center" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <TextBlock VerticalAlignment="Center">Layout Padding</TextBlock>
+                                    <ui:NumberBox Value="{Binding LayoutPadding, Mode=TwoWay}" SpinButtonPlacementMode="Inline" Minimum="0" Maximum="200" Margin="10" VerticalAlignment="Center" />
+                                </StackPanel>
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                                <TextBlock VerticalAlignment="Center">Layout Padding</TextBlock>
-                                <ui:NumberBox Value="{Binding LayoutPadding, Mode=TwoWay}" SpinButtonPlacementMode="Inline" Minimum="0" Maximum="200" Margin="10" VerticalAlignment="Center" />
+                            <StackPanel Orientation="Vertical" Margin="20">
+                                <TextBlock FontWeight="Bold" FontSize="14" Margin="0 20">Screen Margin</TextBlock>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <TextBlock VerticalAlignment="Center">Top</TextBlock>
+                                    <ui:NumberBox Value="{Binding MarginTop, Mode=TwoWay}" SpinButtonPlacementMode="Inline" Minimum="0" Maximum="200" Margin="10" VerticalAlignment="Center" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <TextBlock VerticalAlignment="Center">Left</TextBlock>
+                                    <ui:NumberBox Value="{Binding MarginLeft, Mode=TwoWay}" SpinButtonPlacementMode="Inline" Minimum="0" Maximum="200" Margin="10" VerticalAlignment="Center" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <TextBlock VerticalAlignment="Center">Bottom</TextBlock>
+                                    <ui:NumberBox Value="{Binding MarginBottom, Mode=TwoWay}" SpinButtonPlacementMode="Inline" Minimum="0" Maximum="200" Margin="10" VerticalAlignment="Center" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <TextBlock VerticalAlignment="Center">Right</TextBlock>
+                                    <ui:NumberBox Value="{Binding MarginRight, Mode=TwoWay}" SpinButtonPlacementMode="Inline" Minimum="0" Maximum="200" Margin="10" VerticalAlignment="Center" />
+                                </StackPanel>
                             </StackPanel>
                         </StackPanel>
+                    </ScrollViewer>
+                </TabItem>
+                <TabItem Header="Hotkeys">
+                    <ScrollViewer>
                         <StackPanel Orientation="Vertical" Margin="20">
-                            <TextBlock FontWeight="Bold" FontSize="14" Margin="0 20">Screen Margin</TextBlock>
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                                <TextBlock VerticalAlignment="Center">Top</TextBlock>
-                                <ui:NumberBox Value="{Binding MarginTop, Mode=TwoWay}" SpinButtonPlacementMode="Inline" Minimum="0" Maximum="200" Margin="10" VerticalAlignment="Center" />
+                            <StackPanel Orientation="Horizontal" Margin="10 0">
+                                <TextBlock Width="300" VerticalAlignment="Center">Rotate Layout Clockwise</TextBlock>
+                                <hotkeys:HotkeyEditorControl ViewModelHotkey="{ Binding Hotkeys[0] }" Description="Rotate Layout Clockwise" Width="220"/>
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                                <TextBlock VerticalAlignment="Center">Left</TextBlock>
-                                <ui:NumberBox Value="{Binding MarginLeft, Mode=TwoWay}" SpinButtonPlacementMode="Inline" Minimum="0" Maximum="200" Margin="10" VerticalAlignment="Center" />
+                            <StackPanel Orientation="Horizontal" Margin="10 0">
+                                <TextBlock Width="300" VerticalAlignment="Center">Rotate Layout Counterclockwise</TextBlock>
+                                <hotkeys:HotkeyEditorControl ViewModelHotkey="{ Binding Hotkeys[1] }" Description="Rotate Layout Counterclockwise" Width="220"/>
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                                <TextBlock VerticalAlignment="Center">Bottom</TextBlock>
-                                <ui:NumberBox Value="{Binding MarginBottom, Mode=TwoWay}" SpinButtonPlacementMode="Inline" Minimum="0" Maximum="200" Margin="10" VerticalAlignment="Center" />
+                            <StackPanel Orientation="Horizontal" Margin="10 0">
+                                <TextBlock Width="300" VerticalAlignment="Center">Set Main Pane</TextBlock>
+                                <hotkeys:HotkeyEditorControl ViewModelHotkey="{ Binding Hotkeys[2] }" Description="Set Main Pane" Width="220"/>
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                                <TextBlock VerticalAlignment="Center">Right</TextBlock>
-                                <ui:NumberBox Value="{Binding MarginRight, Mode=TwoWay}" SpinButtonPlacementMode="Inline" Minimum="0" Maximum="200" Margin="10" VerticalAlignment="Center" />
+                            <StackPanel Orientation="Horizontal" Margin="10 0">
+                                <TextBlock Width="300" VerticalAlignment="Center">Swap Focused Window Counterclockwise</TextBlock>
+                                <hotkeys:HotkeyEditorControl ViewModelHotkey="{ Binding Hotkeys[3] }" Description="Swap Focused Window Counterclockwise" Width="220"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="10 0">
+                                <TextBlock Width="300" VerticalAlignment="Center">Swap Focused Window Clockwise</TextBlock>
+                                <hotkeys:HotkeyEditorControl ViewModelHotkey="{ Binding Hotkeys[4] }" Description="Swap Focused Window Clockwise" Width="220"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="10 0">
+                                <TextBlock Width="300" VerticalAlignment="Center">Swap Focus Counterclockwise</TextBlock>
+                                <hotkeys:HotkeyEditorControl ViewModelHotkey="{ Binding Hotkeys[5] }" Description="Swap Focus Counterclockwise" Width="220"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="10 0">
+                                <TextBlock Width="300" VerticalAlignment="Center">Swap Focus Clockwise</TextBlock>
+                                <hotkeys:HotkeyEditorControl ViewModelHotkey="{ Binding Hotkeys[6] }" Description="Swap Focus Clockwise" Width="220"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="10 0">
+                                <TextBlock Width="300" VerticalAlignment="Center">Move Focus Previous Screen</TextBlock>
+                                <hotkeys:HotkeyEditorControl ViewModelHotkey="{ Binding Hotkeys[7] }" Description="Move Focus Previous Screen" Width="220"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="10 0">
+                                <TextBlock Width="300" VerticalAlignment="Center">Move Focus Next Screen</TextBlock>
+                                <hotkeys:HotkeyEditorControl ViewModelHotkey="{ Binding Hotkeys[8] }" Description="Move Focus Next Screen" Width="220"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="10 0">
+                                <TextBlock Width="300" VerticalAlignment="Center">Expand Main Pane</TextBlock>
+                                <hotkeys:HotkeyEditorControl ViewModelHotkey="{ Binding Hotkeys[9] }" Description="Expand Main Pane" Width="220"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="10 0">
+                                <TextBlock Width="300" VerticalAlignment="Center">Shrink Main Pane</TextBlock>
+                                <hotkeys:HotkeyEditorControl ViewModelHotkey="{ Binding Hotkeys[10] }" Description="Shrink Main Pane" Width="220"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="10 0">
+                                <TextBlock Width="300" VerticalAlignment="Center">Move Focused Window Previous Screen</TextBlock>
+                                <hotkeys:HotkeyEditorControl ViewModelHotkey="{ Binding Hotkeys[11] }" Description="Move Focused Window Previous Screen" Width="220"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="10 0">
+                                <TextBlock Width="300" VerticalAlignment="Center">Move Focused Window Next Screen</TextBlock>
+                                <hotkeys:HotkeyEditorControl ViewModelHotkey="{ Binding Hotkeys[12] }" Description="Move Focused Window Next Screen" Width="220"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="10 0">
+                                <TextBlock Width="300" VerticalAlignment="Center">Redraw</TextBlock>
+                                <hotkeys:HotkeyEditorControl ViewModelHotkey="{ Binding Hotkeys[13] }" Description="Redraw" Width="220"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="10 0">
+                                <TextBlock Width="300" VerticalAlignment="Center">Move Focused Window Next Space</TextBlock>
+                                <hotkeys:HotkeyEditorControl ViewModelHotkey="{ Binding Hotkeys[14] }" Description="Move Focused Window Next Space" Width="220"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="10 0">
+                                <TextBlock Width="300" VerticalAlignment="Center">Move Focused Window Previous Space</TextBlock>
+                                <hotkeys:HotkeyEditorControl ViewModelHotkey="{ Binding Hotkeys[15] }" Description="Move Focused Window Previous Space" Width="220"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="10 0">
+                                <TextBlock Width="300" VerticalAlignment="Center">Move Focused Window To Space 1</TextBlock>
+                                <hotkeys:HotkeyEditorControl ViewModelHotkey="{ Binding Hotkeys[16] }" Description="Move Focused Window To Space 1" Width="220"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="10 0">
+                                <TextBlock Width="300" VerticalAlignment="Center">Move Focused Window To Space 2</TextBlock>
+                                <hotkeys:HotkeyEditorControl ViewModelHotkey="{ Binding Hotkeys[17] }" Description="Move Focused Window To Space 2" Width="220"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="10 0">
+                                <TextBlock Width="300" VerticalAlignment="Center">Move Focused Window To Space 3</TextBlock>
+                                <hotkeys:HotkeyEditorControl ViewModelHotkey="{ Binding Hotkeys[18] }" Description="Move Focused Window To Space 3" Width="220"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="10 0">
+                                <TextBlock Width="300" VerticalAlignment="Center">Move Focused Window To Space 4</TextBlock>
+                                <hotkeys:HotkeyEditorControl ViewModelHotkey="{ Binding Hotkeys[19] }" Description="Move Focused Window To Space 4" Width="220"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="10 0">
+                                <TextBlock Width="300" VerticalAlignment="Center">Move Focused Window To Space 5</TextBlock>
+                                <hotkeys:HotkeyEditorControl ViewModelHotkey="{ Binding Hotkeys[20] }" Description="Move Focused Window To Space 5" Width="220"/>
                             </StackPanel>
                         </StackPanel>
-                    </StackPanel>
+                    </ScrollViewer>
                 </TabItem>
             </TabControl>
         </DockPanel>

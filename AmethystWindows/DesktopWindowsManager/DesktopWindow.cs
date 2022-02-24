@@ -20,7 +20,8 @@ namespace AmethystWindows.DesktopWindowsManager
         public string AppName { get; set; }
         public int BorderX;
         public int BorderY;
-        public Rectangle Offset;
+        public int OffsetX;
+        public int OffsetY;
         public string ClassName { get; set; }
         public bool IsUWP { get; set; }
 
@@ -199,17 +200,12 @@ namespace AmethystWindows.DesktopWindowsManager
 
         private void GetBordersOffset()
         {
-            BorderX = (int)Info.cxWindowBorders;
-            BorderY = (int)Info.cyWindowBorders;
-            Offset.X = Math.Abs(Info.rcClient.X - Info.rcWindow.X);
-            Offset.Y = Math.Abs(Info.rcClient.Y - Info.rcWindow.Y);
-            if (Info.dwExStyle.HasFlag(User32.WindowStylesEx.WS_EX_CLIENTEDGE))
-            {
-                BorderX = 0;
-                BorderY = 0;
-                Offset.X = 0;
-                Offset.Y = 0;
-            }
+            RECT rect;
+            DwmApi.DwmGetWindowAttribute(Window.DangerousGetHandle(), DwmApi.DWMWINDOWATTRIBUTE.DWMWA_EXTENDED_FRAME_BOUNDS, out rect);
+            BorderX = (int)Info.cxWindowBorders / 2;
+            BorderY = (int)Info.cyWindowBorders / 2;
+            OffsetX = (Info.rcClient.Width - Info.rcWindow.Width) / 2;
+            OffsetY = (Info.rcClient.Height - Info.rcWindow.Height) / 2;
         }
 
         public override string ToString()

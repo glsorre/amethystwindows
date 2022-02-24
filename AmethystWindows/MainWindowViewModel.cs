@@ -1,11 +1,12 @@
 ﻿using AmethystWindows.DesktopWindowsManager;
+using AmethystWindows.Hotkeys;
 using AmethystWindows.Settings;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
@@ -13,6 +14,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
+using Vanara.PInvoke;
 using WindowsDesktop;
 
 namespace AmethystWindows
@@ -32,6 +34,21 @@ namespace AmethystWindows
             ClassName = className;
             VirtualDesktop = virtualDesktop;
             Monitor = monitor;
+        }
+
+        public override bool Equals(object? obj)
+        {
+            return obj is ViewModelDesktopWindow window &&
+                   Window == window.Window &&
+                   AppName == window.AppName &&
+                   ClassName == window.ClassName &&
+                   VirtualDesktop == window.VirtualDesktop &&
+                   Monitor == window.Monitor;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Window, AppName, ClassName, VirtualDesktop, Monitor);
         }
     }
 
@@ -73,32 +90,12 @@ namespace AmethystWindows
         }
     }
 
-    class ConfigurableFiltersEqualityComparer : IEqualityComparer<List<Pair<string, string>>>
-    {
-        public bool Equals(List<Pair<string, string>> cF1, List<Pair<string, string>> cF2)
-        {
-            if (cF1 == null && cF2 == null)
-                return true;
-            else if (cF1 == null || cF2 == null)
-                return false;
-            else if (cF1.Count == cF2.Count)
-                return true;
-            else
-                return false;
-        }
-
-        public int GetHashCode(List<Pair<string, string>> cFx)
-        {
-            return cFx.GetHashCode();
-        }
-    }
-
     public class MainWindowViewModel : ObservableRecipient
     {
         private NotifyIconWrapper.NotifyRequestRecord? _notifyRequest;
         private bool _showInTaskbar;
         private WindowState _windowState;
-        private IEnumerable<ViewModelDesktopWindow> _windows;
+        private List<ViewModelDesktopWindow> _windows;
         private ViewModelDesktopWindow _selectedWindow;
 
         private int _layoutPadding;
@@ -107,11 +104,16 @@ namespace AmethystWindows
         private int _marginRight;
         private int _marginBottom;
         private int _marginLeft;
+        private int _step;
 
         private bool _disabled;
 
         private List<Pair<string, string>> _configurableFilters;
         private Pair<string, string> _selectedConfigurableFilter;
+
+        private Pair<VirtualDesktop, HMONITOR> _lastChangedDesktopMonitor;
+        private static ObservableDesktopMonitors _desktopMonitors;
+        private static ObservableHotkeys _hotkeys;
 
         public MainWindowViewModel()
         {
@@ -122,7 +124,18 @@ namespace AmethystWindows
             _marginLeft = MySettings.Instance.MarginLeft;
             _marginRight = MySettings.Instance.MarginRight;
             _layoutPadding = MySettings.Instance.LayoutPadding;
-            _configurableFilters = JsonConvert.DeserializeObject<List<Pair<string, string>>>(MySettings.Instance.Filters);
+            _step = MySettings.Instance.Step;
+
+            _disabled = MySettings.Instance.Disabled;
+
+            _configurableFilters = MySettings.Instance.Filters;
+            _hotkeys = new ObservableHotkeys(MySettings.Instance.Hotkeys);
+            _desktopMonitors = new ObservableDesktopMonitors(MySettings.Instance.DesktopMonitors);
+            _windows = new List<ViewModelDesktopWindow>();
+
+            _hotkeys.CollectionChanged += _hotkeys_CollectionChanged;
+            _desktopMonitors.CollectionChanged += _desktopMonitors_CollectionChanged;
+            _lastChangedDesktopMonitor = _desktopMonitors[0].getPair();
 
             LoadedCommand = new RelayCommand(Loaded);
             ClosingCommand = new RelayCommand<CancelEventArgs>(Closing);
@@ -133,6 +146,18 @@ namespace AmethystWindows
             FilterClassWithinAppCommand = new RelayCommand(FilterClassWithinApp);
             RemoveFilterCommand = new RelayCommand(RemoveFilter);
             RedrawCommand = new RelayCommand(() => { App.DWM.ClearWindows(); App.DWM.CollectWindows(); App.DWM.Draw(); });
+        }
+
+        private void _desktopMonitors_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {   
+            ViewModelDesktopMonitor viewModelDesktopMonitor= (ViewModelDesktopMonitor)e.NewItems[0];
+            LastChangedDesktopMonitor = viewModelDesktopMonitor.getPair();
+            OnPropertyChanged("DesktopMonitors");
+        }
+
+        private void _hotkeys_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            OnPropertyChanged("Hotkeys");
         }
 
         public ICommand LoadedCommand { get; }
@@ -161,7 +186,7 @@ namespace AmethystWindows
             set => SetProperty(ref _showInTaskbar, value);
         }
 
-        public IEnumerable<ViewModelDesktopWindow> Windows
+        public List<ViewModelDesktopWindow> Windows
         {
             get => _windows;
             set => SetProperty(ref _windows, value);
@@ -209,10 +234,34 @@ namespace AmethystWindows
             set => SetProperty(ref _marginLeft, value);
         }
 
+        public int Step
+        {
+            get => _step;
+            set => SetProperty(ref _step, value);
+        }
+
         public bool Disabled
         {
             get => _disabled;
             set => SetProperty(ref _disabled, value);
+        }
+
+        public ObservableDesktopMonitors DesktopMonitors
+        {
+            get => _desktopMonitors;
+            set => SetProperty(ref _desktopMonitors, value);
+        }
+
+        public ObservableHotkeys Hotkeys
+        {
+            get => _hotkeys;
+            set => SetProperty(ref _hotkeys, value);
+        }
+
+        public Pair<VirtualDesktop, HMONITOR> LastChangedDesktopMonitor
+        {
+            get;
+            set;
         }
 
         public List<Pair<string, string>> ConfigurableFilters
@@ -245,31 +294,33 @@ namespace AmethystWindows
 
         public void UpdateWindows()
         {
-            Windows = App.DWM.GetWindowsByVirtualDesktop(VirtualDesktop.Current).Select(window => new ViewModelDesktopWindow(
+            List<ViewModelDesktopWindow> windowsForComparison = App.DWM.GetWindowsByVirtualDesktop(VirtualDesktop.Current).Select(window => new ViewModelDesktopWindow(
                 window.Window.DangerousGetHandle().ToString(),
                 window.AppName,
                 window.ClassName,
                 window.VirtualDesktop.Id.ToString(),
                 window.Monitor.ToString()
-                ));
+                )).ToList();
+
+            if (!windowsForComparison.SequenceEqual(Windows)) Windows = windowsForComparison;
         }
 
         public void FilterApp()
         {
             ConfigurableFilters = ConfigurableFilters.Concat(new[] { new Pair<string, string>(SelectedWindow.AppName, "*") }).ToList();
-            MySettings.Instance.Filters = JsonConvert.SerializeObject(ConfigurableFilters.ToList(), Formatting.Indented, new FactorsConverter());
+            MySettings.Instance.Filters = ConfigurableFilters;
         }
 
         public void FilterClassWithinApp()
         {
             ConfigurableFilters = ConfigurableFilters.Concat(new[] { new Pair<string, string>(SelectedWindow.AppName, SelectedWindow.ClassName) }).ToList();
-            MySettings.Instance.Filters = JsonConvert.SerializeObject(ConfigurableFilters.ToList(), Formatting.Indented, new FactorsConverter());
+            MySettings.Instance.Filters = ConfigurableFilters;
         }
 
         public void RemoveFilter()
         {
-            ConfigurableFilters = ConfigurableFilters.Where(f => f.Item1 != SelectedConfigurableFilter.Item1 && f.Item2 != SelectedConfigurableFilter.Item2).ToList();
-            MySettings.Instance.Filters = JsonConvert.SerializeObject(ConfigurableFilters.ToList(), Formatting.Indented, new FactorsConverter());
+            ConfigurableFilters = ConfigurableFilters.Where(f => f.Key != SelectedConfigurableFilter.Key && f.Value != SelectedConfigurableFilter.Value).ToList();
+            MySettings.Instance.Filters = ConfigurableFilters;
         }
 
         private void Loaded()
@@ -285,6 +336,253 @@ namespace AmethystWindows
                 return;
             e.Cancel = true;
             WindowState = WindowState.Minimized;
+        }
+    }
+
+    public class ViewModelDesktopMonitor : INotifyPropertyChanged
+    {
+        private HMONITOR _monitor;
+        private VirtualDesktop _virtualDesktop;
+        private int _factor;
+        private Layout _layout;
+        public HMONITOR Monitor { 
+            get => _monitor;
+
+            set
+            {
+                _monitor = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Monitor)));
+            }
+        }
+        public VirtualDesktop VirtualDesktop {
+            get => _virtualDesktop;
+
+            set
+            {
+                _virtualDesktop = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(VirtualDesktop)));
+            }
+        }
+        public int Factor
+        {
+            get => _factor;
+
+            set
+            {
+                _factor = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Factor)));
+            }
+        }
+        public Layout Layout
+        {
+            get => _layout;
+
+            set
+            {
+                _layout = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Layout)));
+            }
+        }
+
+        public ViewModelDesktopMonitor(HMONITOR monitor, VirtualDesktop virtualDesktop, int factor, Layout layout)
+        {
+            Monitor = monitor;
+            VirtualDesktop = virtualDesktop;
+            Factor = factor;
+            Layout = layout;
+        }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        public void Shrink()
+        {
+            --Factor;
+        }
+
+        public void Expand()
+        {
+            ++Factor;
+        }
+
+        public void RotateLayoutClockwise()
+        {
+            IEnumerable<Layout> values = Enum.GetValues(typeof(Layout)).Cast<Layout>();
+            if (Layout == values.Max())
+            {
+                Layout = Layout.Horizontal;
+            }
+            else
+            {
+                ++Layout;
+            }
+        }
+
+        public void RotateLayoutCounterClockwise()
+        {
+            IEnumerable<Layout> values = Enum.GetValues(typeof(Layout)).Cast<Layout>();
+            if (Layout == 0)
+            {
+                Layout = Layout.Tall;
+            }
+            else
+            {
+                --Layout;
+            }
+        }
+
+        public override bool Equals(object? obj)
+        {
+            return obj is ViewModelDesktopMonitor monitor &&
+                   EqualityComparer<HMONITOR>.Default.Equals(Monitor, monitor.Monitor) &&
+                   EqualityComparer<VirtualDesktop>.Default.Equals(VirtualDesktop, monitor.VirtualDesktop) &&
+                   Factor == monitor.Factor &&
+                   Layout == monitor.Layout;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Monitor, VirtualDesktop, Factor, Layout);
+        }
+
+        public Pair<VirtualDesktop, HMONITOR> getPair()
+        {
+            return new Pair<VirtualDesktop, HMONITOR>(VirtualDesktop, Monitor);
+        }
+    }
+
+    public class ViewModelHotkey : INotifyPropertyChanged
+    {
+        private Hotkey _hotkey;
+        private string _command;
+
+        public Hotkey Hotkey {
+            get => _hotkey;
+            set
+            {
+                _hotkey = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Hotkey)));
+            }
+        }
+        public string Command {
+            get => _command;
+            set
+            {
+                _command = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Hotkey)));
+            }
+        }
+
+        public ViewModelHotkey(string command, Hotkey hotkey)
+        {
+            Hotkey = hotkey;
+            Command = command;
+        }
+
+        public ViewModelHotkey()
+        {
+        }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        public override bool Equals(object? obj)
+        {
+            return obj is ViewModelHotkey hotkey &&
+                   EqualityComparer<Hotkey>.Default.Equals(Hotkey, hotkey.Hotkey) &&
+                   Command == hotkey.Command;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Hotkey, Command);
+        }
+    }
+
+    public class ObservableDesktopMonitors : ObservableCollection<ViewModelDesktopMonitor>
+    {
+        public ObservableDesktopMonitors(List<ViewModelDesktopMonitor> list) : base(list)
+        {
+            foreach (ViewModelDesktopMonitor viewModelDesktopMonitor in list)
+            {
+                viewModelDesktopMonitor.PropertyChanged += ItemPropertyChanged;
+            }
+            CollectionChanged += ObservableDesktopMonitors_CollectionChanged;
+        }
+
+        public ObservableDesktopMonitors()
+        {
+            CollectionChanged += ObservableDesktopMonitors_CollectionChanged;
+        }
+
+        private void ObservableDesktopMonitors_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.NewItems != null)
+            {
+                foreach (Object item in e.NewItems)
+                {
+                    ((INotifyPropertyChanged)item).PropertyChanged += ItemPropertyChanged;
+                }
+            }
+            if (e.OldItems != null)
+            {
+                foreach (Object item in e.OldItems)
+                {
+                    ((INotifyPropertyChanged)item).PropertyChanged -= ItemPropertyChanged;
+                }
+            }
+        }
+
+        private void ItemPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            NotifyCollectionChangedEventArgs args = new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Replace, sender, sender);
+            OnCollectionChanged(args);
+        }
+
+        public ViewModelDesktopMonitor this[Pair<VirtualDesktop, HMONITOR> desktopMonitor] => FindByDesktopMonitor(desktopMonitor);
+
+        private ViewModelDesktopMonitor FindByDesktopMonitor(Pair<VirtualDesktop, HMONITOR> desktopMonitor)
+        {
+            return this.First(viewModelDesktopMonitor => viewModelDesktopMonitor.Monitor.Equals(desktopMonitor.Value) && viewModelDesktopMonitor.VirtualDesktop.Equals(desktopMonitor.Key));
+        }
+    }
+
+    public class ObservableHotkeys : ObservableCollection<ViewModelHotkey>
+    {
+        public ObservableHotkeys(List<ViewModelHotkey> list) : base(list)
+        {
+            foreach (ViewModelHotkey viewModelHotkey in list)
+            {
+                viewModelHotkey.PropertyChanged += ItemPropertyChanged;
+            }
+            CollectionChanged += ObservableHotkeys_CollectionChanged;
+        }
+
+        public ObservableHotkeys()
+        {
+            CollectionChanged += ObservableHotkeys_CollectionChanged;
+        }
+
+        private void ObservableHotkeys_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.NewItems != null)
+            {
+                foreach (Object item in e.NewItems)
+                {
+                    ((INotifyPropertyChanged)item).PropertyChanged += ItemPropertyChanged;
+                }
+            }
+            if (e.OldItems != null)
+            {
+                foreach (Object item in e.OldItems)
+                {
+                    ((INotifyPropertyChanged)item).PropertyChanged -= ItemPropertyChanged;
+                }
+            }
+        }
+
+        private void ItemPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            NotifyCollectionChangedEventArgs args = new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Replace, sender, sender);
+            OnCollectionChanged(args);
         }
     }
 }
