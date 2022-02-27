@@ -19,18 +19,17 @@ namespace AmethystWindows
         public App()
         {
             InitializeComponent();
-
         }
 
         private void App_Activated(object sender, EventArgs e)
         {
-            if (firstActivation) { 
+            if (firstActivation) {
                 DWM = new DesktopWindowsManager.DesktopWindowsManager();
                 Debug.WriteLine($"getting settings");
                 Debug.WriteLine($"setting hooks");
                 hooks = new DesktopWindowsManager.Hooks(DWM);
                 hooks.setWindowsHook();
-                hooks.setKeyboardHook(new WindowInteropHelper(App.Current.MainWindow).Handle, new ObservableHotkeys(MySettings.Instance.Hotkeys));
+                hooks.setKeyboardHook(new WindowInteropHelper(App.Current.MainWindow).Handle, DWM.mainWindowViewModel.Hotkeys);
                 Debug.WriteLine($"getting windows");
                 DWM.CollectWindows();
 
