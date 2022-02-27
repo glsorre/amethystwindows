@@ -4,7 +4,8 @@
              xmlns:ui="http://schemas.modernwpf.com/2019"
              xmlns:local="clr-namespace:AmethystWindows"
              StartupUri="MainWindow.xaml"
-             Activated="App_Activated">
+             Activated="App_Activated"
+             Startup="App_Startup">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
