@@ -2,6 +2,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -31,10 +32,23 @@ namespace AmethystWindows.DesktopWindowsManager
             await Task.Delay(500);
             DesktopWindow desktopWindow = new DesktopWindow(hWND);
             desktopWindow.GetInfo();
-            if (desktopWindow.IsRuntimePresent())
+            DesktopWindowsManager.mainWindowViewModel.LastChangedDesktopMonitor = desktopWindow.GetDesktopMonitor();
+            Pair<string, string> configurableAddition = DesktopWindowsManager.mainWindowViewModel.ConfigurableAdditions.FirstOrDefault(f => f.Key == desktopWindow.AppName);
+            bool hasActiveAddition;
+            if (!(configurableAddition.Key == null))
+            {
+                hasActiveAddition = configurableAddition.Value.Equals("*") || configurableAddition.Value.Equals(desktopWindow.ClassName);
+            } else
+            {
+                hasActiveAddition = false;
+            }         
+            if (desktopWindow.IsRuntimePresent() || hasActiveAddition)
             {
                 Debug.WriteLine($"window created");
                 DesktopWindowsManager.AddWindow(desktopWindow);
+            } else
+            {
+                if (desktopWindow.IsExcluded() && !DesktopWindowsManager.ExcludedWindows.Contains(desktopWindow) && desktopWindow.AppName != "" && !DesktopWindowsManager.FixedExcludedFilters.Contains(desktopWindow.AppName)) DesktopWindowsManager.ExcludedWindows.Add(desktopWindow);
             }
         }
 
@@ -56,17 +70,33 @@ namespace AmethystWindows.DesktopWindowsManager
                         case User32.EventConstants.EVENT_SYSTEM_MINIMIZEEND:
                             Debug.WriteLine($"window maximized");
                             desktopWindow.GetInfo();
-                            DesktopWindowsManager.AddWindow(desktopWindow);
+                            DesktopWindowsManager.mainWindowViewModel.LastChangedDesktopMonitor = desktopWindow.GetDesktopMonitor();
+                            Pair<string, string> configurableAddition = DesktopWindowsManager.mainWindowViewModel.ConfigurableAdditions.FirstOrDefault(f => f.Key == desktopWindow.AppName);
+                            bool hasActiveAddition;
+                            if (!(configurableAddition.Key == null))
+                            {
+                                hasActiveAddition = configurableAddition.Value.Equals("*") || configurableAddition.Value.Equals(desktopWindow.ClassName);
+                            }
+                            else
+                            {
+                                hasActiveAddition = false;
+                            }
+                            if (desktopWindow.IsRuntimePresent() || hasActiveAddition) DesktopWindowsManager.AddWindow(desktopWindow);
                             break;
                         case User32.EventConstants.EVENT_SYSTEM_MINIMIZESTART:
                         case User32.EventConstants.EVENT_OBJECT_HIDE:
                         case User32.EventConstants.EVENT_OBJECT_IME_HIDE:
                             Debug.WriteLine($"window minimized/hide");
                             DesktopWindow removed = DesktopWindowsManager.FindWindow(hwnd);
-                            if (removed != null) DesktopWindowsManager.RemoveWindow(removed);
+                            if (removed != null)
+                            {
+                                DesktopWindowsManager.mainWindowViewModel.LastChangedDesktopMonitor = removed.GetDesktopMonitor();
+                                DesktopWindowsManager.RemoveWindow(removed);
+                            }
                             break;
                         case User32.EventConstants.EVENT_SYSTEM_MOVESIZEEND:
                             Debug.WriteLine($"window move/size");
+                            DesktopWindowsManager.mainWindowViewModel.LastChangedDesktopMonitor = new Pair<WindowsDesktop.VirtualDesktop, HMONITOR>(null, new HMONITOR());
                             DesktopWindow moved = DesktopWindowsManager.FindWindow(hwnd);
                             if (moved != null)
                             {

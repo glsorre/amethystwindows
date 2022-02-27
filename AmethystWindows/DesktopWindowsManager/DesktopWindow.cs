@@ -65,6 +65,26 @@ namespace AmethystWindows.DesktopWindowsManager
             }  
         }
 
+        public bool IsExcluded()
+        {
+            bool common = User32.IsWindowVisible(Window) &&
+                    !User32.IsIconic(Window) &&
+                    IsAltTabWindow() &&
+                    !Info.dwExStyle.HasFlag(User32.WindowStylesEx.WS_EX_TOPMOST) &&
+                    AppName != null;
+
+            if (IsUWP)
+            {
+                return common &&
+                    !IsBackgroundAppWindow();
+            }
+            else
+            {
+                return common &&
+                    !Info.dwExStyle.HasFlag(User32.WindowStylesEx.WS_EX_TOOLWINDOW);
+            }
+        }
+
         public bool IsRuntimeValuable()
         {
             return IsAltTabWindow();
@@ -200,12 +220,10 @@ namespace AmethystWindows.DesktopWindowsManager
 
         private void GetBordersOffset()
         {
-            RECT rect;
-            DwmApi.DwmGetWindowAttribute(Window.DangerousGetHandle(), DwmApi.DWMWINDOWATTRIBUTE.DWMWA_EXTENDED_FRAME_BOUNDS, out rect);
-            BorderX = (int)Info.cxWindowBorders / 2;
-            BorderY = (int)Info.cyWindowBorders / 2;
-            OffsetX = (Info.rcClient.Width - Info.rcWindow.Width) / 2;
-            OffsetY = (Info.rcClient.Height - Info.rcWindow.Height) / 2;
+            BorderX = (int)Info.cxWindowBorders;
+            BorderY = (int)Info.cyWindowBorders;
+            OffsetX = (Info.rcWindow.Width - Info.rcClient.Width) / 2;
+            OffsetY = (Info.rcWindow.Height - Info.rcClient.Height) / 2;
         }
 
         public override string ToString()

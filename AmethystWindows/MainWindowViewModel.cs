@@ -27,6 +27,12 @@ namespace AmethystWindows
         public string VirtualDesktop { get; set; }
         public string Monitor { get; set; }
 
+        public ViewModelDesktopWindow(string appName, string className)
+        {
+            AppName = appName;
+            ClassName = className;
+        }
+
         public ViewModelDesktopWindow(string window, string appName, string className, string virtualDesktop, string monitor)
         {
             Window = window;
@@ -96,7 +102,9 @@ namespace AmethystWindows
         private bool _showInTaskbar;
         private WindowState _windowState;
         private List<ViewModelDesktopWindow> _windows;
+        private List<ViewModelDesktopWindow> _excludedWindows;
         private ViewModelDesktopWindow _selectedWindow;
+        private ViewModelDesktopWindow _selectedExcludedWindow;
 
         private int _layoutPadding;
         private int _padding;
@@ -110,6 +118,9 @@ namespace AmethystWindows
 
         private List<Pair<string, string>> _configurableFilters;
         private Pair<string, string> _selectedConfigurableFilter;
+
+        private List<Pair<string, string>> _configurableAdditions;
+        private Pair<string, string> _selectedConfigurableAddition;
 
         private Pair<VirtualDesktop, HMONITOR> _lastChangedDesktopMonitor;
         private static ObservableDesktopMonitors _desktopMonitors;
@@ -129,13 +140,15 @@ namespace AmethystWindows
             _disabled = MySettings.Instance.Disabled;
 
             _configurableFilters = MySettings.Instance.Filters;
+            _configurableAdditions = MySettings.Instance.Additions;
             _hotkeys = new ObservableHotkeys(MySettings.Instance.Hotkeys);
             _desktopMonitors = new ObservableDesktopMonitors(MySettings.Instance.DesktopMonitors);
             _windows = new List<ViewModelDesktopWindow>();
+            _excludedWindows = new List<ViewModelDesktopWindow>();
 
             _hotkeys.CollectionChanged += _hotkeys_CollectionChanged;
             _desktopMonitors.CollectionChanged += _desktopMonitors_CollectionChanged;
-            _lastChangedDesktopMonitor = _desktopMonitors[0].getPair();
+            _lastChangedDesktopMonitor = new Pair<VirtualDesktop, HMONITOR>(null, new HMONITOR());
 
             LoadedCommand = new RelayCommand(Loaded);
             ClosingCommand = new RelayCommand<CancelEventArgs>(Closing);
@@ -145,6 +158,9 @@ namespace AmethystWindows
             FilterAppCommand = new RelayCommand(FilterApp);
             FilterClassWithinAppCommand = new RelayCommand(FilterClassWithinApp);
             RemoveFilterCommand = new RelayCommand(RemoveFilter);
+            AddAppCommand = new RelayCommand(AddApp);
+            AddClassWithinAppCommand = new RelayCommand(AddClassWithinApp);
+            RemoveAdditionCommand = new RelayCommand(RemoveAddition);
             RedrawCommand = new RelayCommand(() => { App.DWM.ClearWindows(); App.DWM.CollectWindows(); App.DWM.Draw(); });
         }
 
@@ -168,6 +184,9 @@ namespace AmethystWindows
         public ICommand FilterAppCommand { get; }
         public ICommand FilterClassWithinAppCommand { get; }
         public ICommand RemoveFilterCommand { get; }
+        public ICommand AddAppCommand { get; }
+        public ICommand AddClassWithinAppCommand { get; }
+        public ICommand RemoveAdditionCommand { get; }
         public ICommand RedrawCommand { get; }
         public WindowState WindowState
         {
@@ -192,10 +211,22 @@ namespace AmethystWindows
             set => SetProperty(ref _windows, value);
         }
 
+        public List<ViewModelDesktopWindow> ExcludedWindows
+        {
+            get => _excludedWindows;
+            set => SetProperty(ref _excludedWindows, value);
+        }
+
         public ViewModelDesktopWindow SelectedWindow
         {
             get => _selectedWindow;
             set => SetProperty(ref _selectedWindow, value);
+        }
+
+        public ViewModelDesktopWindow SelectedExcludedWindow
+        {
+            get => _selectedExcludedWindow;
+            set => SetProperty(ref _selectedExcludedWindow, value);
         }
 
         public int LayoutPadding
@@ -276,6 +307,18 @@ namespace AmethystWindows
             set => SetProperty(ref _selectedConfigurableFilter, value);
         }
 
+        public List<Pair<string, string>> ConfigurableAdditions
+        {
+            get => _configurableAdditions;
+            set => SetProperty(ref _configurableAdditions, value);
+        }
+
+        public Pair<string, string> SelectedConfigurableAddition
+        {
+            get => _selectedConfigurableAddition;
+            set => SetProperty(ref _selectedConfigurableAddition, value);
+        }
+
         public NotifyIconWrapper.NotifyRequestRecord? NotifyRequest
         {
             get => _notifyRequest;
@@ -305,22 +348,44 @@ namespace AmethystWindows
             if (!windowsForComparison.SequenceEqual(Windows)) Windows = windowsForComparison;
         }
 
+        public void UpdateExcludedWindows()
+        {
+            List<ViewModelDesktopWindow> windowsForComparison = App.DWM.ExcludedWindows.Select(window => new ViewModelDesktopWindow(
+                window.AppName,
+                window.ClassName
+                )).ToList();
+
+            if (!windowsForComparison.SequenceEqual(ExcludedWindows)) ExcludedWindows = windowsForComparison;
+        }
+
         public void FilterApp()
         {
             ConfigurableFilters = ConfigurableFilters.Concat(new[] { new Pair<string, string>(SelectedWindow.AppName, "*") }).ToList();
-            MySettings.Instance.Filters = ConfigurableFilters;
         }
 
         public void FilterClassWithinApp()
         {
             ConfigurableFilters = ConfigurableFilters.Concat(new[] { new Pair<string, string>(SelectedWindow.AppName, SelectedWindow.ClassName) }).ToList();
-            MySettings.Instance.Filters = ConfigurableFilters;
         }
 
         public void RemoveFilter()
         {
             ConfigurableFilters = ConfigurableFilters.Where(f => f.Key != SelectedConfigurableFilter.Key && f.Value != SelectedConfigurableFilter.Value).ToList();
-            MySettings.Instance.Filters = ConfigurableFilters;
+        }
+
+        public void AddApp()
+        {
+            ConfigurableAdditions = ConfigurableAdditions.Concat(new[] { new Pair<string, string>(SelectedExcludedWindow.AppName, "*") }).ToList();
+        }
+
+        public void AddClassWithinApp()
+        {
+            ConfigurableAdditions = ConfigurableAdditions.Concat(new[] { new Pair<string, string>(SelectedExcludedWindow.AppName, SelectedExcludedWindow.ClassName) }).ToList();
+        }
+
+        public void RemoveAddition()
+        {
+            ConfigurableAdditions = ConfigurableAdditions.Where(f => f.Key != SelectedConfigurableAddition.Key && f.Value != SelectedConfigurableAddition.Value).ToList();
         }
 
         private void Loaded()

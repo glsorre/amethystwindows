@@ -35,9 +35,46 @@
                 <ui:AppBarToggleButton x:Name="DisabledBarButton" Icon="DisableUpdates" Label="Disabled" IsChecked="{Binding Disabled, Mode=TwoWay}"/>
             </ui:CommandBar>
             <TabControl>
-                <TabItem Header="Active Windows">
-                    <StackPanel Orientation="Vertical">
-                        <ListBox x:Name="WindowsList" ItemsSource="{Binding Windows}" SelectedItem="{Binding SelectedWindow}">
+            <TabItem Header="Managed Windows">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition Height="100" />
+                    </Grid.RowDefinitions>
+                    <ListBox Grid.Row="0" x:Name="WindowsList" ScrollViewer.CanContentScroll="True" ItemsSource="{Binding Windows}" SelectedItem="{Binding SelectedWindow}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <TextBlock FontWeight="Bold" FontSize="14" Text="{Binding AppName}"/>
+                                    <TextBlock Text="{Binding ClassName}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Vertical" />
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+                    </ListBox>
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <TextBlock Margin="10" VerticalAlignment="Center">
+                            <Hyperlink IsEnabled="{Binding ElementName=WindowsList, Path=SelectedItem, Converter={StaticResource ViewModelDesktopWindowConverter}}" Command="{Binding FilterAppCommand}">
+                                Filter App and Class
+                                </Hyperlink>
+                        </TextBlock>
+                            <Button Margin="10" VerticalAlignment="Center" IsEnabled="{Binding ElementName=WindowsList, Path=SelectedItem, Converter={StaticResource ViewModelDesktopWindowConverter}}" Command="{Binding FilterClassWithinAppCommand}">
+                                Filter App
+                            </Button>
+                        </StackPanel>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Excluded Windows">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition Height="100"/>
+                        </Grid.RowDefinitions>
+                        <ListBox Grid.Row="0" x:Name="ExcludedWindowsList" ScrollViewer.CanContentScroll="True" ItemsSource="{Binding ExcludedWindows}" SelectedItem="{Binding SelectedExcludedWindow}">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel>
@@ -52,21 +89,25 @@
                                 </ItemsPanelTemplate>
                             </ListBox.ItemsPanel>
                         </ListBox>
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
                             <TextBlock Margin="10" VerticalAlignment="Center">
-                                <Hyperlink IsEnabled="{Binding ElementName=WindowsList, Path=SelectedItem, Converter={StaticResource ViewModelDesktopWindowConverter}}" Command="{Binding FilterAppCommand}">
-                                    Filter App and Class
-                                 </Hyperlink>
+                                <Hyperlink IsEnabled="{Binding ElementName=ExcludedWindowsList, Path=SelectedItem, Converter={StaticResource ViewModelDesktopWindowConverter}}" Command="{Binding AddClassWithinAppCommand}">
+                                    Add Class
+                                </Hyperlink>
                             </TextBlock>
-                            <Button Margin="10" VerticalAlignment="Center" IsEnabled="{Binding ElementName=WindowsList, Path=SelectedItem, Converter={StaticResource ViewModelDesktopWindowConverter}}" Command="{Binding FilterClassWithinAppCommand}">
-                                Filter App
+                            <Button Margin="10" VerticalAlignment="Center" IsEnabled="{Binding ElementName=ExcludedWindowsList, Path=SelectedItem, Converter={StaticResource ViewModelDesktopWindowConverter}}" Command="{Binding AddAppCommand}">
+                                Add App
                             </Button>
                         </StackPanel>
-                    </StackPanel>
+                    </Grid>
                 </TabItem>
                 <TabItem Header="Filters">
-                    <StackPanel Orientation="Vertical">
-                        <ListBox x:Name="ConfigurableFiltersList" ItemsSource="{Binding ConfigurableFilters}" SelectedItem="{Binding SelectedConfigurableFilter}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition Height="100"/>
+                        </Grid.RowDefinitions>
+                        <ListBox Grid.Row="0" x:Name="ConfigurableFiltersList" ItemsSource="{Binding ConfigurableFilters}" SelectedItem="{Binding SelectedConfigurableFilter}">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel>
@@ -81,12 +122,40 @@
                                 </ItemsPanelTemplate>
                             </ListBox.ItemsPanel>
                         </ListBox>
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
                             <Button Margin="10" VerticalAlignment="Center" IsEnabled="{Binding ElementName=ConfigurableFiltersList, Path=SelectedItem, Converter={StaticResource ViewModelConfigurableFilterConverter}}" Command="{Binding RemoveFilterCommand}">
                                 Remove
                             </Button>
                         </StackPanel>
-                    </StackPanel>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Additions">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition Height="100"/>
+                        </Grid.RowDefinitions>
+                        <ListBox Grid.Row="0" x:Name="ConfigurableAdditionsList" ItemsSource="{Binding ConfigurableAdditions}" SelectedItem="{Binding SelectedConfigurableAddition}">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" FontSize="14" Text="{Binding Key}"/>
+                                        <TextBlock Text="{Binding Value}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Vertical" />
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
+                        </ListBox>
+                        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Button Margin="10" VerticalAlignment="Center" IsEnabled="{Binding ElementName=ConfigurableAdditionsList, Path=SelectedItem, Converter={StaticResource ViewModelConfigurableFilterConverter}}" Command="{Binding RemoveAdditionCommand}">
+                                Remove
+                            </Button>
+                        </StackPanel>
+                    </Grid>
                 </TabItem>
                 <TabItem Header="Settings">
                     <ScrollViewer>

@@ -27,13 +27,13 @@ namespace AmethystWindows.DesktopWindowsManager
             { 
                 if (configurableFilter.Equals(null))
                 {
-                    Windows[desktopWindow.GetDesktopMonitor()].Add(desktopWindow);
+                    Windows[desktopWindow.GetDesktopMonitor()].Insert(0, desktopWindow);
                 }
                 else
                 {
                     if (configurableFilter.Value != "*" && configurableFilter.Value != desktopWindow.ClassName)
                     {
-                        Windows[desktopWindow.GetDesktopMonitor()].Add(desktopWindow);
+                        Windows[desktopWindow.GetDesktopMonitor()].Insert(0, desktopWindow);
                     }
                 }
             }
@@ -69,8 +69,21 @@ namespace AmethystWindows.DesktopWindowsManager
             User32.EnumWindowsProc filterDesktopWindows = delegate (HWND windowHandle, IntPtr lparam)
             {
                 DesktopWindow desktopWindow = new DesktopWindow(windowHandle);
+                desktopWindow.GetAppName();
+                desktopWindow.GetClassName();
 
-                if (desktopWindow.IsRuntimePresent())
+                Pair<string, string> configurableAddition = mainWindowViewModel.ConfigurableAdditions.FirstOrDefault(f => f.Key == desktopWindow.AppName);
+                bool hasActiveAddition;
+                if (!(configurableAddition.Key == null))
+                {
+                    hasActiveAddition = configurableAddition.Value.Equals("*") || configurableAddition.Value.Equals(desktopWindow.ClassName);
+                }
+                else
+                {
+                    hasActiveAddition = false;
+                }
+
+                if (desktopWindow.IsRuntimePresent() || hasActiveAddition)
                 {
                     User32.ShowWindow(windowHandle, ShowWindowCommand.SW_RESTORE);
                     desktopWindow.GetInfo();
@@ -90,6 +103,9 @@ namespace AmethystWindows.DesktopWindowsManager
                             );
                         AddWindow(desktopWindow);
                     }
+                } else
+                {
+                    if (desktopWindow.IsExcluded() && !ExcludedWindows.Contains(desktopWindow) && desktopWindow.AppName != "" && !FixedExcludedFilters.Contains(desktopWindow.AppName)) ExcludedWindows.Add(desktopWindow);
                 }
                 return true;
             };
@@ -111,13 +127,11 @@ namespace AmethystWindows.DesktopWindowsManager
             if (e.Action.Equals(NotifyCollectionChangedAction.Remove))
             {
                 DesktopWindow desktopWindow = (DesktopWindow)e.OldItems[0];
-                mainWindowViewModel.LastChangedDesktopMonitor = desktopWindow.GetDesktopMonitor();
             }
             else if (e.Action.Equals(NotifyCollectionChangedAction.Add))
             {
                 DesktopWindow desktopWindow = (DesktopWindow)e.NewItems[0];
                 if (desktopWindow.GetDesktopMonitor().Key.Equals(null) || desktopWindow.GetDesktopMonitor().Value.Equals(null)) desktopWindow.GetInfo();
-                mainWindowViewModel.LastChangedDesktopMonitor = desktopWindow.GetDesktopMonitor();
             }
             if (!App.Current.MainWindow.Equals(null))
             {

@@ -11,7 +11,9 @@ using DebounceThrottle;
 using System.Diagnostics;
 using System.Windows.Interop;
 using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
 
+[assembly: InternalsVisibleTo("AmethystWindowsTests")]
 namespace AmethystWindows.DesktopWindowsManager
 {
     partial class DesktopWindowsManager
@@ -19,10 +21,11 @@ namespace AmethystWindows.DesktopWindowsManager
         public Dictionary<Pair<VirtualDesktop, HMONITOR>, ObservableCollection<DesktopWindow>> Windows { get; }
         public Dictionary<Pair<VirtualDesktop, HMONITOR>, bool> WindowsSubscribed = new Dictionary<Pair<VirtualDesktop, HMONITOR>, bool>();
 
-        public MainWindowViewModel mainWindowViewModel = App.Current.MainWindow.DataContext as MainWindowViewModel;
+        public ObservableCollection<DesktopWindow> ExcludedWindows { get; }
+
+        public MainWindowViewModel mainWindowViewModel = App.Current != null ? App.Current.MainWindow.DataContext as MainWindowViewModel : new MainWindowViewModel();
 
         private DebounceDispatcher debounceDispatcher = new DebounceDispatcher(100);
-        private bool firstActivation = true;
 
         private readonly string[] FixedFilters = new string[] {
             "AmethystWindows",
@@ -30,6 +33,10 @@ namespace AmethystWindows.DesktopWindowsManager
             "Cortana",
             "Microsoft Spy++",
             "Task Manager",
+        };
+
+        public readonly string[] FixedExcludedFilters = new string[] {
+            "Settings",
         };
 
         private readonly string[] ModelViewPropertiesDraw = new string[] {
@@ -40,6 +47,7 @@ namespace AmethystWindows.DesktopWindowsManager
             "MarginBottom",
             "MarginLeft",
             "ConfigurableFilters",
+            "ConfigurableAdditions",
             "DesktopMonitors",
             "Windows",
         };
@@ -57,6 +65,7 @@ namespace AmethystWindows.DesktopWindowsManager
             "MarginBottom",
             "MarginLeft",
             "DesktopMonitors",
+            "Additions",
             "Filters",
             "Hotkeys",
         };
@@ -64,8 +73,18 @@ namespace AmethystWindows.DesktopWindowsManager
         public DesktopWindowsManager()
         {
             Windows = new Dictionary<Pair<VirtualDesktop, HMONITOR>, ObservableCollection<DesktopWindow>>();
+            ExcludedWindows = new ObservableCollection<DesktopWindow>();
 
+            ExcludedWindows.CollectionChanged += ExcludedWindows_CollectionChanged;
             mainWindowViewModel.PropertyChanged += MainWindowViewModel_PropertyChanged;
+        }
+
+        private void ExcludedWindows_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (!App.Current.MainWindow.Equals(null))
+            {
+                mainWindowViewModel.UpdateExcludedWindows();
+            }
         }
 
         private void MainWindowViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -88,26 +107,21 @@ namespace AmethystWindows.DesktopWindowsManager
                 MySettings.Instance.MarginLeft = mainWindowViewModel.MarginLeft;
 
                 MySettings.Instance.Filters = mainWindowViewModel.ConfigurableFilters;
+                MySettings.Instance.Additions = mainWindowViewModel.ConfigurableAdditions;
                 MySettings.Instance.DesktopMonitors = mainWindowViewModel.DesktopMonitors.ToList();
                 MySettings.Instance.Hotkeys = mainWindowViewModel.Hotkeys.ToList();
                 
                 MySettings.Save();
             }
-            if (e.PropertyName == "ConfigurableFilters")
+            if (e.PropertyName == "ConfigurableFilters" || e.PropertyName == "ConfigurableAdditions")
             {
                 ClearWindows();
                 CollectWindows();
             }
             if (ModelViewPropertiesDraw.Contains(e.PropertyName))
             {
-                if (firstActivation)
-                {
-                    debounceDispatcher.Debounce(() => Draw());
-                    firstActivation = false;
-                }
-
-                if (ModelViewPropertiesDrawMonitor.Contains(e.PropertyName)) debounceDispatcher.Debounce(() => Draw());
-                else debounceDispatcher.Debounce(() => Draw(mainWindowViewModel.LastChangedDesktopMonitor));
+                if (ModelViewPropertiesDrawMonitor.Contains(e.PropertyName) && mainWindowViewModel.LastChangedDesktopMonitor.Key != null) debounceDispatcher.Debounce(() => Draw(mainWindowViewModel.LastChangedDesktopMonitor));
+                else debounceDispatcher.Debounce(() => Draw());
             }
         }
 

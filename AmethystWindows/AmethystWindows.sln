@@ -14,6 +14,8 @@ Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "AmethystWindowsSetup_x86", 
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "AmethystWindowsSetup_x64", "..\AmethystWindowsSetup_x64\AmethystWindowsSetup_x64.vdproj", "{17B0D5BC-912E-433E-9B84-73C7A66A931D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmethystWindowsTests", "..\AmethystWindowsTests\AmethystWindowsTests.csproj", "{EF8905FE-FEA1-43FE-AFD5-3C0FF8DE4273}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -66,6 +68,18 @@ Global
 		{17B0D5BC-912E-433E-9B84-73C7A66A931D}.Release|Any CPU.ActiveCfg = Release
 		{17B0D5BC-912E-433E-9B84-73C7A66A931D}.Release|x64.ActiveCfg = Release
 		{17B0D5BC-912E-433E-9B84-73C7A66A931D}.Release|x86.ActiveCfg = Release
+		{EF8905FE-FEA1-43FE-AFD5-3C0FF8DE4273}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF8905FE-FEA1-43FE-AFD5-3C0FF8DE4273}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF8905FE-FEA1-43FE-AFD5-3C0FF8DE4273}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{EF8905FE-FEA1-43FE-AFD5-3C0FF8DE4273}.Debug|x64.Build.0 = Debug|Any CPU
+		{EF8905FE-FEA1-43FE-AFD5-3C0FF8DE4273}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EF8905FE-FEA1-43FE-AFD5-3C0FF8DE4273}.Debug|x86.Build.0 = Debug|Any CPU
+		{EF8905FE-FEA1-43FE-AFD5-3C0FF8DE4273}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF8905FE-FEA1-43FE-AFD5-3C0FF8DE4273}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF8905FE-FEA1-43FE-AFD5-3C0FF8DE4273}.Release|x64.ActiveCfg = Release|Any CPU
+		{EF8905FE-FEA1-43FE-AFD5-3C0FF8DE4273}.Release|x64.Build.0 = Release|Any CPU
+		{EF8905FE-FEA1-43FE-AFD5-3C0FF8DE4273}.Release|x86.ActiveCfg = Release|Any CPU
+		{EF8905FE-FEA1-43FE-AFD5-3C0FF8DE4273}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

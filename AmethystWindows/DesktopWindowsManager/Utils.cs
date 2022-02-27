@@ -100,7 +100,7 @@ namespace AmethystWindows.DesktopWindowsManager
             foreach (JObject desktopMonitor in array.Children())
             {
                 Layout layout = (Layout)desktopMonitor.GetValue("Layout").Value<int>();
-                int factor = desktopMonitor.GetValue("Layout").Value<int>();
+                int factor = desktopMonitor.GetValue("Factor").Value<int>();
 
                 Point point = new Point(desktopMonitor.GetValue("MonitorX").Value<int>() + 100, desktopMonitor.GetValue("MonitorY").Value<int>() + 100);
                 HMONITOR monitor = User32.MonitorFromPoint(point, User32.MonitorFlags.MONITOR_DEFAULTTONEAREST);
