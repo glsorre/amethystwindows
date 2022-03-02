@@ -1,38 +1,24 @@
-# Amethyst Windows
+# Amethyst Windows v2
 
-[![Build Status](https://dev.azure.com/giuseppesorrentino/AmethystWindows/_apis/build/status/glsorre.amethystwindows?branchName=master)](https://dev.azure.com/giuseppesorrentino/AmethystWindows/_build/latest?definitionId=1&branchName=master)
 [![Gitter](https://badges.gitter.im/glsorre/amethystwindows.svg)](https://gitter.im/glsorre/amethystwindows?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 [![GitHub labels](https://img.shields.io/github/labels/glsorre/amethystwindows/help%20wanted)](https://github.com/glsorre/amethystwindows/labels/help%20wanted)
 
-The **dynamic / automatic tiling window manager** for **windows 10** along the lines of [ianyh/Amethyst](https://github.com/ianyh/Amethyst).
+The **dynamic / automatic tiling window manager** for **windows 10/11** along the lines of [ianyh/Amethyst](https://github.com/ianyh/Amethyst).
 
 A very quick screencast of basic functions is [available](https://www.youtube.com/embed/AWN_KehMzHc).
 
 ## Features
 
-- integrated with **windows 10 virtual desktops**
+- integrated with **windows 10/11 virtual desktops**
 - fully **customizable shortcuts**
 - supports **multi-monitor** set-ups
 - **automatic updates**
 - **open source**
 - available for **x86, x86-64 and ARM** architectures
 
-## Install Amethyst Windows
-
-1. Download the appinstaller file from release page
-2. Install it trough [MS App Installer](https://www.microsoft.com/en-us/p/app-installer/9nblggh4nns1?activetab=pivot:overviewtab)
-3. Do not forget to star the project :)
-
-## Screenshots
-
-![Main Page](https://cdn.jsdelivr.net/gh/glsorre/amethystwindows@site/_assets/main.png)
-
-![Settings Page](https://cdn.jsdelivr.net/gh/glsorre/amethystwindows@site/_assets/settings.png)
-
-
 # Documentation
 
-## Keyboard Shortcuts
+## Default Keyboard Shortcuts
 
 Amethyst Windows uses two modifiers.
 
@@ -67,16 +53,6 @@ The keyboard shortcuts configured are:
 | `mod2 + 3`                | Throw focused window to virtualdesktop 3      |
 | `mod2 + 4`                | Throw focused window to virtualdesktop 4      |
 | `mod2 + 5`                | Throw focused window to virtualdesktop 5      |
-
-### Customize Shortcuts
-
-1. Copy [`defaultHotkeys.json`](https://github.com/glsorre/amethystwindows/blob/master/defaultHotkeys.json) into `%USERPROFILE%/AppData/Roaming/AmethystWindows/hotkeys.json`.
-2. Edit the copied file:
-    - [key field reference](https://docs.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes)
-    - [modifiers reference](https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-registerhotkey#parameters)
-3. Relaunch the application:
-    - click on exit from the systray
-    - relaunch.
 
 ## Layouts
 
@@ -120,9 +96,4 @@ I will add issues where I think you could start from and label them as help want
 ## Credits
 
 A big credit goes to [ianyh/Amethyst](https://ianyh.com/amethyst/). This is simply its port on the windows 10 operating system.
-
-I got ideas and code snippets from the following projects:
-- [MScholtes/VirtualDesktop](https://github.com/MScholtes/VirtualDesktop);
-- [Grabacr07/VirtualDesktop ](https://github.com/Grabacr07/VirtualDesktop);
-- [losttech/VirtualDesktop ](https://github.com/losttech/VirtualDesktop)
 
