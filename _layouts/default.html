@@ -133,7 +133,7 @@
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
 
   {% seo title=false %}
-  <title>Amethyst Windows | Automatic tiling window manager for windows 10</title>
+  <title>Amethyst Windows v2 | Automatic tiling window manager for windows 10/11</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#157878">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -153,7 +153,7 @@
         </h1>
         {% if site.show_downloads %}
         <div>
-          <a id="download-cta" href="{{ site.github.appxbundle_url }}" class="button button_large download">Install</a>
+          <a id="download-cta" href="{{ site.github.release_url }}" class="button button_large download">Download</a>
         </div>
         {% endif %}
         <div>
@@ -174,7 +174,7 @@
 
     {% if site.show_downloads %}
     <div class="unit whole spaced footer_download">
-      <a id="download-cta2" href="{{ site.github.appxbundle_url }}" class="button button_large download">Install</a>
+      <a id="download-cta2" href="{{ site.github.release_url }}" class="button button_large download">Download</a>
     </div>
     {% endif %}
 

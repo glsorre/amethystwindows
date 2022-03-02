@@ -1,8 +1,8 @@
-title: Amethyst Windows
+title: Amethyst Windows v2
 google_analytics: G-LD9W6DQ801
 show_downloads: true
 github:
-  appxbundle_url: ms-appinstaller:?source=https://update.amethystwindows.com/AmethystWindowsPackaging.appinstaller
+  release_url: https://github.com/glsorre/amethystwindows/releases
 relative_links:
   enabled: true
   collections: true

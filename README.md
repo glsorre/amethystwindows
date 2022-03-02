@@ -1,33 +1,21 @@
-# Amethyst Windows
+# Amethyst Windows v2
 
-The **dynamic / automatic tiling window manager** for **windows 10** along the lines of [ianyh/Amethyst](https://github.com/ianyh/Amethyst).
+The **dynamic / automatic tiling window manager** for **windows 10/11** along the lines of [ianyh/Amethyst](https://github.com/ianyh/Amethyst).
 
 A very quick screencast of basic functions is [available](https://www.youtube.com/embed/AWN_KehMzHc).
 
 ## Features
 
-- integrated with **windows 10 virtual desktops**
+- integrated with **windows 10/11 virtual desktops**
 - fully **customizable shortcuts**
 - supports **multi-monitor** set-ups
 - **automatic updates**
 - **open source**
-- available for **x86, x86-64 and ARM** architectures
-
-## Install Amethyst Windows
-
-Simply click on the [install button](#download-cta)
-
-## Screenshots
-
-![Main Page](https://cdn.jsdelivr.net/gh/glsorre/amethystwindows@site/_assets/main.png)
-
-![Settings Page](https://cdn.jsdelivr.net/gh/glsorre/amethystwindows@site/_assets/settings.png)
-
+- available for **x86, x86-64** architectures
 
 # Documentation
 
-## Keyboard Shortcuts
-
+## Default Keyboard Shortcuts
 Amethyst Windows uses two modifiers.
 
 | Shortcut                  | Description                          |
@@ -61,16 +49,6 @@ The keyboard shortcuts configured are:
 | `mod2 + 3`                | Throw focused window to virtualdesktop 3      |
 | `mod2 + 4`                | Throw focused window to virtualdesktop 4      |
 | `mod2 + 5`                | Throw focused window to virtualdesktop 5      |
-
-### Customize Shortcuts
-
-1. Copy [`defaultHotkeys.json`](https://github.com/glsorre/amethystwindows/blob/master/defaultHotkeys.json) into `%USERPROFILE%/AppData/Roaming/AmethystWindows/hotkeys.json`.
-2. Edit the copied file:
-    - [key field reference](https://docs.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes)
-    - [modifiers reference](https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-registerhotkey#parameters)
-3. Relaunch the application:
-    - click on exit from the systray
-    - relaunch.
 
 ## Layouts
 
