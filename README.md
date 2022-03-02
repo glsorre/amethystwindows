@@ -14,7 +14,7 @@ A very quick screencast of basic functions is [available](https://www.youtube.co
 - supports **multi-monitor** set-ups
 - **automatic updates**
 - **open source**
-- available for **x86, x86-64 and ARM** architectures
+- available for **x86, x86-64** architectures
 
 # Documentation
 
