@@ -119,8 +119,8 @@ namespace AmethystWindows
             new ViewModelHotkey() { Command = "expandMainPane", Hotkey = new Hotkey(Key.L, Modifier2) },
             new ViewModelHotkey() { Command = "shrinkMainPane", Hotkey = new Hotkey(Key.H, Modifier2) },
 
-            new ViewModelHotkey() { Command = "moveFocusedPreviousScreen", Hotkey = new Hotkey(Key.K, Modifier1) },
-            new ViewModelHotkey() { Command = "moveFocusedNextScreen", Hotkey = new Hotkey(Key.J, Modifier1) },
+            new ViewModelHotkey() { Command = "moveFocusedPreviousScreen", Hotkey = new Hotkey(Key.K, Modifier2) },
+            new ViewModelHotkey() { Command = "moveFocusedNextScreen", Hotkey = new Hotkey(Key.J, Modifier2) },
 
             new ViewModelHotkey() { Command = "redraw", Hotkey = new Hotkey(Key.Z, Modifier1) },
 

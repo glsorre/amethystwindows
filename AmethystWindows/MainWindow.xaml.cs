@@ -11,7 +11,6 @@ namespace AmethystWindows
     public partial class MainWindow : Window
     {
         private MainWindowViewModel mainWindowViewModel;
-        private DebounceDispatcher debounceDispatcher = new DebounceDispatcher(250);
 
         public MainWindow()
         {

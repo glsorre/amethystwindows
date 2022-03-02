@@ -1,7 +1,4 @@
 ﻿using AmethystWindows.Settings;
-using Microsoft.AppCenter;
-using Microsoft.AppCenter.Analytics;
-using Microsoft.AppCenter.Crashes;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Diagnostics;
@@ -22,12 +19,6 @@ namespace AmethystWindows
         public App()
         {
             InitializeComponent();
-        }
-
-        private void App_Startup(object sender, EventArgs e)
-        {
-            AppCenter.Start("66c7bd79-f437-4ba2-a7ea-6063773aa3dd",
-                   typeof(Analytics), typeof(Crashes));
         }
 
         private void App_Activated(object sender, EventArgs e)

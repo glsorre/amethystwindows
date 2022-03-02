@@ -150,8 +150,8 @@ namespace AmethystWindows.DesktopWindowsManager
             User32.RegisterHotKey(hWND, 0x15, convertModifiers(hotkeys[6]),  (uint)KeyInterop.VirtualKeyFromKey(hotkeys[6].Hotkey.Key)); //K
             User32.RegisterHotKey(hWND, 0x18, convertModifiers(hotkeys[7]),  (uint)KeyInterop.VirtualKeyFromKey(hotkeys[7].Hotkey.Key)); //P
             User32.RegisterHotKey(hWND, 0x19, convertModifiers(hotkeys[8]),  (uint)KeyInterop.VirtualKeyFromKey(hotkeys[8].Hotkey.Key)); //N
-            User32.RegisterHotKey(hWND, 0x23, convertModifiers(hotkeys[9]),  (uint)KeyInterop.VirtualKeyFromKey(hotkeys[9].Hotkey.Key)); //L
-            User32.RegisterHotKey(hWND, 0x22, convertModifiers(hotkeys[10]), (uint)KeyInterop.VirtualKeyFromKey(hotkeys[10].Hotkey.Key)); //H
+            User32.RegisterHotKey(hWND, 0x22, convertModifiers(hotkeys[9]),  (uint)KeyInterop.VirtualKeyFromKey(hotkeys[9].Hotkey.Key)); //L
+            User32.RegisterHotKey(hWND, 0x23, convertModifiers(hotkeys[10]), (uint)KeyInterop.VirtualKeyFromKey(hotkeys[10].Hotkey.Key)); //H
             User32.RegisterHotKey(hWND, 0x25, convertModifiers(hotkeys[11]), (uint)KeyInterop.VirtualKeyFromKey(hotkeys[11].Hotkey.Key)); //K
             User32.RegisterHotKey(hWND, 0x24, convertModifiers(hotkeys[12]), (uint)KeyInterop.VirtualKeyFromKey(hotkeys[12].Hotkey.Key)); //J
             User32.RegisterHotKey(hWND, 0x17, convertModifiers(hotkeys[13]), (uint)KeyInterop.VirtualKeyFromKey(hotkeys[13].Hotkey.Key)); //Z

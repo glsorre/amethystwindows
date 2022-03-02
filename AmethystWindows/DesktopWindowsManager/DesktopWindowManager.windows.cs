@@ -223,15 +223,18 @@ namespace AmethystWindows.DesktopWindowsManager
             List<Pair<VirtualDesktop, HMONITOR>> desktopMonitors = Windows.Keys.Where(dM => dM.Key.ToString() == VirtualDesktop.Current.ToString()).ToList();
             int currentMonitorIndex = desktopMonitors.IndexOf(window.GetDesktopMonitor());
             int maxIndex = desktopMonitors.Count - 1;
+            mainWindowViewModel.LastChangedDesktopMonitor = new Pair<VirtualDesktop, HMONITOR>(null, new HMONITOR());
             if (currentMonitorIndex == maxIndex)
             {
                 RemoveWindow(window);
+                mainWindowViewModel.LastChangedDesktopMonitor = new Pair<VirtualDesktop, HMONITOR>(null, new HMONITOR());
                 window.MonitorHandle = desktopMonitors[0].Value;
                 AddWindow(window);
             }
             else
             {
                 RemoveWindow(window);
+                mainWindowViewModel.LastChangedDesktopMonitor = new Pair<VirtualDesktop, HMONITOR>(null, new HMONITOR());
                 window.MonitorHandle = desktopMonitors[++currentMonitorIndex].Value;
                 AddWindow(window);
             }
@@ -242,15 +245,18 @@ namespace AmethystWindows.DesktopWindowsManager
             List<Pair<VirtualDesktop, HMONITOR>> desktopMonitors = Windows.Keys.Where(dM => dM.Key.ToString() == VirtualDesktop.Current.ToString()).ToList();
             int currentMonitorIndex = desktopMonitors.IndexOf(window.GetDesktopMonitor());
             int maxIndex = desktopMonitors.Count - 1;
+            mainWindowViewModel.LastChangedDesktopMonitor = new Pair<VirtualDesktop, HMONITOR>(null, new HMONITOR());
             if (currentMonitorIndex == 0)
             {
                 RemoveWindow(window);
+                mainWindowViewModel.LastChangedDesktopMonitor = new Pair<VirtualDesktop, HMONITOR>(null, new HMONITOR());
                 window.MonitorHandle = desktopMonitors[maxIndex].Value;
                 AddWindow(window);
             }
             else
             {
                 RemoveWindow(window);
+                mainWindowViewModel.LastChangedDesktopMonitor = new Pair<VirtualDesktop, HMONITOR>(null, new HMONITOR());
                 window.MonitorHandle = desktopMonitors[--currentMonitorIndex].Value;
                 AddWindow(window);
             }
