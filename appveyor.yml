@@ -19,6 +19,7 @@ assembly_info:
 
 build_script:
 - ps: |
+    $env:RestoreUseSkipNonexistentTargets='false'
     $env:DevenvPath = "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE"
     
     nuget restore AmethystWindows
