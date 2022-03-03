@@ -1,9 +1,6 @@
-
-
-version: 2.0.0.{build}
+version: 2.0.{build}.1
 
 pull_requests:
-
   do_not_increment_build_number: true
 
 image: Visual Studio 2022
@@ -11,35 +8,35 @@ image: Visual Studio 2022
 configuration: Release
 
 platform:
-
 - x64
 
-build_script:
+assembly_info:
+  patch: true
+  file: '**\AssemblyInfo.*'
+  assembly_version: '{version}'
+  assembly_file_version: '{version}'
+  assembly_informational_version: '{version}'
 
-- ps: >-
+build_script:
+- ps: |
+    $env:DevenvPath = "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE"
+    
+    nuget package restore AmethystWindows
     nuget restore AmethystWindows
 
-    [xml]$manifest= get-content "C:\projects\amethystwindows\AmethystWindowsPacakging\Package.appxmanifest"
+- '"%DevenvPath%\devenv.com" AmethystWindows/AmethystWindows.sln /build Release /project AmethystWindowsSetup_x86\AmethystWindowsSetup_x86.vdproj /projectconfig Release'
 
-    $manifest.Package.Identity.Version = "$env:APPVEYOR_BUILD_VERSION"
-
-    $manifest.save("C:\projects\amethystwindows\AmethystWindowsPacakging\Package.appxmanifest")
-
-    msbuild "C:\projects\amethystwindows\AmethystWindows\AmethystWindows.sln" /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll" /p:GenerateAppInstallerFile=true /p:AppInstallerUri="https://update.amethystwindows.com" /p:AppInstallerUpdateFrequency=1 /p:AppInstallerCheckForUpdateFrequency=OnApplicationRun
+- '"%DevenvPath%\devenv.com" AmethystWindows/AmethystWindows.sln /build Release /project AmethystWindowsSetup_x64\AmethystWindowsSetup_x64.vdproj /projectconfig Release'  
 
 artifacts:
-
-- path: AmethystWindowsPacakging\AppPackages
-
-  name: AppPackages
+- path: AmethystWindowsSetup_x86\Release
+  name: x86
+- path: AmethystWindowsSetup_x64\Release
+  name: x64
 
 deploy:
-
 - provider: Webhook
-
   url: https://app.signpath.io/API/v1/698a531d-4078-4f30-953b-6a9e9892e338/Integrations/AppVeyor?ProjectSlug=amethystwindows&SigningPolicySlug=test-signing&ArtifactConfigurationSlug=v2
-
   authorization:
-
     secure: xCVRa1gtcPlfTZvZ2FA6890QXlY9SSPCdlUmcuwyEuzO7r1hjp0GpAn1UKe6E+xZW8y02VaNzPMXTv6sEeTIkw==
 
