@@ -7,9 +7,6 @@ image: Visual Studio 2022
 
 configuration: Release
 
-platform:
-- x64
-
 assembly_info:
   patch: true
   file: '**\AssemblyInfo.*'
