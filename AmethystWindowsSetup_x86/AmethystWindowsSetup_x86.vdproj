@@ -102,7 +102,7 @@
         {
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_EB555AA601AF44228D50201C4A47D52E"
             {
-            "SourcePath" = "8:..\\..\\..\\..\\..\\Downloads\\Logo.ico"
+            "SourcePath" = "8:..\\Logo.ico"
             "TargetName" = "8:Logo.ico"
             "Tag" = "8:"
             "Folder" = "8:_B428B9D8DD9548BA82DD8AC6253B2C1E"
