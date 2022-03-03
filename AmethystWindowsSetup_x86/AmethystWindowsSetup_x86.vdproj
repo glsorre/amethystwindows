@@ -15,6 +15,12 @@
     {
         "Entry"
         {
+        "MsmKey" = "8:_8DF8A7FD84FF4A8395971C6292B05B10"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_EB555AA601AF44228D50201C4A47D52E"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -37,6 +43,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
         "Release"
         {
@@ -297,6 +311,20 @@
         }
         "Shortcut"
         {
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_32B6A34F99EF46BFB07094267D86AAC7"
+            {
+            "Name" = "8:Amethyst Windows"
+            "Arguments" = "8:"
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:0"
+            "Transitive" = "11:FALSE"
+            "Target" = "8:_8DF8A7FD84FF4A8395971C6292B05B10"
+            "Folder" = "8:_D897EBFC5E2B4F7C91A9C89B5DCA4C3C"
+            "WorkingFolder" = "8:_B428B9D8DD9548BA82DD8AC6253B2C1E"
+            "Icon" = "8:"
+            "Feature" = "8:"
+            }
         }
         "UserInterface"
         {
@@ -696,9 +724,9 @@
         }
         "ProjectOutput"
         {
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_58F3432CAFA041C8894BDF91D33CF5D4"
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_8DF8A7FD84FF4A8395971C6292B05B10"
             {
-            "SourcePath" = "8:"
+            "SourcePath" = "8:..\\AmethystWindows\\obj\\Release\\net6.0-windows10.0.19041.0\\apphost.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_B428B9D8DD9548BA82DD8AC6253B2C1E"
@@ -716,7 +744,7 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             "ProjectOutputGroupRegister" = "3:1"
-            "OutputConfiguration" = "8:Release|x86"
+            "OutputConfiguration" = "8:"
             "OutputGroupCanonicalName" = "8:PublishItems"
             "OutputProjectGuid" = "8:{EAA1FB9B-8A29-4270-B6E7-E89A458A11F9}"
             "ShowKeyOutput" = "11:TRUE"
