@@ -195,8 +195,14 @@ namespace AmethystWindows.DesktopWindowsManager
                     name = GetWindowTitle();
                     break;
                 default:
-                    FileVersionInfo myFileVersionInfo = FileVersionInfo.GetVersionInfo(fileName);
-                    name = myFileVersionInfo.FileDescription;
+                    try
+                    {
+                        FileVersionInfo myFileVersionInfo = FileVersionInfo.GetVersionInfo(fileName);
+                        name = myFileVersionInfo.FileDescription;
+                    } catch
+                    {
+                        name = null;
+                    }
                     break;
             }
             if (name == null)

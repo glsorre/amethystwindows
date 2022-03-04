@@ -13,18 +13,14 @@ assembly_info:
   assembly_informational_version: '{version}'
 
 build_script:
-- ps: >-
-    $ErrorActionPreference = "Stop"
-
-    $env:NUGET_RESTORE_MSBUILD_ARGS="/p:RestoreProjectFilterMode=""inclusionlist"""
-
-    $env:DevenvPath="C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE"
+- cmd: >-
+    set NUGET_RESTORE_MSBUILD_ARGS="/p:RestoreProjectFilterMode=""inclusionlist"""
     
     nuget restore AmethystWindows
-
-    & "$env:DevenvPath\devenv.com" AmethystWindows/AmethystWindows.sln /rebuild "Release|x86" /project AmethystWindowsSetup_x86\AmethystWindowsSetup_x86.vdproj /projectconfig Release
+ 
+    "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\devenv.com" AmethystWindows/AmethystWindows.sln /rebuild "Release|x86" /project AmethystWindowsSetup_x86\AmethystWindowsSetup_x86.vdproj /projectconfig Release
     
-    & "$env:DevenvPath\devenv.com" AmethystWindows/AmethystWindows.sln /rebuild "Release|x64" /project AmethystWindowsSetup_x64\AmethystWindowsSetup_x64.vdproj /projectconfig Release
+    "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\devenv.com" AmethystWindows/AmethystWindows.sln /rebuild "Release|x64" /project AmethystWindowsSetup_x64\AmethystWindowsSetup_x64.vdproj /projectconfig Release
 
 test: off
 
