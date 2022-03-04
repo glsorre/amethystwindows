@@ -17,11 +17,12 @@ assembly_info:
 build_script:
 - ps: >-
     $env:NUGET_RESTORE_MSBUILD_ARGS="/p:RestoreProjectFilterMode=""inclusionlist"""
+    $env:DevenvPath="C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE"
     
     nuget restore AmethystWindows
     
-    'C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\devenv.com' AmethystWindows/AmethystWindows.sln /build Release /project AmethystWindowsSetup_x64\AmethystWindowsSetup_x64.vdproj /projectconfig Release /Out errorFile.txt
-    'C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\devenv.com' AmethystWindows/AmethystWindows.sln /build Release /project AmethystWindowsSetup_x86\AmethystWindowsSetup_x86.vdproj /projectconfig Release /Out errorFile.txt
+    %DevenvPath%\devenv.com AmethystWindows/AmethystWindows.sln /build Release /project AmethystWindowsSetup_x64\AmethystWindowsSetup_x64.vdproj /projectconfig Release /Out errorFile.txt
+    %DevenvPath%\devenv.com AmethystWindows/AmethystWindows.sln /build Release /project AmethystWindowsSetup_x86\AmethystWindowsSetup_x86.vdproj /projectconfig Release /Out errorFile.txt
 
 artifacts:
 - path: AmethystWindowsSetup_x86\Release
