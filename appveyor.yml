@@ -14,6 +14,8 @@ assembly_info:
 
 build_script:
 - ps: >-
+    $ErrorActionPreference = "Stop"
+
     $env:NUGET_RESTORE_MSBUILD_ARGS="/p:RestoreProjectFilterMode=""inclusionlist"""
 
     $env:DevenvPath="C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE"
