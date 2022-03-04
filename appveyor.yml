@@ -24,7 +24,11 @@ build_script:
     set NUGET_RESTORE_MSBUILD_ARGS=/p:RestoreProjectFilterMode="inclusionlist"
     
     nuget restore AmethystWindows
- 
+
+    msbuild "C:\projects\amethystwindows\AmethystWindows\AmethystWindows.sln" /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+
+after_build:
+- cmd: >-
     start /WAIT "" "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\devenv.com" "AmethystWindows\AmethystWindows.sln" /rebuild "Release|x86" /project "AmethystWindowsSetup_x86\AmethystWindowsSetup_x86.vdproj" /projectconfig Release
     
     start /WAIT "" "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\devenv.com" "AmethystWindows\AmethystWindows.sln" /rebuild "Release|x64" /project "AmethystWindowsSetup_x64\AmethystWindowsSetup_x64.vdproj" /projectconfig Release
