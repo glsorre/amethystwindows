@@ -25,7 +25,7 @@ build_script:
     
     nuget restore AmethystWindows
 
-    msbuild "C:\projects\amethystwindows\AmethystWindows\AmethystWindows.sln" /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+    msbuild "C:\projects\amethystwindows\AmethystWindows\AmethystWindows.sln" /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll" /property:Configuration=Release
 
 after_build:
 - cmd: >-
