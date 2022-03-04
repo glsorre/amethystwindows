@@ -24,11 +24,11 @@ build_script:
     
     & "$env:DevenvPath\devenv.com" AmethystWindows/AmethystWindows.sln /build Release /project AmethystWindowsSetup_x64\AmethystWindowsSetup_x64.vdproj /projectconfig Release /Out errorFile.txt
 
-    & "$env:DevenvPath\devenv.com" AmethystWindows/AmethystWindows.sln /clean
+    & "$env:DevenvPath\devenv.com" AmethystWindows/AmethystWindows.sln /clean /projectconfig Release
 
     & "$env:DevenvPath\devenv.com" AmethystWindows/AmethystWindows.sln /build Release /project AmethystWindowsSetup_x86\AmethystWindowsSetup_x86.vdproj /projectconfig Release /Out errorFile.txt
 
-    & "$env:DevenvPath\devenv.com" AmethystWindows/AmethystWindows.sln /clean
+    & "$env:DevenvPath\devenv.com" AmethystWindows/AmethystWindows.sln /clean /projectconfig Release
 
 
 artifacts:
