@@ -14,7 +14,7 @@ assembly_info:
 
 build_script:
 - cmd: >-
-    set NUGET_RESTORE_MSBUILD_ARGS="/p:RestoreProjectFilterMode=""inclusionlist"""
+    set NUGET_RESTORE_MSBUILD_ARGS=/p:RestoreProjectFilterMode="inclusionlist"
     
     nuget restore AmethystWindows
  
