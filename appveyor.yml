@@ -31,6 +31,8 @@ build_script:
     & "$env:DevenvPath\devenv.com" AmethystWindows/AmethystWindows.sln /clean /projectconfig Release
 
 
+test: off
+
 artifacts:
 - path: AmethystWindowsSetup_x86\Release
   name: x86
