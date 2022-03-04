@@ -22,9 +22,14 @@ build_script:
     
     nuget restore AmethystWindows
     
-    & "$env:DevenvPath\devenv.com" AmethystWindows/AmethystWindows.sln /clean /build Release /project AmethystWindowsSetup_x64\AmethystWindowsSetup_x64.vdproj /projectconfig Release /Out errorFile.txt
+    & "$env:DevenvPath\devenv.com" AmethystWindows/AmethystWindows.sln /build Release /project AmethystWindowsSetup_x64\AmethystWindowsSetup_x64.vdproj /projectconfig Release /Out errorFile.txt
 
-    & "$env:DevenvPath\devenv.com" AmethystWindows/AmethystWindows.sln /clean /build Release /project AmethystWindowsSetup_x86\AmethystWindowsSetup_x86.vdproj /projectconfig Release /Out errorFile.txt
+    & "$env:DevenvPath\devenv.com" AmethystWindows/AmethystWindows.sln /clean
+
+    & "$env:DevenvPath\devenv.com" AmethystWindows/AmethystWindows.sln /build Release /project AmethystWindowsSetup_x86\AmethystWindowsSetup_x86.vdproj /projectconfig Release /Out errorFile.txt
+
+    & "$env:DevenvPath\devenv.com" AmethystWindows/AmethystWindows.sln /clean
+
 
 artifacts:
 - path: AmethystWindowsSetup_x86\Release
