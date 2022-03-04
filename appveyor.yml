@@ -29,7 +29,7 @@ build_script:
 
 after_build:
 - cmd: >-
-    C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\DisableOutOfProcBuild.exe
+    "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\DisableOutOfProcBuild.exe"
 
     "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\devenv.com" "AmethystWindows\AmethystWindows.sln" /rebuild "Release|x86" /project "AmethystWindowsSetup_x86\AmethystWindowsSetup_x86.vdproj" /projectconfig Release
     
