@@ -32,17 +32,13 @@ build_script:
     
     $solution = 'AmethystWindows\AmethystWindows.sln'
 
-    Start-Process -Wait -FilePath "`"$devenv`"" -ArgumentList $solution, '/build', 'Release^|x86', '/project', '.\AmethystWindowsSetup_x86\AmethystWindowsSetup_x86.vdproj', '/projectconfig', 'Release'
-
-    Start-Process -Wait -FilePath "`"$devenv`"" -ArgumentList $solution, '/build', 'Release^|x64', '/project', '.\AmethystWindowsSetup_x64\AmethystWindowsSetup_x64.vdproj', '/projectconfig', 'Release'
+    Start-Process -Wait -FilePath "`"$devenv`"" -ArgumentList $solution, '/build', 'Release', '/project', '.\AmethystWindowsSetup\AmethystWindowsSetup.vdproj', '/projectconfig', 'Release'
 
 test: off
 
 artifacts:
-- path: AmethystWindowsSetup_x86\Release
-  name: x86
-- path: AmethystWindowsSetup_x64\Release
-  name: x64
+- path: AmethystWindowsSetup\Release
+  name: msi
 
 deploy:
 - provider: Webhook

@@ -27,6 +27,14 @@
     <NoWarn />
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+	<NoWarn />
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
+	<NoWarn />
+  </PropertyGroup>
+
   <ItemGroup>
     <Content Include="Logo.ico" />
   </ItemGroup>
