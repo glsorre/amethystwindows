@@ -16,11 +16,11 @@ assembly_info:
   assembly_file_version: '{version}'
   assembly_informational_version: '{version}'
 
-init:
-  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+# init:
+#   - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 
-on_finish:
-  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+# on_finish:
+#   - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 
 build_script:
 - cmd: >-
@@ -28,7 +28,7 @@ build_script:
     
     nuget restore AmethystWindows
 
-    "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\devenv.com" "AmethystWindows\AmethystWindows.sln" /runexit
+    "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\devenv.com" /resetsettings "AmethystWindows\.vssettings"
 
     "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\devenv.com" "AmethystWindows\AmethystWindows.sln" /build "Release|x86" /project "AmethystWindowsSetup_x86\AmethystWindowsSetup_x86.vdproj" /projectconfig Release /out AmAmethystWindowsSetup_x86.log
 
