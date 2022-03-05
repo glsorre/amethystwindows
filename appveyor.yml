@@ -27,10 +27,14 @@ build_script:
     $env:NUGET_RESTORE_MSBUILD_ARGS = "/p:RestoreProjectFilterMode=""inclusionlist"""
     
     nuget restore AmethystWindows
+    
+    $devenv ='C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\devenv.com'
+    
+    $solution = 'AmethystWindows\AmethystWindows.sln'
+    
+    Start-Process -Wait -FilePath cmd -ArgumentList '/c', "`"$devenv`"", "`"$solution`"", '/build', '"Release|x86"', '/project', 'AmethystWindowsSetup_x86\AmethystWindowsSetup_x86.vdproj', '/projectconfig', 'Release' , '/out', 'AmethystWindowsSetup_x86.log'
 
-    cmd /c 'C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\devenv.com' AmethystWindows\AmethystWindows.sln /build '"Release|x86"' /project AmethystWindowsSetup_x86\AmethystWindowsSetup_x86.vdproj /projectconfig Release /out AmAmethystWindowsSetup_x86.log
-
-    cmd /c 'C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\devenv.com' AmethystWindows\AmethystWindows.sln /build '"Release|x64"' /project AmethystWindowsSetup_x64\AmethystWindowsSetup_x64.vdproj /projectconfig Release /out AmAmethystWindowsSetup_x64.log
+    Start-Process -Wait -FilePath cmd -ArgumentList '/c', "`"$devenv`"", "`"$solution`"", '/build', '"Release|x64"', '/project', 'AmethystWindowsSetup_x64\AmethystWindowsSetup_x64.vdproj', '/projectconfig', 'Release' , '/out', 'AmethystWindowsSetup_x64.log'
 
 test: off
 
