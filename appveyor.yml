@@ -28,7 +28,7 @@ build_script:
     
     nuget restore AmethystWindows
 
-    "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\devenv.com" /resetsettings "AmethystWindows\.vssettings"
+    "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\devenv.com" /resetsettings "AmethystWindows\.vssettings" /Command Exit 
 
     "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\devenv.com" "AmethystWindows\AmethystWindows.sln" /build "Release|x86" /project "AmethystWindowsSetup_x86\AmethystWindowsSetup_x86.vdproj" /projectconfig Release /out AmAmethystWindowsSetup_x86.log
 
