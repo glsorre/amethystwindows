@@ -24,6 +24,8 @@ assembly_info:
 
 build_script:
 - cmd: >-
+    "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\devenv.com" /nosplash /resetsettings "AmethystWindows\.vssettings" /command "Exit"
+    
     set NUGET_RESTORE_MSBUILD_ARGS=/p:RestoreProjectFilterMode="inclusionlist"
     
     nuget restore AmethystWindows
