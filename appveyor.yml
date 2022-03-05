@@ -28,11 +28,7 @@ build_script:
     
     nuget restore AmethystWindows
     
-    $devenv = 'C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\devenv.com'
-    
-    $solution = 'AmethystWindows\AmethystWindows.sln'
-
-    '"$devenv" "$solution" /build Release project .\AmethystWindowsSetup\AmethystWindowsSetup.vdproj /projectconfig Release'
+    & "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\devenv.com" AmethystWindows\AmethystWindows.sln /build Release /project .\AmethystWindowsSetup\AmethystWindowsSetup.vdproj /projectconfig Release
 
 test: off
 
