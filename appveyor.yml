@@ -16,8 +16,11 @@ assembly_info:
   assembly_file_version: '{version}'
   assembly_informational_version: '{version}'
 
-# init:
-#   - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+init:
+  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+
+on_finish:
+  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 
 build_script:
 - cmd: >-
@@ -25,13 +28,13 @@ build_script:
     
     nuget restore AmethystWindows
 
-    msbuild "C:\projects\amethystwindows\AmethystWindows\AmethystWindows.sln" /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll" /property:Configuration=Release /property:Platform=x86
+    # msbuild "C:\projects\amethystwindows\AmethystWindows\AmethystWindows.sln" /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll" /property:Configuration=Release /property:Platform=x86
 
-    "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\devenv.exe" "AmethystWindows\AmethystWindows.sln" /build "Release|x86" /project "AmethystWindowsSetup_x86\AmethystWindowsSetup_x86.vdproj" /projectconfig Release
+    "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\devenv.com" "AmethystWindows\AmethystWindows.sln" /build "Release|x86" /project "AmethystWindowsSetup_x86\AmethystWindowsSetup_x86.vdproj" /projectconfig Release /out AmAmethystWindowsSetup_x86.log
 
-    msbuild "C:\projects\amethystwindows\AmethystWindows\AmethystWindows.sln" /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll" /property:Configuration=Release /property:Platform=x64
+    # msbuild "C:\projects\amethystwindows\AmethystWindows\AmethystWindows.sln" /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll" /property:Configuration=Release /property:Platform=x64
 
-    "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\devenv.exe" "AmethystWindows\AmethystWindows.sln" /build "Release|x64" /project "AmethystWindowsSetup_x64\AmethystWindowsSetup_x64.vdproj" /projectconfig Release
+    "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\devenv.com" "AmethystWindows\AmethystWindows.sln" /build "Release|x64" /project "AmethystWindowsSetup_x64\AmethystWindowsSetup_x64.vdproj" /projectconfig Release /out AmAmethystWindowsSetup_x64.log
 
 test: off
 
