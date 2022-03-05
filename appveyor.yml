@@ -32,7 +32,7 @@ build_script:
     
     $solution = 'AmethystWindows\AmethystWindows.sln'
 
-    "`"$devenv`"" $solution /build Release project .\AmethystWindowsSetup\AmethystWindowsSetup.vdproj /projectconfig Release
+    '$devenv' '$solution' /build Release project .\AmethystWindowsSetup\AmethystWindowsSetup.vdproj /projectconfig Release
 
 test: off
 
