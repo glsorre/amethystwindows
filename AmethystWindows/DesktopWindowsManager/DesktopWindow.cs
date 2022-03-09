@@ -205,7 +205,7 @@ namespace AmethystWindows.DesktopWindowsManager
                     }
                     break;
             }
-            if (name == null)
+            if (name == "")
             {
                 name = fileName.Split(new string[] { "\\" }, StringSplitOptions.None).Last();
             }
