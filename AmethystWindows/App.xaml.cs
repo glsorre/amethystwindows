@@ -22,7 +22,8 @@ namespace AmethystWindows
 
         private void App_Activated(object sender, EventArgs e)
         {
-            if (firstActivation) {
+            if (firstActivation)
+            {
                 DWM = new DesktopWindowsManager.DesktopWindowsManager();
                 Debug.WriteLine($"getting settings");
                 Debug.WriteLine($"setting hooks");
@@ -36,18 +37,31 @@ namespace AmethystWindows
                 VirtualDesktop.CurrentChanged += VirtualDesktop_CurrentChanged;
 
                 Debug.WriteLine($"setting virtual desktops");
-                int virtualDesktopsExisting = VirtualDesktop.GetDesktops().Count();
-                int virtualDesktopsToCreate = MySettings.Instance.VirtualDesktops - virtualDesktopsExisting;
-
-                if (virtualDesktopsExisting < MySettings.Instance.VirtualDesktops)
-                {
-                    for (int i = 1; i <= virtualDesktopsToCreate; i++)
-                    {
-                        VirtualDesktop.Create();
-                    }
-                }
+                InitVirtualDesktops();
 
                 firstActivation = false;
+            }
+        }
+
+        public static void InitVirtualDesktops()
+        {
+            VirtualDesktop[] virtualDesktopsExisting = VirtualDesktop.GetDesktops();
+            int virtualDesktopDifference = DWM.mainWindowViewModel.VirtualDesktops - virtualDesktopsExisting.Length;
+
+            if (virtualDesktopDifference < 0)
+            {
+                for (int i = virtualDesktopDifference; i < 0; i++)
+                {
+                    virtualDesktopsExisting[virtualDesktopsExisting.Length + i].Remove();
+                }
+            }
+
+            if (virtualDesktopDifference > 0)
+            {
+                for (int i = 0; i < virtualDesktopDifference; i++)
+                {
+                    VirtualDesktop.Create();
+                }
             }
         }
 

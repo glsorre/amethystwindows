@@ -64,6 +64,7 @@ namespace AmethystWindows.DesktopWindowsManager
             "MarginRight",
             "MarginBottom",
             "MarginLeft",
+            "VirtualDesktops",
             "DesktopMonitors",
             "Additions",
             "Filters",
@@ -90,6 +91,11 @@ namespace AmethystWindows.DesktopWindowsManager
         private void MainWindowViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             Debug.WriteLine($"ModelViewChanged: {e.PropertyName}");
+            if (e.PropertyName == "VirtualDesktops")
+            {
+                App.InitVirtualDesktops();
+            }
+
             if (e.PropertyName == "Hotkeys")
             {
                 HWND mainWindowHandle = new WindowInteropHelper(App.Current.MainWindow).Handle;
@@ -105,6 +111,8 @@ namespace AmethystWindows.DesktopWindowsManager
                 MySettings.Instance.MarginRight = mainWindowViewModel.MarginRight;
                 MySettings.Instance.MarginBottom = mainWindowViewModel.MarginBottom;
                 MySettings.Instance.MarginLeft = mainWindowViewModel.MarginLeft;
+
+                MySettings.Instance.VirtualDesktops = mainWindowViewModel.VirtualDesktops;
 
                 MySettings.Instance.Filters = mainWindowViewModel.ConfigurableFilters;
                 MySettings.Instance.Additions = mainWindowViewModel.ConfigurableAdditions;

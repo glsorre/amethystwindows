@@ -161,6 +161,13 @@
                     <ScrollViewer>
                         <StackPanel Orientation="Horizontal" Margin="5">
                             <StackPanel Orientation="Vertical" Margin="20">
+                                <TextBlock FontWeight="Bold" FontSize="14" Margin="0 20">Virtual Desktops</TextBlock>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <TextBlock VerticalAlignment="Center">Number</TextBlock>
+                                    <ui:NumberBox Value="{Binding VirtualDesktops, Mode=TwoWay}" SpinButtonPlacementMode="Inline" Minimum="1" Maximum="10" Margin="10" VerticalAlignment="Center" />
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" Margin="20">
                                 <TextBlock FontWeight="Bold" FontSize="14" Margin="0 20">Padding</TextBlock>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                                     <TextBlock VerticalAlignment="Center">Window Padding</TextBlock>

@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -99,16 +100,22 @@ namespace AmethystWindows.DesktopWindowsManager
 
             foreach (JObject desktopMonitor in array.Children())
             {
-                Layout layout = (Layout)desktopMonitor.GetValue("Layout").Value<int>();
-                int factor = desktopMonitor.GetValue("Factor").Value<int>();
+                try
+                {
+                    Layout layout = (Layout)desktopMonitor.GetValue("Layout").Value<int>();
+                    int factor = desktopMonitor.GetValue("Factor").Value<int>();
 
-                Point point = new Point(desktopMonitor.GetValue("MonitorX").Value<int>() + 100, desktopMonitor.GetValue("MonitorY").Value<int>() + 100);
-                HMONITOR monitor = User32.MonitorFromPoint(point, User32.MonitorFlags.MONITOR_DEFAULTTONEAREST);
+                    Point point = new Point(desktopMonitor.GetValue("MonitorX").Value<int>() + 100, desktopMonitor.GetValue("MonitorY").Value<int>() + 100);
+                    HMONITOR monitor = User32.MonitorFromPoint(point, User32.MonitorFlags.MONITOR_DEFAULTTONEAREST);
 
-                VirtualDesktop savedDesktop = VirtualDesktop.GetDesktops().First(vD => vD.Id.Equals(new Guid(desktopMonitor.GetValue("DesktopID").Value<string>())));
-                HMONITOR savedMonitor = monitor;
+                    VirtualDesktop savedDesktop = VirtualDesktop.GetDesktops().First(vD => vD.Id.Equals(new Guid(desktopMonitor.GetValue("DesktopID").Value<string>())));
+                    HMONITOR savedMonitor = monitor;
 
-                list.Add(new ViewModelDesktopMonitor(monitor, savedDesktop, factor, layout));
+                    list.Add(new ViewModelDesktopMonitor(monitor, savedDesktop, factor, layout));
+                } catch
+                {
+                    Debug.WriteLine("WARNING: something was wrong in reloading your settings. Most probably monitor or virtual desktop do not exist anymore.");
+                }
             }
 
             return list;

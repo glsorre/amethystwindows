@@ -149,6 +149,7 @@ namespace AmethystWindows
         private int _marginBottom;
         private int _marginLeft;
         private int _step;
+        private int _virtualDesktops;
 
         private bool _disabled;
 
@@ -171,6 +172,7 @@ namespace AmethystWindows
             _marginLeft = !MySettings.Instance.MarginLeft.Equals(null) ? MySettings.Instance.MarginLeft : 0;
             _marginRight = !MySettings.Instance.MarginRight.Equals(null) ? MySettings.Instance.MarginRight : 0;
             _layoutPadding = !MySettings.Instance.LayoutPadding.Equals(null) ? MySettings.Instance.LayoutPadding : 4;
+            _virtualDesktops = !MySettings.Instance.VirtualDesktops.Equals(null) ? MySettings.Instance.VirtualDesktops : 3;
             _step = !MySettings.Instance.Step.Equals(null) ? MySettings.Instance.Step : 25;
 
             _disabled = !MySettings.Instance.Disabled.Equals(null) ? MySettings.Instance.Disabled : false;
@@ -299,6 +301,12 @@ namespace AmethystWindows
         {
             get => _marginLeft;
             set => SetProperty(ref _marginLeft, value);
+        }
+
+        public int VirtualDesktops
+        {
+            get => _virtualDesktops;
+            set => SetProperty(ref _virtualDesktops, value);
         }
 
         public int Step
