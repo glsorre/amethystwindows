@@ -133,14 +133,6 @@ namespace AmethystWindows
                     DesktopWindow selected = App.DWM.FindWindow(selectedWindow);
                     App.DWM.MoveWindowNextScreen(selected);
                 }
-                if (wParam.ToInt32() == 0x21)
-                {
-                    HMONITOR currentMonitor = User32.MonitorFromWindow(User32.GetForegroundWindow(), User32.MonitorFlags.MONITOR_DEFAULTTONEAREST);
-                    VirtualDesktop currentDesktop = VirtualDesktop.Current;
-                    Pair<VirtualDesktop, HMONITOR> currentPair = new Pair<VirtualDesktop, HMONITOR>(currentDesktop, currentMonitor);
-                    ViewModelDesktopMonitor viewModelDesktopMonitor = mainWindowViewModel.DesktopMonitors[currentPair];
-                    viewModelDesktopMonitor.RotateLayoutCounterClockwise();
-                }
                 if (wParam.ToInt32() == 0x26)
                 {
                     HWND selectedWindow = User32.GetForegroundWindow();
