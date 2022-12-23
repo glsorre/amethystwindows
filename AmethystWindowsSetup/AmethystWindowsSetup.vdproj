@@ -15,13 +15,13 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_AF5BB3FD74C74980BF41FAEC784B87C0"
+        "MsmKey" = "8:_D6E13A515CBD49CBB96631697350DF61"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_D6E13A515CBD49CBB96631697350DF61"
+        "MsmKey" = "8:_E8932203B9364E81851426FB92F5FA86"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -161,7 +161,7 @@
             "{1525181F-901A-416C-8A58-119130FE478E}:_824B6ABDA71C4C9799AF3AE5DA1E228C"
             {
             "Name" = "8:#1919"
-            "AlwaysCreate" = "11:FALSE"
+            "AlwaysCreate" = "11:TRUE"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Property" = "8:ProgramMenuFolder"
@@ -329,7 +329,7 @@
         }
         "Shortcut"
         {
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_1E68BE9698A1494A8B63642C00A053B9"
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_3A902D57DE2C44F5AA215C9A46A94A06"
             {
             "Name" = "8:Amethyst Windows"
             "Arguments" = "8:"
@@ -337,10 +337,10 @@
             "ShowCmd" = "3:1"
             "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"
-            "Target" = "8:_AF5BB3FD74C74980BF41FAEC784B87C0"
+            "Target" = "8:_824B6ABDA71C4C9799AF3AE5DA1E228C"
             "Folder" = "8:_824B6ABDA71C4C9799AF3AE5DA1E228C"
-            "WorkingFolder" = "8:_E6CB6BE4352C436D8984D86ADCEFBDEC"
-            "Icon" = "8:_D6E13A515CBD49CBB96631697350DF61"
+            "WorkingFolder" = "8:_824B6ABDA71C4C9799AF3AE5DA1E228C"
+            "Icon" = "8:"
             "Feature" = "8:"
             }
         }
@@ -742,9 +742,9 @@
         }
         "ProjectOutput"
         {
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_AF5BB3FD74C74980BF41FAEC784B87C0"
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_E8932203B9364E81851426FB92F5FA86"
             {
-            "SourcePath" = "8:..\\AmethystWindows\\obj\\Release\\net6.0-windows10.0.19041.0\\apphost.exe"
+            "SourcePath" = "8:..\\AmethystWindows\\obj\\x86\\Debug\\net6.0-windows10.0.19041.0\\apphost.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_E6CB6BE4352C436D8984D86ADCEFBDEC"
@@ -762,7 +762,7 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             "ProjectOutputGroupRegister" = "3:1"
-            "OutputConfiguration" = "8:Release|Any CPU"
+            "OutputConfiguration" = "8:"
             "OutputGroupCanonicalName" = "8:PublishItems"
             "OutputProjectGuid" = "8:{EAA1FB9B-8A29-4270-B6E7-E89A458A11F9}"
             "ShowKeyOutput" = "11:TRUE"

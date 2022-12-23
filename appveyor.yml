@@ -3,6 +3,8 @@ version: 2.0.{build}.1
 environment:
   APPVEYOR_RDP_PASSWORD:
     secure: 0qKfXtTntKUwQoDfGF9/K2HwEvqUCXrEF89XngR6/ZU=
+  priv_key:
+    secure: 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
 
 pull_requests:
   do_not_increment_build_number: true
@@ -22,13 +24,20 @@ assembly_info:
 # on_finish:
 #   - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 
+install:
+  - ps: $fileContent = "-----BEGIN OPENSSH PRIVATE KEY-----`n"
+  - ps: $fileContent += $env:priv_key.Replace(' ', "`n")
+  - ps: $fileContent += "`n-----END OPENSSH PRIVATE KEY-----`n"
+  - ps: Set-Content $env:userprofile\.ssh\id_rsa $fileContent
+  - git submodule update --init --recursive
+
 build_script:
-- ps: >-    
+- ps: >-
     $env:NUGET_RESTORE_MSBUILD_ARGS = "/p:RestoreProjectFilterMode=""inclusionlist"""
     
     nuget restore AmethystWindows
-    
-    & "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\devenv.com" AmethystWindows\AmethystWindows.sln /build Release /project .\AmethystWindowsSetup\AmethystWindowsSetup.vdproj /projectconfig Release
+
+    & "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\devenv.com" C:\projects\amethystwindows\AmethystWindows\AmethystWindows.sln /build Release /project C:\projects\amethystwindows\AmethystWindowsSetup\AmethystWindowsSetup.vdproj /projectconfig  Release
 
 test: off
 
@@ -40,5 +49,6 @@ deploy:
 - provider: Webhook
   url: https://app.signpath.io/API/v1/698a531d-4078-4f30-953b-6a9e9892e338/Integrations/AppVeyor?ProjectSlug=amethystwindows&SigningPolicySlug=test-signing&ArtifactConfigurationSlug=v2
   authorization:
-    secure: xCVRa1gtcPlfTZvZ2FA6890QXlY9SSPCdlUmcuwyEuzO7r1hjp0GpAn1UKe6E+xZW8y02VaNzPMXTv6sEeTIkw==
+    secure: r2qM837yYaB7flws69ZXnmKu/eT+yDyiFXWAxtxF2Sy3u20YnF5jZu6tsmdIYGednqAlDD/zBdhVcSE5jAtwuQ==
+
 

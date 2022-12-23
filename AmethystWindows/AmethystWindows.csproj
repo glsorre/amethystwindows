@@ -41,15 +41,19 @@
 
   <ItemGroup>
     <PackageReference Include="DebounceThrottle" Version="1.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="6.0.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.4.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="7.0.0" />
     <PackageReference Include="Microsoft.Toolkit.Mvvm" Version="7.1.2" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
-    <PackageReference Include="ModernWpfUI" Version="0.9.4" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="Vanara.PInvoke.DwmApi" Version="3.3.15" />
-    <PackageReference Include="Vanara.PInvoke.User32" Version="3.3.15" />
-    <PackageReference Include="VirtualDesktop" Version="5.0.5" />
+    <PackageReference Include="ModernWpfUI" Version="0.9.6" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+    <PackageReference Include="Vanara.PInvoke.DwmApi" Version="3.4.11" />
+    <PackageReference Include="Vanara.PInvoke.User32" Version="3.4.11" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\VirtualDesktop\src\VirtualDesktop\VirtualDesktop.csproj" />
   </ItemGroup>
 
 </Project>

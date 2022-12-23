@@ -1,0 +1,3 @@
+[submodule "VirtualDesktop"]
+	path = VirtualDesktop
+	url = git@github.com:glsorre/VirtualDesktop.git
