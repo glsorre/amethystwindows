@@ -117,7 +117,7 @@ namespace AmethystWindows.DesktopWindowsManager
                 MySettings.Instance.Filters = mainWindowViewModel.ConfigurableFilters;
                 MySettings.Instance.Additions = mainWindowViewModel.ConfigurableAdditions;
                 MySettings.Instance.DesktopMonitors = mainWindowViewModel.DesktopMonitors.ToList();
-                MySettings.Instance.Hotkeys = mainWindowViewModel.Hotkeys.ToList();
+                MySettings.Instance.Hotkeys = mainWindowViewModel.Hotkeys.ToHashSet();
                 
                 MySettings.Save();
             }

@@ -15,6 +15,7 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
 using Vanara.PInvoke;
+using Windows.Foundation.Collections;
 using WindowsDesktop;
 
 namespace AmethystWindows
@@ -100,7 +101,7 @@ namespace AmethystWindows
     {
         private static ModifierKeys Modifier1 = ModifierKeys.Shift | ModifierKeys.Alt;
         private static ModifierKeys Modifier2 = ModifierKeys.Shift | ModifierKeys.Alt | ModifierKeys.Windows;
-        private readonly List<ViewModelHotkey> defaultHotkeys = new List<ViewModelHotkey>()
+        private readonly HashSet<ViewModelHotkey> defaultHotkeys = new HashSet<ViewModelHotkey>()
         {
             new ViewModelHotkey() { Command = "rotateLayoutClockwise", Hotkey = new Hotkey(Key.Space, Modifier1) },
             new ViewModelHotkey() { Command = "rotateLayoutCounterclockwise", Hotkey = new Hotkey(Key.Space, Modifier2) },
@@ -656,17 +657,12 @@ namespace AmethystWindows
 
     public class ObservableHotkeys : ObservableCollection<ViewModelHotkey>
     {
-        public ObservableHotkeys(List<ViewModelHotkey> list) : base(list)
+        public ObservableHotkeys(HashSet<ViewModelHotkey> list) : base(list)
         {
             foreach (ViewModelHotkey viewModelHotkey in list)
             {
                 viewModelHotkey.PropertyChanged += ItemPropertyChanged;
             }
-            CollectionChanged += ObservableHotkeys_CollectionChanged;
-        }
-
-        public ObservableHotkeys()
-        {
             CollectionChanged += ObservableHotkeys_CollectionChanged;
         }
 

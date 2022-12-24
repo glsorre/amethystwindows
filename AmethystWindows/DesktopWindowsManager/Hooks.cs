@@ -125,7 +125,7 @@ namespace AmethystWindows.DesktopWindowsManager
 
         private User32.HotKeyModifiers convertModifiers(ViewModelHotkey viewModelHotkey)
         {
-            User32.HotKeyModifiers modifiers = 0;
+            User32.HotKeyModifiers modifiers = User32.HotKeyModifiers.MOD_NONE;
 
             if (viewModelHotkey.Hotkey.Modifiers.HasFlag(ModifierKeys.Control))
                 modifiers |= User32.HotKeyModifiers.MOD_CONTROL;
