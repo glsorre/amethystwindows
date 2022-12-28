@@ -1,4 +1,5 @@
 ﻿using AmethystWindows.DesktopWindowsManager;
+using AmethystWindows.GridGenerator;
 using AmethystWindows.Hotkeys;
 using AmethystWindows.Settings;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
@@ -532,7 +533,7 @@ namespace AmethystWindows
             IEnumerable<Layout> values = Enum.GetValues(typeof(Layout)).Cast<Layout>();
             if (Layout == 0)
             {
-                Layout = Layout.Tall;
+                Layout = Layout.TallLeft;
             }
             else
             {

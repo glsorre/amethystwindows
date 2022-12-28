@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using AmethystWindows.GridGenerator;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -16,17 +17,6 @@ using WindowsDesktop;
 
 namespace AmethystWindows.DesktopWindowsManager
 {
-    public enum Layout : ushort
-    {
-        Horizontal = 0,
-        Vertical = 1,
-        HorizGrid = 2,
-        VertGrid = 3,
-        Monocle = 4,
-        Wide = 5,
-        Tall = 6
-    }
-
     public struct Pair<K, V>
     {
         public K Key { get; set; }

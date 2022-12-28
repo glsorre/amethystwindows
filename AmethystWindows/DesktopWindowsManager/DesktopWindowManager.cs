@@ -6,6 +6,7 @@ using System.Linq;
 using Vanara.PInvoke;
 using WindowsDesktop;
 
+using AmethystWindows.GridGenerator;
 using AmethystWindows.Settings;
 using DebounceThrottle;
 using System.Diagnostics;
@@ -26,6 +27,8 @@ namespace AmethystWindows.DesktopWindowsManager
         public MainWindowViewModel mainWindowViewModel = App.Current != null ? App.Current.MainWindow.DataContext as MainWindowViewModel : new MainWindowViewModel();
 
         private DebounceDispatcher debounceDispatcher = new DebounceDispatcher(100);
+
+        public GridGenerator.GridGenerator GridGenerator { get; }
 
         private readonly string[] FixedFilters = new string[] {
             "AmethystWindows",
@@ -78,6 +81,8 @@ namespace AmethystWindows.DesktopWindowsManager
 
             ExcludedWindows.CollectionChanged += ExcludedWindows_CollectionChanged;
             mainWindowViewModel.PropertyChanged += MainWindowViewModel_PropertyChanged;
+
+            GridGenerator = new GridGenerator.GridGenerator();
         }
 
         private void ExcludedWindows_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)

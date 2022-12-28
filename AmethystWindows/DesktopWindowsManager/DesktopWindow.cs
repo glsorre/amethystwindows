@@ -20,8 +20,8 @@ namespace AmethystWindows.DesktopWindowsManager
         public string AppName { get; set; }
         public int BorderX;
         public int BorderY;
-        public int OffsetX;
-        public int OffsetY;
+        public Point OffsetTL;
+        public Point OffsetBR;
         public string ClassName { get; set; }
         public bool IsUWP { get; set; }
 
@@ -228,8 +228,14 @@ namespace AmethystWindows.DesktopWindowsManager
         {
             BorderX = (int)Info.cxWindowBorders;
             BorderY = (int)Info.cyWindowBorders;
-            OffsetX = (Info.rcWindow.Width - Info.rcClient.Width) / 2;
-            OffsetY = (Info.rcWindow.Height - Info.rcClient.Height) / 2;
+            OffsetTL = new Point(
+                Info.rcWindow.Left - Info.rcClient.Left,
+                Info.rcWindow.Top - Info.rcClient.Top
+                );
+            OffsetBR = new Point(
+                Info.rcWindow.Right - Info.rcClient.Right,
+                Info.rcWindow.Bottom - Info.rcClient.Bottom
+                );
         }
 
         public override string ToString()

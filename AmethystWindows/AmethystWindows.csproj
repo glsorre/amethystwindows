@@ -6,9 +6,10 @@
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
     <UseWindowsForms>True</UseWindowsForms>
-	<Platforms>AnyCPU;x64;x86</Platforms>
+	<Platforms>AnyCPU;x64;x86;ARM32;ARM64</Platforms>
 	<RuntimeIdentifiers>win-x64;win-x86</RuntimeIdentifiers>
 	<ApplicationIcon>Logo.ico</ApplicationIcon>
+	<PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

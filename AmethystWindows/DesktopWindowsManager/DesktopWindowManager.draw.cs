@@ -1,4 +1,5 @@
-﻿using AmethystWindows.Settings;
+﻿using AmethystWindows.GridGenerator;
+using AmethystWindows.Settings;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -18,11 +19,11 @@ namespace AmethystWindows.DesktopWindowsManager
             if (!mainWindowViewModel.Disabled) { 
                 ObservableCollection<DesktopWindow> windows = Windows[key];
                 KeyValuePair<Pair<VirtualDesktop, HMONITOR>, ObservableCollection<DesktopWindow>> desktopMonitor = new KeyValuePair<Pair<VirtualDesktop, HMONITOR>, ObservableCollection<DesktopWindow>>(key, windows);
-                int mX, mY;
-                IEnumerable<Rectangle> gridGenerator;
-                DrawMonitor(desktopMonitor, out mX, out mY, out gridGenerator);
+                int mX, mY, mWidth, mHeight;
+                Rectangle[] grid;
+                DrawMonitor(desktopMonitor, out mX, out mY, out mWidth, out mHeight, out grid);
 
-                 foreach (var w in windows.Select((value, i) => new Tuple<int, DesktopWindow>(i, value)))
+                foreach (var w in windows.Select((value, i) => new Tuple<int, DesktopWindow>(i, value)))
                 {
                     User32.ShowWindow(w.Item2.Window, ShowWindowCommand.SW_RESTORE);
                 }
@@ -31,15 +32,17 @@ namespace AmethystWindows.DesktopWindowsManager
                 foreach (var w in windows.Select((value, i) => new Tuple<int, DesktopWindow>(i, value)))
                 {
                     Rectangle adjustedSize = new Rectangle(
-                        gridGenerator.ToArray()[w.Item1].X,
-                        gridGenerator.ToArray()[w.Item1].Y,
-                        gridGenerator.ToArray()[w.Item1].Width,
-                        gridGenerator.ToArray()[w.Item1].Height
+                        grid[w.Item1].X,
+                        grid[w.Item1].Y,
+                        grid[w.Item1].Width,
+                        grid[w.Item1].Height
                     );
 
-                    DrawWindow(mX, mY, adjustedSize, w, hDWP1, windows.Count);
+                    DrawWindow(mX, mY, mWidth, mHeight, adjustedSize, w, hDWP1, windows.Count);
                 }
                 User32.EndDeferWindowPos(hDWP1.DangerousGetHandle());
+
+                if (windows.Count == 1) User32.ShowWindow(windows[0].Window, ShowWindowCommand.SW_MAXIMIZE);
 
                 foreach (var w in desktopMonitor.Value.Select((value, i) => new Tuple<int, DesktopWindow>(i, value)))
                 {
@@ -53,9 +56,9 @@ namespace AmethystWindows.DesktopWindowsManager
             if (!mainWindowViewModel.Disabled) {
                 foreach (var desktopMonitor in Windows)
                 {
-                    int mX, mY;
-                    IEnumerable<Rectangle> gridGenerator;
-                    DrawMonitor(desktopMonitor, out mX, out mY, out gridGenerator);
+                    int mX, mY, mWidth, mHeight;
+                    Rectangle[] grid;
+                    DrawMonitor(desktopMonitor, out mX, out mY, out mWidth, out mHeight, out grid);
 
                     foreach (var w in desktopMonitor.Value.Select((value, i) => new Tuple<int, DesktopWindow>(i, value)))
                     {
@@ -66,15 +69,17 @@ namespace AmethystWindows.DesktopWindowsManager
                     foreach (var w in desktopMonitor.Value.Select((value, i) => new Tuple<int, DesktopWindow>(i, value)))
                     {
                         Rectangle adjustedSize = new Rectangle(
-                            gridGenerator.ToArray()[w.Item1].X,
-                            gridGenerator.ToArray()[w.Item1].Y,
-                            gridGenerator.ToArray()[w.Item1].Width,
-                            gridGenerator.ToArray()[w.Item1].Height
+                            grid[w.Item1].X,
+                            grid[w.Item1].Y,
+                            grid[w.Item1].Width,
+                            grid[w.Item1].Height
                         );
 
-                        DrawWindow(mX, mY, adjustedSize, w, hDWP1, Windows.Count);
+                        DrawWindow(mX, mY, mWidth, mHeight, adjustedSize, w, hDWP1, Windows.Count);
                     }
                     User32.EndDeferWindowPos(hDWP1.DangerousGetHandle());
+
+                    if (desktopMonitor.Value.Count == 1) User32.ShowWindow(desktopMonitor.Value[0].Window, ShowWindowCommand.SW_MAXIMIZE);
 
                     foreach (var w in desktopMonitor.Value.Select((value, i) => new Tuple<int, DesktopWindow>(i, value)))
                     {
@@ -84,7 +89,7 @@ namespace AmethystWindows.DesktopWindowsManager
             }
         }
 
-        private void DrawMonitor(KeyValuePair<Pair<VirtualDesktop, HMONITOR>, ObservableCollection<DesktopWindow>> desktopMonitor, out int mX, out int mY, out IEnumerable<Rectangle> gridGenerator)
+        private void DrawMonitor(KeyValuePair<Pair<VirtualDesktop, HMONITOR>, ObservableCollection<DesktopWindow>> desktopMonitor, out int mX, out int mY, out int mWidth, out int mHeight, out Rectangle[] grid)
         {
             HMONITOR m = desktopMonitor.Key.Value;
             int windowsCount = desktopMonitor.Value.Count;
@@ -95,8 +100,8 @@ namespace AmethystWindows.DesktopWindowsManager
 
             mX = info.rcWork.X + mainWindowViewModel.MarginLeft;
             mY = info.rcWork.Y + mainWindowViewModel.MarginTop;
-            int mWidth = info.rcWork.Width - mainWindowViewModel.MarginLeft - mainWindowViewModel.MarginRight;
-            int mHeight = info.rcWork.Height - mainWindowViewModel.MarginTop - mainWindowViewModel.MarginBottom;
+            mWidth = info.rcWork.Width - mainWindowViewModel.MarginLeft - mainWindowViewModel.MarginRight;
+            mHeight = info.rcWork.Height - mainWindowViewModel.MarginTop - mainWindowViewModel.MarginBottom;
 
             Layout mCurrentLayout;
             int mCurrentFactor;
@@ -111,30 +116,39 @@ namespace AmethystWindows.DesktopWindowsManager
                     desktopMonitor.Key.Value,
                     desktopMonitor.Key.Key,
                     0,
-                    Layout.Tall
+                    Layout.TallLeft
                     ));
                 mCurrentLayout = mainWindowViewModel.DesktopMonitors[desktopMonitor.Key].Layout;
                 mCurrentFactor = mainWindowViewModel.DesktopMonitors[desktopMonitor.Key].Factor;
             }
 
-            gridGenerator = GridGenerator(mWidth, mHeight, windowsCount, mCurrentFactor, mCurrentLayout, mainWindowViewModel.LayoutPadding);
+            System.Diagnostics.Debug.WriteLine("Layout: " + mCurrentLayout.ToString());
+            System.Diagnostics.Debug.WriteLine("Count: " + windowsCount.ToString());
+
+            grid = GridGenerator.Generate(mCurrentLayout, mWidth, mHeight, windowsCount, mainWindowViewModel.LayoutPadding, mCurrentFactor, mainWindowViewModel.Step);
         }
 
-        private void DrawWindow(int mX, int mY, Rectangle adjustedSize, Tuple<int, DesktopWindow> w, HDWP hDWP, int windowsCount)
+        private void DrawWindow(int mX, int mY, int mWidth, int mHeight, Rectangle adjustedSize, Tuple<int, DesktopWindow> w, HDWP hDWP, int windowsCount)
         {
-            int X = mX + adjustedSize.X - w.Item2.BorderX / 2 + mainWindowViewModel.Padding;
-            int Y = mY + adjustedSize.Y - w.Item2.BorderY / 2 + mainWindowViewModel.Padding;
+            GridRectangle gridRectangle = new GridRectangle(
+                new Rectangle(adjustedSize.X, adjustedSize.Y, adjustedSize.Width, adjustedSize.Height),
+                new Point(mX, mY),
+                new Point(w.Item2.BorderX, w.Item2.BorderY),
+                w.Item2.OffsetTL,
+                w.Item2.OffsetBR,
+                new Point(mainWindowViewModel.Padding, mainWindowViewModel.Padding)
+            );
 
-            Y = Y <= mY ? mY : Y;
+            Rectangle windowRectangle = gridRectangle.Position();
 
             User32.DeferWindowPos(
                 hDWP,
                 w.Item2.Window,
                 HWND.HWND_NOTOPMOST,
-                X,
-                Y,
-                adjustedSize.Width + w.Item2.BorderX - 2 * mainWindowViewModel.Padding,
-                adjustedSize.Height + w.Item2.BorderY - 2 * mainWindowViewModel.Padding,
+                windowRectangle.X,
+                windowRectangle.Y,
+                windowRectangle.Width,
+                windowRectangle.Height,
                 User32.SetWindowPosFlags.SWP_NOACTIVATE |
                 User32.SetWindowPosFlags.SWP_NOCOPYBITS |
                 User32.SetWindowPosFlags.SWP_NOZORDER |
