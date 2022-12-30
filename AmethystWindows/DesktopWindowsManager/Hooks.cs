@@ -154,14 +154,15 @@ namespace AmethystWindows.DesktopWindowsManager
             User32.RegisterHotKey(hWND, 0x23, convertModifiers(hotkeys[10]), (uint)KeyInterop.VirtualKeyFromKey(hotkeys[10].Hotkey.Key)); //H
             User32.RegisterHotKey(hWND, 0x25, convertModifiers(hotkeys[11]), (uint)KeyInterop.VirtualKeyFromKey(hotkeys[11].Hotkey.Key)); //K
             User32.RegisterHotKey(hWND, 0x24, convertModifiers(hotkeys[12]), (uint)KeyInterop.VirtualKeyFromKey(hotkeys[12].Hotkey.Key)); //J
-            User32.RegisterHotKey(hWND, 0x17, convertModifiers(hotkeys[13]), (uint)KeyInterop.VirtualKeyFromKey(hotkeys[13].Hotkey.Key)); //Z
-            User32.RegisterHotKey(hWND, 0x26, convertModifiers(hotkeys[14]), (uint)KeyInterop.VirtualKeyFromKey(hotkeys[14].Hotkey.Key)); //right
-            User32.RegisterHotKey(hWND, 0x27, convertModifiers(hotkeys[15]), (uint)KeyInterop.VirtualKeyFromKey(hotkeys[15].Hotkey.Key)); //left
-            User32.RegisterHotKey(hWND, 0x1,  convertModifiers(hotkeys[16]), (uint)KeyInterop.VirtualKeyFromKey(hotkeys[16].Hotkey.Key)); //1
-            User32.RegisterHotKey(hWND, 0x2,  convertModifiers(hotkeys[17]), (uint)KeyInterop.VirtualKeyFromKey(hotkeys[17].Hotkey.Key)); //2
-            User32.RegisterHotKey(hWND, 0x3,  convertModifiers(hotkeys[18]), (uint)KeyInterop.VirtualKeyFromKey(hotkeys[18].Hotkey.Key)); //3
-            User32.RegisterHotKey(hWND, 0x4,  convertModifiers(hotkeys[19]), (uint)KeyInterop.VirtualKeyFromKey(hotkeys[19].Hotkey.Key)); //4
-            User32.RegisterHotKey(hWND, 0x5,  convertModifiers(hotkeys[20]), (uint)KeyInterop.VirtualKeyFromKey(hotkeys[20].Hotkey.Key)); //5
+            User32.RegisterHotKey(hWND, 0x30, convertModifiers(hotkeys[13]), (uint)KeyInterop.VirtualKeyFromKey(hotkeys[13].Hotkey.Key)); //Z
+            User32.RegisterHotKey(hWND, 0x31, convertModifiers(hotkeys[14]), (uint)KeyInterop.VirtualKeyFromKey(hotkeys[14].Hotkey.Key)); //Z
+            User32.RegisterHotKey(hWND, 0x26, convertModifiers(hotkeys[15]), (uint)KeyInterop.VirtualKeyFromKey(hotkeys[15].Hotkey.Key)); //right
+            User32.RegisterHotKey(hWND, 0x27, convertModifiers(hotkeys[16]), (uint)KeyInterop.VirtualKeyFromKey(hotkeys[16].Hotkey.Key)); //left
+            User32.RegisterHotKey(hWND, 0x1,  convertModifiers(hotkeys[17]), (uint)KeyInterop.VirtualKeyFromKey(hotkeys[17].Hotkey.Key)); //1
+            User32.RegisterHotKey(hWND, 0x2,  convertModifiers(hotkeys[18]), (uint)KeyInterop.VirtualKeyFromKey(hotkeys[18].Hotkey.Key)); //2
+            User32.RegisterHotKey(hWND, 0x3,  convertModifiers(hotkeys[19]), (uint)KeyInterop.VirtualKeyFromKey(hotkeys[19].Hotkey.Key)); //3
+            User32.RegisterHotKey(hWND, 0x4,  convertModifiers(hotkeys[20]), (uint)KeyInterop.VirtualKeyFromKey(hotkeys[20].Hotkey.Key)); //4
+            User32.RegisterHotKey(hWND, 0x5,  convertModifiers(hotkeys[21]), (uint)KeyInterop.VirtualKeyFromKey(hotkeys[21].Hotkey.Key)); //5
         }
 
         public void unsetKeyboardHook(HWND hWND)

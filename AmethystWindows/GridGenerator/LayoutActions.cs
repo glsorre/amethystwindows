@@ -6,26 +6,25 @@ using System.Linq;
 
 namespace AmethystWindows.GridGenerator
 {
-    static class LayoutActions
+    public static class LayoutActions
     {
-        public static Rectangle[] vertical(GridDescripton gridDescription)
+        public static Rectangle[] Vertical(GridDescripton gridDescription)
         {
             Rectangle[] result = new Rectangle[gridDescription.WindowsCount];
 
             int horizSize = gridDescription.MWidth / gridDescription.WindowsCount;
             int j = 0;
+
             for (int i = 0; i <= gridDescription.WindowsMaxIndex; i++)
             {
-                int lastPadding = i == (gridDescription.WindowsMaxIndex) ? 0 : gridDescription.LayoutPadding;
+                int lastPadding = i == (gridDescription.WindowsMaxIndex) ? 0 : gridDescription.LayoutPadding / 2;
                 result[i] = new Rectangle(i * horizSize, j, horizSize - lastPadding, gridDescription.MHeight);
             }
 
             return result;
         }
         
-        public static Func<GridDescripton, Rectangle[]> Vertical = vertical;
-
-        public static Rectangle[] horizontal(GridDescripton gridDescription)
+        public static Rectangle[] Horizontal(GridDescripton gridDescription)
         {
             Rectangle[] result = new Rectangle[gridDescription.WindowsCount];
 
@@ -33,16 +32,14 @@ namespace AmethystWindows.GridGenerator
             int j = 0;
             for (int i = 0; i <= gridDescription.WindowsMaxIndex; i++)
             {
-                int lastPadding = i == (gridDescription.WindowsMaxIndex) ? 0 : gridDescription.LayoutPadding;
+                int lastPadding = i == (gridDescription.WindowsMaxIndex) ? 0 : gridDescription.LayoutPadding / 2;
                 result[i] = new Rectangle(j, i * vertSize, gridDescription.MWidth, vertSize - lastPadding);
             }
 
             return result;
         }
 
-        public static Func<GridDescripton, Rectangle[]> Horizontal = horizontal;
-
-        public static Rectangle[] monocle(GridDescripton gridDescription)
+        public static Rectangle[] Monocle(GridDescripton gridDescription)
         {
             Rectangle[] result = new Rectangle[gridDescription.WindowsCount];
 
@@ -54,35 +51,33 @@ namespace AmethystWindows.GridGenerator
             return result;
         }
 
-        public static Func<GridDescripton, Rectangle[]> Monocle = monocle;
-
-        public static Rectangle[] wideTop(GridDescripton gridDescription)
+        public static Rectangle[] WideTop(GridDescripton gridDescription)
         {
             Rectangle[] result = new Rectangle[gridDescription.WindowsCount];
 
             int size = gridDescription.MWidth / (gridDescription.WindowsMaxIndex);
+            int mainPaneResize = gridDescription.Step * gridDescription.Factor;
             
-            result[0] = new Rectangle(0, 0, gridDescription.MWidth, gridDescription.MHeight / 2);
-            Rectangle[] subResult = Horizontal(new GridDescripton(gridDescription.MWidth, gridDescription.MHeight / 2, gridDescription.WindowsCount - 1, gridDescription.LayoutPadding, gridDescription.Factor, gridDescription.Step));
+            result[0] = new Rectangle(0, 0, gridDescription.MWidth, gridDescription.MHeight / 2 - gridDescription.LayoutPadding / 2 + mainPaneResize);
+            Rectangle[] subResult = Vertical(new GridDescripton(gridDescription.MWidth, gridDescription.MHeight / 2 + gridDescription.LayoutPadding / 2 - mainPaneResize, gridDescription.WindowsCount - 1, gridDescription.LayoutPadding, gridDescription.Factor, gridDescription.Step));
             for (int i = 0; i < subResult.Length; i++)
             {
-                subResult[i].Y += gridDescription.MHeight / 2;
+                subResult[i].Y += gridDescription.MHeight / 2 + mainPaneResize;
                 result[i + 1] = subResult[i];
             }
 
             return result;
         }
 
-        public static Func<GridDescripton, Rectangle[]> WideTop = wideTop;
-
-        public static Rectangle[] wideBottom(GridDescripton gridDescription)
+        public static Rectangle[] WideBottom(GridDescripton gridDescription)
         {
             Rectangle[] result = new Rectangle[gridDescription.WindowsCount];
 
             int size = gridDescription.MWidth / (gridDescription.WindowsMaxIndex);
+            int mainPaneResize = gridDescription.Step * gridDescription.Factor;
 
-            result[0] = new Rectangle(0, gridDescription.MHeight / 2, gridDescription.MWidth, gridDescription.MHeight / 2);
-            Rectangle[] subResult = Horizontal(new GridDescripton(gridDescription.MWidth, gridDescription.MHeight / 2, gridDescription.WindowsCount - 1, gridDescription.LayoutPadding, gridDescription.Factor, gridDescription.Step));
+            result[0] = new Rectangle(0, gridDescription.MHeight / 2 + gridDescription.LayoutPadding / 2 + mainPaneResize, gridDescription.MWidth, gridDescription.MHeight / 2 - mainPaneResize);
+            Rectangle[] subResult = Vertical(new GridDescripton(gridDescription.MWidth, gridDescription.MHeight / 2 + mainPaneResize, gridDescription.WindowsCount - 1, gridDescription.LayoutPadding, gridDescription.Factor, gridDescription.Step));
             for (int i = 0; i < subResult.Length; i++)
             {
                 result[i + 1] = subResult[i];
@@ -91,33 +86,33 @@ namespace AmethystWindows.GridGenerator
             return result;
         }
 
-        public static Func<GridDescripton, Rectangle[]> WideBottom = wideBottom;
-
-        public static Rectangle[] tallLeft(GridDescripton gridDescription)
+        public static Rectangle[] TallLeft(GridDescripton gridDescription)
         {
             Rectangle[] result = new Rectangle[gridDescription.WindowsCount];
 
             int size = gridDescription.MHeight / (gridDescription.WindowsMaxIndex);
-            result[0] = new Rectangle(0, 0, gridDescription.MWidth / 2, gridDescription.MHeight);
-            Rectangle[] subResult = Horizontal(new GridDescripton(gridDescription.MWidth / 2, gridDescription.MHeight, gridDescription.WindowsCount - 1, gridDescription.LayoutPadding, gridDescription.Factor, gridDescription.Step));
+            int mainPaneResize = gridDescription.Step * gridDescription.Factor;
+
+            result[0] = new Rectangle(0, 0, gridDescription.MWidth / 2 - gridDescription.LayoutPadding / 2 + mainPaneResize, gridDescription.MHeight);
+            Rectangle[] subResult = Horizontal(new GridDescripton(gridDescription.MWidth / 2 - gridDescription.LayoutPadding / 2 - mainPaneResize, gridDescription.MHeight, gridDescription.WindowsCount - 1, gridDescription.LayoutPadding, gridDescription.Factor, gridDescription.Step));
             for (int i = 0; i < subResult.Length; i++)
             {
-                subResult[i].X += gridDescription.MWidth / 2;
+                subResult[i].X += gridDescription.MWidth / 2 + gridDescription.LayoutPadding / 2 + mainPaneResize;
                 result[i + 1] = subResult[i];
             }
 
             return result;
         }
 
-        public static Func<GridDescripton, Rectangle[]> TallLeft = tallLeft;
-
-        public static Rectangle[] tallRight(GridDescripton gridDescription)
+        public static Rectangle[] TallRight(GridDescripton gridDescription)
         {
             Rectangle[] result = new Rectangle[gridDescription.WindowsCount];
 
             int size = gridDescription.MHeight / (gridDescription.WindowsMaxIndex);
-            result[0] = new Rectangle(gridDescription.MWidth / 2, 0, gridDescription.MWidth / 2, gridDescription.MHeight);
-            Rectangle[] subResult = Horizontal(new GridDescripton(gridDescription.MWidth / 2, gridDescription.MHeight, gridDescription.WindowsCount - 1, gridDescription.LayoutPadding, gridDescription.Factor, gridDescription.Step));
+            int mainPaneResize = gridDescription.Step * gridDescription.Factor;
+
+            result[0] = new Rectangle(gridDescription.MWidth / 2 + gridDescription.LayoutPadding / 2 - mainPaneResize, 0, gridDescription.MWidth / 2 - gridDescription.LayoutPadding / 2 + mainPaneResize, gridDescription.MHeight);
+            Rectangle[] subResult = Horizontal(new GridDescripton(gridDescription.MWidth / 2 - gridDescription.LayoutPadding / 2 - mainPaneResize, gridDescription.MHeight, gridDescription.WindowsCount - 1, gridDescription.LayoutPadding, gridDescription.Factor, gridDescription.Step));
             for (int i = 0; i < subResult.Length; i++)
             {
                 result[i + 1] = subResult[i];
@@ -126,35 +121,36 @@ namespace AmethystWindows.GridGenerator
             return result;
         }
 
-        public static Func<GridDescripton, Rectangle[]> TallRight = tallRight;
-
-        public static Rectangle[] threeTallLeft(GridDescripton gridDescription)
+        public static Rectangle[] ThreeTallLeft(GridDescripton gridDescription)
         {
             Rectangle[] result = new Rectangle[gridDescription.WindowsCount];
 
             int size = gridDescription.MHeight / (gridDescription.WindowsMaxIndex);
-            result[0] = new Rectangle(0, 0, gridDescription.MWidth / 3, gridDescription.MHeight);
-            result[1] = new Rectangle(gridDescription.MWidth / 3, 0, gridDescription.MWidth / 3, gridDescription.MHeight);
-            Rectangle[] subResult = Horizontal(new GridDescripton(gridDescription.MWidth / 3, gridDescription.MHeight, gridDescription.WindowsCount - 2, gridDescription.LayoutPadding, gridDescription.Factor, gridDescription.Step));
+            int mainPaneResize = gridDescription.Step * gridDescription.Factor;
+
+            result[1] = new Rectangle(0, 0, gridDescription.MWidth / 3 - gridDescription.LayoutPadding / 2 - mainPaneResize, gridDescription.MHeight);
+            result[0] = new Rectangle(gridDescription.MWidth / 3 + gridDescription.LayoutPadding / 2 - mainPaneResize, 0, gridDescription.MWidth / 3 - gridDescription.LayoutPadding + mainPaneResize * 2, gridDescription.MHeight);
+            Rectangle[] subResult = Horizontal(new GridDescripton(gridDescription.MWidth / 3 - gridDescription.LayoutPadding / 2 + mainPaneResize, gridDescription.MHeight, gridDescription.WindowsCount - 2, gridDescription.LayoutPadding, gridDescription.Factor, gridDescription.Step));
             for (int i = 0; i < subResult.Length; i++)
             {
-                subResult[i].X += 2 * gridDescription.MWidth / 3;
+                subResult[i].X += 2 * gridDescription.MWidth / 3 + gridDescription.LayoutPadding / 2 + mainPaneResize;
+                subResult[i].Width -= mainPaneResize * 2;
                 result[i + 2] = subResult[i];
             }
 
             return result;
         }
 
-        public static Func<GridDescripton, Rectangle[]> ThreeTallLeft = threeTallLeft;
-
-        public static Rectangle[] threeTallRight(GridDescripton gridDescription)
+        public static Rectangle[] ThreeTallRight(GridDescripton gridDescription)
         {
             Rectangle[] result = new Rectangle[gridDescription.WindowsCount];
 
             int size = gridDescription.MHeight / (gridDescription.WindowsMaxIndex);
-            result[0] = new Rectangle(2 * gridDescription.MWidth / 3, 0, gridDescription.MWidth / 3, gridDescription.MHeight);
-            result[1] = new Rectangle(gridDescription.MWidth / 3, 0, gridDescription.MWidth / 3, gridDescription.MHeight);
-            Rectangle[] subResult = Horizontal(new GridDescripton(gridDescription.MWidth / 3, gridDescription.MHeight, gridDescription.WindowsCount - 2, gridDescription.LayoutPadding, gridDescription.Factor, gridDescription.Step));
+            int mainPaneResize = gridDescription.Step * gridDescription.Factor;
+
+            result[1] = new Rectangle(2 * gridDescription.MWidth / 3 + gridDescription.LayoutPadding / 2 + mainPaneResize, 0, gridDescription.MWidth / 3 - gridDescription.LayoutPadding / 2 - mainPaneResize, gridDescription.MHeight);
+            result[0] = new Rectangle(gridDescription.MWidth / 3 + gridDescription.LayoutPadding / 2 - mainPaneResize, 0, gridDescription.MWidth / 3 - gridDescription.LayoutPadding + mainPaneResize * 2, gridDescription.MHeight);
+            Rectangle[] subResult = Horizontal(new GridDescripton(gridDescription.MWidth / 3 - gridDescription.LayoutPadding / 2 - mainPaneResize, gridDescription.MHeight, gridDescription.WindowsCount - 2, gridDescription.LayoutPadding, gridDescription.Factor, gridDescription.Step));
             for (int i = 0; i < subResult.Length; i++)
             {
                 result[i + 2] = subResult[i];
@@ -162,19 +158,18 @@ namespace AmethystWindows.GridGenerator
 
             return result;
         }
-
-        public static Func<GridDescripton, Rectangle[]> ThreeTallRight = threeTallRight;
-
-        public static Func<GridDescripton, Rectangle[]>[] ToArray() => new[] {
-            Horizontal,
-            Vertical,
-            Monocle,
-            WideTop,
-            WideBottom,
-            TallLeft,
-            TallRight,
-            ThreeTallLeft,
-            ThreeTallRight,
-        };
     };
+
+    public static class LayoutBackup
+    {
+        public static Func<GridDescripton, Rectangle[]> Horizontal = LayoutActions.Horizontal;
+        public static Func<GridDescripton, Rectangle[]> Vertical = LayoutActions.Vertical;
+        public static Func<GridDescripton, Rectangle[]> Monocle = LayoutActions.Monocle;
+        public static Func<GridDescripton, Rectangle[]> WideTop = LayoutActions.Horizontal;
+        public static Func<GridDescripton, Rectangle[]> WideBottom = LayoutActions.Horizontal;
+        public static Func<GridDescripton, Rectangle[]> TallLeft = LayoutActions.Vertical;
+        public static Func<GridDescripton, Rectangle[]> TallRight = LayoutActions.Vertical;
+        public static Func<GridDescripton, Rectangle[]> ThreeTallLeft = LayoutActions.Vertical;
+        public static Func<GridDescripton, Rectangle[]> ThreeTallRight = LayoutActions.Vertical;
+    }
 }

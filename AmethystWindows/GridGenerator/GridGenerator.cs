@@ -8,6 +8,8 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Automation.Peers;
+using Vanara.Extensions;
+using Vanara.Extensions.Reflection;
 
 namespace AmethystWindows.GridGenerator
 {
@@ -24,32 +26,34 @@ namespace AmethystWindows.GridGenerator
         ThreeTallRight = 8,
     }
 
-    static class LayoutBackup
+    public static class LayoutExtension
     {
-        public static Func<GridDescripton, Rectangle[]> Horizontal = LayoutActions.horizontal;
-        public static Func<GridDescripton, Rectangle[]> Vertical = LayoutActions.vertical;
-        public static Func<GridDescripton, Rectangle[]> Monocle = LayoutActions.monocle;
-        public static Func<GridDescripton, Rectangle[]> WideTop = LayoutActions.horizontal;
-        public static Func<GridDescripton, Rectangle[]> WideBottom = LayoutActions.horizontal;
-        public static Func<GridDescripton, Rectangle[]> TallLeft = LayoutActions.vertical;
-        public static Func<GridDescripton, Rectangle[]> TallRight = LayoutActions.vertical;
-        public static Func<GridDescripton, Rectangle[]> ThreeTallLeft = LayoutActions.vertical;
-        public static Func<GridDescripton, Rectangle[]> ThreeTallRight = LayoutActions.vertical;
+        public static Func<GridDescripton, Rectangle[]> GetLayoutAction(this Layout layout)
+        {
+            return (Func<GridDescripton, Rectangle[]>)Delegate.CreateDelegate(typeof(Func<GridDescripton, Rectangle[]>), typeof(LayoutActions).GetMethod(layout.ToString()));
+            }
 
-        public static Func<GridDescripton, Rectangle[]>[] ToArray() => new[] {
-            Horizontal,
-            Vertical,
-            Monocle,
-            WideTop,
-            WideBottom,
-            TallLeft,
-            TallRight,
-            ThreeTallLeft,
-            ThreeTallRight,
-        };
+        public static Func<GridDescripton, Rectangle[]> GetLayoutBackup(this Layout layout)
+        {
+            return typeof(LayoutBackup).GetField(layout.ToString()).GetValue(null) as Func<GridDescripton, Rectangle[]>;
+        }
     }
 
-    class GridDescripton
+    public class LayoutDescription
+    {
+        public Layout Layout { get; set; }
+        public Func<GridDescripton, Rectangle[]> LayoutAction { get; set; }
+        public Func<GridDescripton, Rectangle[]> LayoutActionBackup { get; set; }
+
+        public LayoutDescription(Layout layout, Func<GridDescripton, Rectangle[]> layoutAction, Func<GridDescripton, Rectangle[]> layoutActionBackup)
+        {
+            Layout = layout;
+            LayoutAction = layoutAction;
+            LayoutActionBackup = layoutActionBackup;
+        }
+    }
+
+    public class GridDescripton
     {
         int _mWidth;
         int _mHeight;
@@ -82,22 +86,17 @@ namespace AmethystWindows.GridGenerator
 
     public class GridGenerator
     {
-        Dictionary<Layout, Func<GridDescripton, Rectangle[]>> layouts;
-        Dictionary<Layout, Func<GridDescripton, Rectangle[]>> backupLayouts;
+        LayoutDescription[] layouts;
 
         public GridGenerator()
         {
-            layouts = new Dictionary<Layout, Func<GridDescripton, Rectangle[]>>();
-            backupLayouts = new Dictionary<Layout, Func<GridDescripton, Rectangle[]>>();
-    
             IEnumerable<Layout> layoutValues = Enum.GetValues(typeof(Layout)).Cast<Layout>();
-            Func<GridDescripton, Rectangle[]>[] layoutFuncs = LayoutActions.ToArray();
-            Func<GridDescripton, Rectangle[]>[] layoutFuncsBackups = LayoutBackup.ToArray();
+
+            layouts = new LayoutDescription[layoutValues.Count()];
 
             foreach (Layout layout in layoutValues)
             {
-                layouts.Add(layout, layoutFuncs[((ushort)layout)]);
-                backupLayouts.Add(layout, layoutFuncsBackups[((ushort)layout)]);
+                layouts[(int)layout] = new LayoutDescription(layout, layout.GetLayoutAction(), layout.GetLayoutBackup());
             }
         }
 
@@ -107,9 +106,9 @@ namespace AmethystWindows.GridGenerator
             
             GridDescripton gridDescripton = new GridDescripton(mWidth, mHeight, windowsCount, layoutPadding, factor, step);
 
-            if (windowsCount == 2) return backupLayouts[layout](gridDescripton);
+            if (windowsCount == 2) return layouts[(int)layout].LayoutActionBackup(gridDescripton);
 
-            Rectangle[] grid = layouts[layout](gridDescripton);
+            Rectangle[] grid = layouts[(int)layout].LayoutAction(gridDescripton);
 
             foreach (var item in grid)
             {

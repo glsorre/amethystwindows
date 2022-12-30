@@ -86,7 +86,11 @@ namespace AmethystWindows
                     Pair<VirtualDesktop, HMONITOR> currentPair = new Pair<VirtualDesktop, HMONITOR>(VirtualDesktop.Current, currentMonitor);
                     App.DWM.MoveWindowCounterClockwise(currentPair, selected);
                 }
-                if (wParam.ToInt32() == 0x17)
+                if (wParam.ToInt32() == 0x30)
+                {
+                    App.DWM.Draw();
+                }
+                if (wParam.ToInt32() == 0x31)
                 {
                     mainWindowViewModel.RedrawCommand.Execute(null);
                 }

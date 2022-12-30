@@ -256,36 +256,40 @@
                                 <hotkeys:HotkeyEditorControl ViewModelHotkey="{ Binding Hotkeys[12] }" Description="Move Focused Window Next Screen" Width="220"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="20">
-                                <TextBlock Width="300" VerticalAlignment="Center">Redraw</TextBlock>
-                                <hotkeys:HotkeyEditorControl ViewModelHotkey="{ Binding Hotkeys[13] }" Description="Redraw" Width="220"/>
+                                <TextBlock Width="300" VerticalAlignment="Center">Redraw Simple</TextBlock>
+                                <hotkeys:HotkeyEditorControl ViewModelHotkey="{ Binding Hotkeys[13] }" Description="RedrawSimple" Width="220"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="20">
+                                <TextBlock Width="300" VerticalAlignment="Center">Redraw Forced</TextBlock>
+                                <hotkeys:HotkeyEditorControl ViewModelHotkey="{ Binding Hotkeys[14] }" Description="RedrawForced" Width="220"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="20">
                                 <TextBlock Width="300" VerticalAlignment="Center">Move Focused Window Next Space</TextBlock>
-                                <hotkeys:HotkeyEditorControl ViewModelHotkey="{ Binding Hotkeys[14] }" Description="Move Focused Window Next Space" Width="220"/>
+                                <hotkeys:HotkeyEditorControl ViewModelHotkey="{ Binding Hotkeys[15] }" Description="Move Focused Window Next Space" Width="220"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="20">
                                 <TextBlock Width="300" VerticalAlignment="Center">Move Focused Window Previous Space</TextBlock>
-                                <hotkeys:HotkeyEditorControl ViewModelHotkey="{ Binding Hotkeys[15] }" Description="Move Focused Window Previous Space" Width="220"/>
+                                <hotkeys:HotkeyEditorControl ViewModelHotkey="{ Binding Hotkeys[16] }" Description="Move Focused Window Previous Space" Width="220"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="20">
                                 <TextBlock Width="300" VerticalAlignment="Center">Move Focused Window To Space 1</TextBlock>
-                                <hotkeys:HotkeyEditorControl ViewModelHotkey="{ Binding Hotkeys[16] }" Description="Move Focused Window To Space 1" Width="220"/>
+                                <hotkeys:HotkeyEditorControl ViewModelHotkey="{ Binding Hotkeys[17] }" Description="Move Focused Window To Space 1" Width="220"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="20">
                                 <TextBlock Width="300" VerticalAlignment="Center">Move Focused Window To Space 2</TextBlock>
-                                <hotkeys:HotkeyEditorControl ViewModelHotkey="{ Binding Hotkeys[17] }" Description="Move Focused Window To Space 2" Width="220"/>
+                                <hotkeys:HotkeyEditorControl ViewModelHotkey="{ Binding Hotkeys[18] }" Description="Move Focused Window To Space 2" Width="220"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="20">
                                 <TextBlock Width="300" VerticalAlignment="Center">Move Focused Window To Space 3</TextBlock>
-                                <hotkeys:HotkeyEditorControl ViewModelHotkey="{ Binding Hotkeys[18] }" Description="Move Focused Window To Space 3" Width="220"/>
+                                <hotkeys:HotkeyEditorControl ViewModelHotkey="{ Binding Hotkeys[19] }" Description="Move Focused Window To Space 3" Width="220"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="20">
                                 <TextBlock Width="300" VerticalAlignment="Center">Move Focused Window To Space 4</TextBlock>
-                                <hotkeys:HotkeyEditorControl ViewModelHotkey="{ Binding Hotkeys[19] }" Description="Move Focused Window To Space 4" Width="220"/>
+                                <hotkeys:HotkeyEditorControl ViewModelHotkey="{ Binding Hotkeys[20] }" Description="Move Focused Window To Space 4" Width="220"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="20">
                                 <TextBlock Width="300" VerticalAlignment="Center">Move Focused Window To Space 5</TextBlock>
-                                <hotkeys:HotkeyEditorControl ViewModelHotkey="{ Binding Hotkeys[20] }" Description="Move Focused Window To Space 5" Width="220"/>
+                                <hotkeys:HotkeyEditorControl ViewModelHotkey="{ Binding Hotkeys[21] }" Description="Move Focused Window To Space 5" Width="220"/>
                             </StackPanel>
                         </StackPanel>
                     </ScrollViewer>

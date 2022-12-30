@@ -124,7 +124,8 @@ namespace AmethystWindows
             new ViewModelHotkey() { Command = "moveFocusedPreviousScreen", Hotkey = new Hotkey(Key.K, Modifier2) },
             new ViewModelHotkey() { Command = "moveFocusedNextScreen", Hotkey = new Hotkey(Key.J, Modifier2) },
 
-            new ViewModelHotkey() { Command = "redraw", Hotkey = new Hotkey(Key.Z, Modifier1) },
+            new ViewModelHotkey() { Command = "redrawSimple", Hotkey = new Hotkey(Key.Z, Modifier1) },
+            new ViewModelHotkey() { Command = "redrawForced", Hotkey = new Hotkey(Key.Z, Modifier2) },
 
             new ViewModelHotkey() { Command = "moveFocusedNextSpace", Hotkey = new Hotkey(Key.Left, Modifier2) },
             new ViewModelHotkey() { Command = "moveFocusedPreviousSpace", Hotkey = new Hotkey(Key.Right, Modifier2) },
@@ -181,7 +182,15 @@ namespace AmethystWindows
 
             _configurableFilters = MySettings.Instance.Filters;
             _configurableAdditions = MySettings.Instance.Additions;
-            _hotkeys = MySettings.Instance.Hotkeys.Count == 0 ? new ObservableHotkeys(defaultHotkeys) : new ObservableHotkeys(MySettings.Instance.Hotkeys);
+
+            if (MySettings.Instance.Hotkeys.Count! < defaultHotkeys.Count)
+            {
+                MessageBox.Show("Hotkeys have been reset to default.", "Amethyst Windows", MessageBoxButton.OK, MessageBoxImage.Warning, MessageBoxResult.OK, MessageBoxOptions.DefaultDesktopOnly);
+                MySettings.Instance.Hotkeys = defaultHotkeys;
+                MySettings.Save();
+            }
+            _hotkeys = new ObservableHotkeys(MySettings.Instance.Hotkeys);
+            
             _desktopMonitors = new ObservableDesktopMonitors(MySettings.Instance.DesktopMonitors);
             _windows = new List<ViewModelDesktopWindow>();
             _excludedWindows = new List<ViewModelDesktopWindow>();
