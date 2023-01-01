@@ -7,22 +7,16 @@ namespace AmethystWindows.Hotkeys
 {
     public partial class HotkeyEditorControl
     {
-        public static readonly DependencyProperty ViewModelHotkeyProperty =
-            DependencyProperty.Register(nameof(ViewModelHotkey), typeof(ViewModelHotkey),
+        public static readonly DependencyProperty HotkeyProperty =
+            DependencyProperty.Register(nameof(Hotkey), typeof(Hotkey),
                 typeof(HotkeyEditorControl),
-                new FrameworkPropertyMetadata(default(ViewModelHotkey),
+                new FrameworkPropertyMetadata(default(Hotkey),
                     FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
-        public ViewModelHotkey ViewModelHotkey
+        public Hotkey Hotkey
         {
-            get => (ViewModelHotkey)GetValue(ViewModelHotkeyProperty);
-            set => SetValue(ViewModelHotkeyProperty, value);
-        }
-
-        public string Description
-        {
-            get;
-            set;
+            get => (Hotkey)GetValue(HotkeyProperty);
+            set => SetValue(HotkeyProperty, value);
         }
 
         public HotkeyEditorControl()
@@ -50,7 +44,7 @@ namespace AmethystWindows.Hotkeys
             if (modifiers == ModifierKeys.None &&
                 (key == Key.Delete || key == Key.Back || key == Key.Escape))
             {
-                ViewModelHotkey = new ViewModelHotkey(Description, null);
+                Hotkey = new Hotkey(Key.None, ModifierKeys.None);
                 return;
             }
 
@@ -71,7 +65,7 @@ namespace AmethystWindows.Hotkeys
             }
 
             // Update the value
-            ViewModelHotkey = new ViewModelHotkey(Description, new Hotkey(key, modifiers));
+            Hotkey = new Hotkey(key, modifiers);
         }
     }
 }

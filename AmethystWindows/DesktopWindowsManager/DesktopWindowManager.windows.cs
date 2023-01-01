@@ -162,6 +162,14 @@ namespace AmethystWindows.DesktopWindowsManager
                     );
         }
 
+        public void SetSecondaryWindow(Pair<VirtualDesktop, HMONITOR> desktopMonitor, DesktopWindow window)
+        {
+            Windows[desktopMonitor].Move(
+                    Windows[desktopMonitor].IndexOf(window),
+                    1
+                    );
+        }
+
         public void RotateFocusedWindowClockwise(Pair<VirtualDesktop, HMONITOR> desktopMonitor, DesktopWindow window)
         {
             int currentIndex = Windows[desktopMonitor].IndexOf(window);
@@ -297,6 +305,15 @@ namespace AmethystWindows.DesktopWindowsManager
                 VirtualDesktop.MoveToDesktop(window.Window.DangerousGetHandle(), nextVirtualDesktop);
                 window.VirtualDesktop = nextVirtualDesktop;
                 AddWindow(window);
+                nextVirtualDesktop.Switch();
+            }
+        }
+
+        public void MoveToSpecificVirtualDesktop(DesktopWindow window, Guid id)
+        {
+            VirtualDesktop nextVirtualDesktop = VirtualDesktop.FromId(id);
+            if (nextVirtualDesktop != null)
+            {
                 nextVirtualDesktop.Switch();
             }
         }

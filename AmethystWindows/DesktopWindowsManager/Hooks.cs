@@ -135,59 +135,24 @@ namespace AmethystWindows.DesktopWindowsManager
                 modifiers |= User32.HotKeyModifiers.MOD_ALT;
             if (viewModelHotkey.Hotkey.Modifiers.HasFlag(ModifierKeys.Windows))
                 modifiers |= User32.HotKeyModifiers.MOD_WIN;
-
+            
             return modifiers;
         }
 
         public void setKeyboardHook(HWND hWND, ObservableCollection<ViewModelHotkey> hotkeys)
         {
-            User32.RegisterHotKey(hWND, 0x11, convertModifiers(hotkeys[0]),  (uint)KeyInterop.VirtualKeyFromKey(hotkeys[0].Hotkey.Key)); //space
-            User32.RegisterHotKey(hWND, 0x21, convertModifiers(hotkeys[1]),  (uint)KeyInterop.VirtualKeyFromKey(hotkeys[1].Hotkey.Key)); //space
-            User32.RegisterHotKey(hWND, 0x12, convertModifiers(hotkeys[2]),  (uint)KeyInterop.VirtualKeyFromKey(hotkeys[2].Hotkey.Key)); //enter
-            User32.RegisterHotKey(hWND, 0x13, convertModifiers(hotkeys[3]),  (uint)KeyInterop.VirtualKeyFromKey(hotkeys[3].Hotkey.Key)); //H
-            User32.RegisterHotKey(hWND, 0x16, convertModifiers(hotkeys[4]),  (uint)KeyInterop.VirtualKeyFromKey(hotkeys[4].Hotkey.Key)); //L
-            User32.RegisterHotKey(hWND, 0x14, convertModifiers(hotkeys[5]),  (uint)KeyInterop.VirtualKeyFromKey(hotkeys[5].Hotkey.Key)); //J 
-            User32.RegisterHotKey(hWND, 0x15, convertModifiers(hotkeys[6]),  (uint)KeyInterop.VirtualKeyFromKey(hotkeys[6].Hotkey.Key)); //K
-            User32.RegisterHotKey(hWND, 0x18, convertModifiers(hotkeys[7]),  (uint)KeyInterop.VirtualKeyFromKey(hotkeys[7].Hotkey.Key)); //P
-            User32.RegisterHotKey(hWND, 0x19, convertModifiers(hotkeys[8]),  (uint)KeyInterop.VirtualKeyFromKey(hotkeys[8].Hotkey.Key)); //N
-            User32.RegisterHotKey(hWND, 0x22, convertModifiers(hotkeys[9]),  (uint)KeyInterop.VirtualKeyFromKey(hotkeys[9].Hotkey.Key)); //L
-            User32.RegisterHotKey(hWND, 0x23, convertModifiers(hotkeys[10]), (uint)KeyInterop.VirtualKeyFromKey(hotkeys[10].Hotkey.Key)); //H
-            User32.RegisterHotKey(hWND, 0x25, convertModifiers(hotkeys[11]), (uint)KeyInterop.VirtualKeyFromKey(hotkeys[11].Hotkey.Key)); //K
-            User32.RegisterHotKey(hWND, 0x24, convertModifiers(hotkeys[12]), (uint)KeyInterop.VirtualKeyFromKey(hotkeys[12].Hotkey.Key)); //J
-            User32.RegisterHotKey(hWND, 0x30, convertModifiers(hotkeys[13]), (uint)KeyInterop.VirtualKeyFromKey(hotkeys[13].Hotkey.Key)); //Z
-            User32.RegisterHotKey(hWND, 0x31, convertModifiers(hotkeys[14]), (uint)KeyInterop.VirtualKeyFromKey(hotkeys[14].Hotkey.Key)); //Z
-            User32.RegisterHotKey(hWND, 0x26, convertModifiers(hotkeys[15]), (uint)KeyInterop.VirtualKeyFromKey(hotkeys[15].Hotkey.Key)); //right
-            User32.RegisterHotKey(hWND, 0x27, convertModifiers(hotkeys[16]), (uint)KeyInterop.VirtualKeyFromKey(hotkeys[16].Hotkey.Key)); //left
-            User32.RegisterHotKey(hWND, 0x1,  convertModifiers(hotkeys[17]), (uint)KeyInterop.VirtualKeyFromKey(hotkeys[17].Hotkey.Key)); //1
-            User32.RegisterHotKey(hWND, 0x2,  convertModifiers(hotkeys[18]), (uint)KeyInterop.VirtualKeyFromKey(hotkeys[18].Hotkey.Key)); //2
-            User32.RegisterHotKey(hWND, 0x3,  convertModifiers(hotkeys[19]), (uint)KeyInterop.VirtualKeyFromKey(hotkeys[19].Hotkey.Key)); //3
-            User32.RegisterHotKey(hWND, 0x4,  convertModifiers(hotkeys[20]), (uint)KeyInterop.VirtualKeyFromKey(hotkeys[20].Hotkey.Key)); //4
-            User32.RegisterHotKey(hWND, 0x5,  convertModifiers(hotkeys[21]), (uint)KeyInterop.VirtualKeyFromKey(hotkeys[21].Hotkey.Key)); //5
+            foreach (var hotkey in hotkeys)
+            {
+                User32.RegisterHotKey(hWND, (int)hotkey.Command, convertModifiers(hotkey), (uint)KeyInterop.VirtualKeyFromKey(hotkey.Hotkey.Key));
+            }
         }
 
-        public void unsetKeyboardHook(HWND hWND)
+        public void unsetKeyboardHook(HWND hWND, ObservableCollection<ViewModelHotkey> hotkeys)
         {
-            User32.UnregisterHotKey(hWND, 0x11); //space
-            User32.UnregisterHotKey(hWND, 0x21); //space
-            User32.UnregisterHotKey(hWND, 0x12); //enter
-            User32.UnregisterHotKey(hWND, 0x13); //H
-            User32.UnregisterHotKey(hWND, 0x16); //L
-            User32.UnregisterHotKey(hWND, 0x14); //J 
-            User32.UnregisterHotKey(hWND, 0x15); //K
-            User32.UnregisterHotKey(hWND, 0x18); //P
-            User32.UnregisterHotKey(hWND, 0x19); //N
-            User32.UnregisterHotKey(hWND, 0x23); //L
-            User32.UnregisterHotKey(hWND, 0x22); //H
-            User32.UnregisterHotKey(hWND, 0x25); //K
-            User32.UnregisterHotKey(hWND, 0x24); //J
-            User32.UnregisterHotKey(hWND, 0x17); //Z
-            User32.UnregisterHotKey(hWND, 0x26); //right
-            User32.UnregisterHotKey(hWND, 0x27); //left
-            User32.UnregisterHotKey(hWND, 0x1); //1
-            User32.UnregisterHotKey(hWND, 0x2); //2
-            User32.UnregisterHotKey(hWND, 0x3); //3
-            User32.UnregisterHotKey(hWND, 0x4); //4
-            User32.UnregisterHotKey(hWND, 0x5); //5
+            foreach (var hotkey in hotkeys)
+            {
+                User32.UnregisterHotKey(hWND, (int)hotkey.Command);
+            }
         }
     }
 }

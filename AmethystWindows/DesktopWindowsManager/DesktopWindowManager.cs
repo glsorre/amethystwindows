@@ -104,7 +104,7 @@ namespace AmethystWindows.DesktopWindowsManager
             if (e.PropertyName == "Hotkeys")
             {
                 HWND mainWindowHandle = new WindowInteropHelper(App.Current.MainWindow).Handle;
-                App.hooks.unsetKeyboardHook(mainWindowHandle);
+                App.hooks.unsetKeyboardHook(mainWindowHandle, mainWindowViewModel.Hotkeys);
                 App.hooks.setKeyboardHook(mainWindowHandle, mainWindowViewModel.Hotkeys);
             }
             if (ModelViewPropertiesSaveSettings.Contains(e.PropertyName))

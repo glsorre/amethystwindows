@@ -104,37 +104,44 @@ namespace AmethystWindows
         private static ModifierKeys Modifier2 = ModifierKeys.Shift | ModifierKeys.Alt | ModifierKeys.Windows;
         private readonly HashSet<ViewModelHotkey> defaultHotkeys = new HashSet<ViewModelHotkey>()
         {
-            new ViewModelHotkey() { Command = "rotateLayoutClockwise", Hotkey = new Hotkey(Key.Space, Modifier1) },
-            new ViewModelHotkey() { Command = "rotateLayoutCounterclockwise", Hotkey = new Hotkey(Key.Space, Modifier2) },
+            new ViewModelHotkey() { Command = HotkeyCommand.rotateLayoutClockwise, Hotkey = new Hotkey(Key.Space, Modifier1), Description = "Rotate Layout Clockwise" },
+            new ViewModelHotkey() { Command = HotkeyCommand.rotateLayoutCounterclockwise, Hotkey = new Hotkey(Key.Space, Modifier2), Description = "Rotate Layout Counterclockvise" },
 
-            new ViewModelHotkey() { Command = "setMainPane", Hotkey = new Hotkey(Key.Enter, Modifier1) },
+            new ViewModelHotkey() { Command = HotkeyCommand.setMainPane, Hotkey = new Hotkey(Key.Enter, Modifier1), Description = "Set Main Pane" },
+            new ViewModelHotkey() { Command = HotkeyCommand.setSecondaryPane, Hotkey = new Hotkey(Key.Enter, Modifier2), Description = "Set Secondary Pane" },
 
-            new ViewModelHotkey() { Command = "swapFocusedCounterclockwise", Hotkey = new Hotkey(Key.H, Modifier1) },
-            new ViewModelHotkey() { Command = "swapFocusedClockwise", Hotkey = new Hotkey(Key.L, Modifier1) },
+            new ViewModelHotkey() { Command = HotkeyCommand.swapFocusedCounterclockwise, Hotkey = new Hotkey(Key.H, Modifier1), Description = "Move Focused Window Counterclockwise" },
+            new ViewModelHotkey() { Command = HotkeyCommand.swapFocusedClockwise, Hotkey = new Hotkey(Key.L, Modifier1), Description = "Move Focused Window Clockwise" },
 
-            new ViewModelHotkey() { Command = "swapFocusCounterclockwise", Hotkey = new Hotkey(Key.J, Modifier1) },
-            new ViewModelHotkey() { Command = "swapFocusClockwise", Hotkey = new Hotkey(Key.K, Modifier1) },
+            new ViewModelHotkey() { Command = HotkeyCommand.swapFocusCounterclockwise, Hotkey = new Hotkey(Key.J, Modifier1), Description = "Move Focus Counterclockwise" },
+            new ViewModelHotkey() { Command = HotkeyCommand.swapFocusClockwise, Hotkey = new Hotkey(Key.K, Modifier1), Description = "Move Focus Counterclockwise" },
 
-            new ViewModelHotkey() { Command = "moveFocusPreviousScreen", Hotkey = new Hotkey(Key.P, Modifier1) },
-            new ViewModelHotkey() { Command = "moveFocusNextScreen", Hotkey = new Hotkey(Key.N, Modifier1) },
+            new ViewModelHotkey() { Command = HotkeyCommand.moveFocusPreviousScreen, Hotkey = new Hotkey(Key.P, Modifier1), Description = "Move Focus To Previous Screen" },
+            new ViewModelHotkey() { Command = HotkeyCommand.moveFocusNextScreen, Hotkey = new Hotkey(Key.N, Modifier1), Description = "Move Focus To Next Screen" },
 
-            new ViewModelHotkey() { Command = "expandMainPane", Hotkey = new Hotkey(Key.L, Modifier2) },
-            new ViewModelHotkey() { Command = "shrinkMainPane", Hotkey = new Hotkey(Key.H, Modifier2) },
+            new ViewModelHotkey() { Command = HotkeyCommand.expandMainPane, Hotkey = new Hotkey(Key.L, Modifier2), Description = "Expand Main Pane" },
+            new ViewModelHotkey() { Command = HotkeyCommand.shrinkMainPane, Hotkey = new Hotkey(Key.H, Modifier2), Description = "Shrink Main Pane" },
 
-            new ViewModelHotkey() { Command = "moveFocusedPreviousScreen", Hotkey = new Hotkey(Key.K, Modifier2) },
-            new ViewModelHotkey() { Command = "moveFocusedNextScreen", Hotkey = new Hotkey(Key.J, Modifier2) },
+            new ViewModelHotkey() { Command = HotkeyCommand.moveFocusedPreviousScreen, Hotkey = new Hotkey(Key.K, Modifier2), Description = "Move Focused Window To Previous Screen" },
+            new ViewModelHotkey() { Command = HotkeyCommand.moveFocusedNextScreen, Hotkey = new Hotkey(Key.J, Modifier2), Description = "Move Focused Window TO Next Screen" },
 
-            new ViewModelHotkey() { Command = "redrawSimple", Hotkey = new Hotkey(Key.Z, Modifier1) },
-            new ViewModelHotkey() { Command = "redrawForced", Hotkey = new Hotkey(Key.Z, Modifier2) },
+            new ViewModelHotkey() { Command = HotkeyCommand.redrawSimple, Hotkey = new Hotkey(Key.Z, Modifier1), Description = "Redraw" },
+            new ViewModelHotkey() { Command = HotkeyCommand.redrawForced, Hotkey = new Hotkey(Key.Z, Modifier2), Description = "Evaluate And Redraw" },
 
-            new ViewModelHotkey() { Command = "moveFocusedNextSpace", Hotkey = new Hotkey(Key.Left, Modifier2) },
-            new ViewModelHotkey() { Command = "moveFocusedPreviousSpace", Hotkey = new Hotkey(Key.Right, Modifier2) },
+            new ViewModelHotkey() { Command = HotkeyCommand.moveFocusedNextSpace, Hotkey = new Hotkey(Key.Left, Modifier2), Description = "Move Focused Window To Next Virtual Desktop" },
+            new ViewModelHotkey() { Command = HotkeyCommand.moveFocusedPreviousSpace, Hotkey = new Hotkey(Key.Right, Modifier2), Description = "Move Focused Window To Next Virtual Desktop" },
 
-            new ViewModelHotkey() { Command = "moveFocusedToSpace1", Hotkey = new Hotkey(Key.D1, Modifier2) },
-            new ViewModelHotkey() { Command = "moveFocusedToSpace2", Hotkey = new Hotkey(Key.D2, Modifier2) },
-            new ViewModelHotkey() { Command = "moveFocusedToSpace3", Hotkey = new Hotkey(Key.D3, Modifier2) },
-            new ViewModelHotkey() { Command = "moveFocusedToSpace4", Hotkey = new Hotkey(Key.D4, Modifier2) },
-            new ViewModelHotkey() { Command = "moveFocusedToSpace5", Hotkey = new Hotkey(Key.D5, Modifier2) },
+            new ViewModelHotkey() { Command = HotkeyCommand.moveFocusedToSpace1, Hotkey = new Hotkey(Key.D1, Modifier2), Description = "Move Focused Window To First Virtual Desktop" },
+            new ViewModelHotkey() { Command = HotkeyCommand.moveFocusedToSpace2, Hotkey = new Hotkey(Key.D2, Modifier2), Description = "Move Focused Window To Second Virtual Desktop" },
+            new ViewModelHotkey() { Command = HotkeyCommand.moveFocusedToSpace3, Hotkey = new Hotkey(Key.D3, Modifier2), Description = "Move Focused Window To Third Virtual Desktop" },
+            new ViewModelHotkey() { Command = HotkeyCommand.moveFocusedToSpace4, Hotkey = new Hotkey(Key.D4, Modifier2), Description = "Move Focused Window To Fouth Virtual Desktop" },
+            new ViewModelHotkey() { Command = HotkeyCommand.moveFocusedToSpace5, Hotkey = new Hotkey(Key.D5, Modifier2), Description = "Move Focused Window To Fifth Virtual Desktop" },
+
+            new ViewModelHotkey() { Command = HotkeyCommand.switchToSpace1, Hotkey = new Hotkey(Key.D1, Modifier1), Description = "Switch To First Virtual Desktop" },
+            new ViewModelHotkey() { Command = HotkeyCommand.switchToSpace2, Hotkey = new Hotkey(Key.D2, Modifier1), Description = "Switch To Second Virtual Desktop" },
+            new ViewModelHotkey() { Command = HotkeyCommand.switchToSpace3, Hotkey = new Hotkey(Key.D3, Modifier1), Description = "Switch To Third Virtual Desktop" },
+            new ViewModelHotkey() { Command = HotkeyCommand.switchToSpace4, Hotkey = new Hotkey(Key.D4, Modifier1), Description = "Switch To Fourth Virtual Desktop" },
+            new ViewModelHotkey() { Command = HotkeyCommand.switchToSpace5, Hotkey = new Hotkey(Key.D5, Modifier1), Description = "Switch To Fifth Virtual Desktop" },
         };
 
         private NotifyIconWrapper.NotifyRequestRecord? _notifyRequest;
@@ -570,10 +577,53 @@ namespace AmethystWindows
         }
     }
 
+    public enum HotkeyCommand : int
+    {
+        rotateLayoutClockwise = 0,
+        rotateLayoutCounterclockwise = 1,
+
+        setMainPane = 2,
+        setSecondaryPane = 3,
+
+        swapFocusedCounterclockwise = 4,
+        swapFocusedClockwise = 5,
+
+        swapFocusCounterclockwise = 6,
+        swapFocusClockwise = 7,
+
+        moveFocusPreviousScreen = 8,
+        moveFocusNextScreen = 9,
+
+        expandMainPane = 10,
+        shrinkMainPane = 11,
+
+        moveFocusedPreviousScreen = 12,
+        moveFocusedNextScreen = 13,
+        
+        redrawSimple = 14,
+        redrawForced = 15,
+
+        moveFocusedNextSpace = 16,
+        moveFocusedPreviousSpace = 17,
+
+        moveFocusedToSpace1 = 18,
+        moveFocusedToSpace2 = 19,
+        moveFocusedToSpace3 = 20,
+        moveFocusedToSpace4 = 21,
+        moveFocusedToSpace5 = 22,
+
+        switchToSpace1 = 23,
+        switchToSpace2 = 24,
+        switchToSpace3 = 25,
+        switchToSpace4 = 26,
+        switchToSpace5 = 27
+    }
+
     public class ViewModelHotkey : INotifyPropertyChanged
     {
         private Hotkey _hotkey;
-        private string _command;
+        private HotkeyCommand _command;
+        private string _description;
 
         public Hotkey Hotkey {
             get => _hotkey;
@@ -583,19 +633,21 @@ namespace AmethystWindows
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Hotkey)));
             }
         }
-        public string Command {
+        public HotkeyCommand Command {
             get => _command;
             set
             {
                 _command = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Hotkey)));
             }
         }
 
-        public ViewModelHotkey(string command, Hotkey hotkey)
+        public string Description { get => _description; set => _description = value; }
+
+        public ViewModelHotkey(HotkeyCommand command, Hotkey hotkey, string description)
         {
             Hotkey = hotkey;
             Command = command;
+            Description = description;
         }
 
         public ViewModelHotkey()
@@ -603,18 +655,6 @@ namespace AmethystWindows
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
-
-        public override bool Equals(object? obj)
-        {
-            return obj is ViewModelHotkey hotkey &&
-                   EqualityComparer<Hotkey>.Default.Equals(Hotkey, hotkey.Hotkey) &&
-                   Command == hotkey.Command;
-        }
-
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(Hotkey, Command);
-        }
     }
 
     public class ObservableDesktopMonitors : ObservableCollection<ViewModelDesktopMonitor>
