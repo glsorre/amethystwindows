@@ -25,6 +25,7 @@ Amethyst Windows uses two modifiers.
 
 
 The keyboard shortcuts configured are:
+
 | Shortcut       | Description                                  |
 | -------------- | -------------------------------------------- |
 | `mod1 + space` | Rotate layouts clockwise                     |
