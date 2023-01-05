@@ -207,12 +207,22 @@
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal" Margin="20">
-                                            <TextBlock Width="300" VerticalAlignment="Center" Text="{Binding Path=Description, UpdateSourceTrigger=PropertyChanged}" />
+                                            <TextBlock Width="400" VerticalAlignment="Center" Text="{Binding Path=Description, UpdateSourceTrigger=PropertyChanged}" />
                                             <hotkeys:HotkeyEditorControl Hotkey="{Binding Path=Hotkey, Mode=TwoWay}" Width="220"/>
                                         </StackPanel>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
+                        </StackPanel>
+                    </ScrollViewer>
+                </TabItem>
+                <TabItem Header="About">
+                    <ScrollViewer>
+                        <StackPanel Orientation="Vertical" Margin="20">
+                            <TextBlock FontWeight="Bold" FontSize="14" Margin="0 20">Amthyst Windows</TextBlock>
+                            <TextBlock Text="{Binding Version}" />
+                            <TextBlock Text="Author: Giuseppe Sorrentino" />
+                            <TextBlock Text="Website: amethystwindows.com " />
                         </StackPanel>
                     </ScrollViewer>
                 </TabItem>

@@ -12,10 +12,14 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using Vanara.PInvoke;
+using Windows.ApplicationModel;
+using Windows.Data.Xml.Dom;
 using Windows.Foundation.Collections;
 using WindowsDesktop;
 
@@ -28,6 +32,8 @@ namespace AmethystWindows
         public string ClassName { get; set; }
         public string VirtualDesktop { get; set; }
         public string Monitor { get; set; }
+
+        public string Version { get; set; }
 
         public ViewModelDesktopWindow(string appName, string className)
         {
@@ -162,6 +168,7 @@ namespace AmethystWindows
         private int _virtualDesktops;
 
         private bool _disabled;
+        private string _version;
 
         private List<Pair<string, string>> _configurableFilters;
         private Pair<string, string> _selectedConfigurableFilter;
@@ -186,6 +193,7 @@ namespace AmethystWindows
             _step = !MySettings.Instance.Step.Equals(null) ? MySettings.Instance.Step : 25;
 
             _disabled = !MySettings.Instance.Disabled.Equals(null) ? MySettings.Instance.Disabled : false;
+            _version = getVersion();
 
             _configurableFilters = MySettings.Instance.Filters;
             _configurableAdditions = MySettings.Instance.Additions;
@@ -339,6 +347,12 @@ namespace AmethystWindows
             set => SetProperty(ref _disabled, value);
         }
 
+        public string Version
+        {
+            get => _version;
+            set => SetProperty(ref _version, value);
+        }
+
         public ObservableDesktopMonitors DesktopMonitors
         {
             get => _desktopMonitors;
@@ -463,6 +477,12 @@ namespace AmethystWindows
                 return;
             e.Cancel = true;
             WindowState = WindowState.Minimized;
+        }
+
+        private string getVersion()
+        {
+            var version = Package.Current.Id.Version;
+            return $"{version.Major}.{version.Minor}.{version.Build}.{version.Revision}";
         }
     }
 
