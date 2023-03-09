@@ -51,7 +51,7 @@ namespace AmethystWindows
                     VirtualDesktop currentDesktop = VirtualDesktop.Current;
                     Pair<VirtualDesktop, HMONITOR> currentPair = new Pair<VirtualDesktop, HMONITOR>(currentDesktop, currentMonitor);
                     ViewModelDesktopMonitor viewModelDesktopMonitor = mainWindowViewModel.DesktopMonitors[currentPair];
-                    viewModelDesktopMonitor.RotateLayoutClockwise();
+                    viewModelDesktopMonitor.RotateLayoutCounterClockwise();
                 }
                 if (wParam.ToInt32() == (Int32)HotkeyCommand.setMainPane)
                 {
