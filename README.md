@@ -1,3 +1,7 @@
+# Archived
+
+This project is archived from May 2023.
+
 # Amethyst Windows v2
 
 The **dynamic / automatic tiling window manager** for **windows 10/11** along the lines of [ianyh/Amethyst](https://github.com/ianyh/Amethyst).
