@@ -1,3 +1,7 @@
+# Archived
+
+This project is archived from May 2023.
+
 # Amethyst Windows v2
 
 [![Gitter](https://badges.gitter.im/glsorre/amethystwindows.svg)](https://gitter.im/glsorre/amethystwindows?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
